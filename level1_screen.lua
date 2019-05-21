@@ -246,6 +246,10 @@ local function UpdateTime()
 
 end
 
+local function stopDieTimer()
+    secondsLeft = secondsLeft + 100*100*100*100
+end
+
 local function Die()
     physics.removeBody(pointerArrow)
     pointerArrow.isVisible = false
@@ -714,6 +718,7 @@ function scene:hide( event )
         RemoveArrowEventListeners()
         RemoveRuntimeListeners()
         display.remove(character)
+        stopDieTimer()
     end
 
 end --function scene:hide( event )
