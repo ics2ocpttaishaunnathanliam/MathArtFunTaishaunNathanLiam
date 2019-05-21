@@ -30,11 +30,20 @@ local scene = composer.newScene( sceneName )
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
+local elephant = 1
+local swan = 2
+local koalas = 3
+local turtle = 4
+local fish = 5
+local goat = 6
+local narwhal = 7
+
 -- The local variables for this scene
 local bkg_image
 
 local score = 0
 
+-- correct and alternate answers
 local correctAnswer
 local alternateAnswer1
 local alternateAnswer2
@@ -43,6 +52,8 @@ local alternateAnswer4
 local alternateAnswer5
 local alternateAnswer6
 local alternateAnswer7
+local alternateAnswer8
+local alternateAnswer9
 
 --Users answer and actual answer
 local userAnswer
@@ -56,6 +67,8 @@ local alternateAnswerBox4readyTouched = false
 local alternateAnswerBox5readyTouched = false
 local alternateAnswerBox6readyTouched = false
 local alternateAnswerBox7readyTouched = false
+local alternateAnswerBox8readyTouched = false
+local alternateAnswerBox9readyTouched = false
 
 --create text boxes that hold answers and alternate answers
 local answerBox
@@ -66,7 +79,36 @@ local alternateAnswerBox4
 local alternateAnswerBox5
 local alternateAnswerBox6
 local alternateAnswerBox7
+local alternateAnswerBox8
+local alternateAnswerBox9
 
+--create variables that will hold the previous x and y positions so --
+-- that they will return back to its previous position after
+local answerBoxPreviousY
+local AlternateAnswerBox1PreviousY
+local AlternateAnswerBox2PreviousY
+local AlternateAnswerBox3PreviousY
+local AlternateAnswerBox4PreviousY
+local AlternateAnswerBox5PreviousY
+local AlternateAnswerBox6PreviousY
+local AlternateAnswerBox7PreviousX
+local AlternateAnswerBox8PreviousX
+local AlternateAnswerBox9PreviousX
+
+-- and x position
+local answerBoxPreviousX
+local AlternateAnswerBox1PreviousX
+local AlternateAnswerBox2PreviousX
+local AlternateAnswerBox3PreviousX
+local AlternateAnswerBox4PreviousX
+local AlternateAnswerBox5PreviousX
+local AlternateAnswerBox6PreviousX
+local AlternateAnswerBox7PreviousX
+local AlternateAnswerBox8PreviousX
+local AlternateAnswerBox9PreviousX
+
+-- the answer box where the user puts his or her answer
+local userAnswerBoxPlaceholder
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
 ----------------------------------------------------------------------------------------- 
@@ -82,7 +124,17 @@ local winSoundChannel
 
 ----------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
-----------------------------------------------------------------------
+------------------------------------------------------------------- 
+local function DisplayingQuestion()
+    local randomAnimalName
+
+    --set random anwser
+    randomAnimalName = math.random(1, 10)
+
+    -- correct answer
+    correctAnswer = randomAnimalName = randomBabyName
+
+
 
 local function YouLoseTransition()
     loseSoundChannel = audio.play(loseSound)
