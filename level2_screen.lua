@@ -7,7 +7,7 @@
 -- This program is the level 1 screen of the program it is where the user starts to play the game.
 
 -----------------------------------------------------------------------------------------
---
+
 -----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
@@ -114,7 +114,12 @@ local AlternateAnswerBox3PreviousX
 -- the answer box where the user puts his or her answer
 local userAnswerBoxPlaceholder
 
--- rectangle variables
+--sound
+local muteButton
+local unmuteButton
+
+local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
+local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
@@ -129,16 +134,9 @@ local hitSoundChannel
 local winSound = audio.loadSound( "Sounds/Cheer.m4a" )
 local winSoundChannel
 
-local muteButton
-local unmuteButton
-
-local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
-local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
-
 ----------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ------------------------------------------------------------------- 
-
 local function Mute(touch)
     if (touch.phase == "ended") then
         audio.pause(bkgMusicMM)
@@ -221,9 +219,9 @@ local function correctAnswerListener(touch)
     end
 
     if (touch.phase == "ended") then
-        alreadyTouchedBlueGirl = false
-        alreadyTouchedYellowGirl = false
-        alreadyTouchedPinkGirl = false
+        incorrectAnswer1AlreadyTouched= false
+        incorrectAnswer2AlreadyTouched = false
+        incorrectAnswer3AlreadyTouched = false
     end
 end
 
@@ -314,19 +312,6 @@ function scene:create( event )
         -- Insert background image into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( bkg_image )
     
-    muteButton = display.newImageRect("Images/Mute.png", 200, 200)
-    muteButton.x = display.contentWidth*1.5/10
-    muteButton.y = display.contentHeight*1.3/10
-    muteButton.isVisible = true
-
-    unmuteButton = display.newImageRect("Images/UnMute.png", 200, 200)
-    unmuteButton.x = display.contentWidth*1.5/10
-    unmuteButton.y = display.contentHeight*1.3/10
-    unmuteButton.isVisible = false
-
-    sceneGroup:insert( muteButton )
-    sceneGroup:insert( unmuteButton )
-
     -- questin text above
     titleQuestionObject = display.newText( "Match animal baby names\nto their adult ones!", 518, 610, nil, 50 )
     titleQuestionObject:setTextColor(1, 0, 0)
@@ -357,6 +342,10 @@ function scene:create( event )
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.6
     userAnswerBoxPlaceholder.width = 200
     userAnswerBoxPlaceholder.height = 100
+
+    sceneGroup:insert( titleQuestionObject )
+    sceneGroup:insert( questionObject )
+    sceneGroup
 end 
     
 
@@ -384,9 +373,6 @@ function scene:show( event )
         -- Example: start timers, begin animation, play audio, etc
         AskQuestion()
         AddTouchListeners()
-        bkgMusicMMChannel = audio.play(bkgMusicMM)
-        muteButton:addEventListener("touch", Mute)
-        unmuteButton:addEventListener("touch", UnMute)
     end
 
 end --function scene:show( event )
@@ -412,8 +398,6 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
         RemoveTouchListeners()
-        muteButton:removeEventListener("touch", Mute)
-        unmuteButton:removeEventListener("touch", UnMute)
     end
 
 end --function scene:hide( event )
