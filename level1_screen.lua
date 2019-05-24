@@ -7,7 +7,7 @@
 -- This program is the level 1 screen of the program it is where the user starts to play the game.
 
 -----------------------------------------------------------------------------------------
-
+--
 -----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
@@ -247,7 +247,7 @@ local function UpdateTime()
 end
 
 local function stopDieTimer()
-    secondsLeft = secondsLeft + 100*100*100*100
+    secondsLeft = secondsLeft + 100000000000000
 end
 
 local function Die()
@@ -568,6 +568,7 @@ function scene:create( event )
     door.y = display.contentHeight*6.4/7
     door.myName = "door"
     door:scale(.5,.5)
+    
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
     muteButton.x = display.contentWidth*1.5/10
     muteButton.y = display.contentHeight*1.3/10

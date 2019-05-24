@@ -35,6 +35,9 @@ local level2Button
 local level3Button
 local level4Button
 
+local flyingBall
+local flyingBallX = -6000
+
 local muteButton
 local unmuteButton
 -----------------------------------------------------------------------------------------
@@ -42,12 +45,17 @@ local unmuteButton
 -----------------------------------------------------------------------------------------
 
 local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
-local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=2, loops=-1 } )
+local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=12, loops=-1 } )
 
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+
+local function MoveApple(event)
+    flyingBallX = flyingBallX+1
+    flyingBall.x = flyingBallX
+end
 
 local function Mute(touch)
     if (touch.phase == "ended") then
@@ -119,6 +127,11 @@ function scene:create( event )
     unmuteButton.y = display.contentHeight*1.3/10
     unmuteButton.isVisible = false
 
+    flyingBall = display.newImageRect("Images/ApplesNathan@2x.png", 50, 50)
+    flyingBall.x = -500
+    flyingBall.y = display.contentHeight/2
+    flyingBall.isVisible = true
+
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg_image )
 
@@ -128,14 +141,14 @@ function scene:create( event )
         level1Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth/2,
+            x = display.contentWidth*8/17,
             y = display.contentHeight*1/8,
 
             -- Insert the images here
             defaultFile = "Images/MathLevel1ButtonUnpressedYourName@2x.png",
             overFile = "Images/MathLevel1ButtonPressedYourName@2x.png",
 
-            width =  250, 
+            width =  260, 
             height = 125,
 
             -- When the button is released, call the Level1 screen transition function
@@ -145,14 +158,14 @@ function scene:create( event )
         level2Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth/2,
+            x = display.contentWidth*9/17,
             y = display.contentHeight*3/8,
 
             -- Insert the images here
             defaultFile = "Images/ArtLevel2ButtonUnpressedYourName@2x.png",
             overFile = "Images/ArtLevel2ButtonPressedYourName@2x.png",
 
-            width =  250, 
+            width =  260, 
             height = 125,
 
             -- When the button is released, call the Level1 screen transition function
@@ -162,14 +175,14 @@ function scene:create( event )
         level3Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth/2,
+            x = display.contentWidth*8/17,
             y = display.contentHeight*5/8,
 
             -- Insert the images here
             defaultFile = "Images/MathLevel3ButtonUnpressedYourName@2x.png",
             overFile = "Images/MathLevel3ButtonPressedYourName@2x.png",
 
-            width =  250, 
+            width =  260, 
             height = 125,
 
             -- When the button is released, call the Level1 screen transition function
@@ -179,14 +192,14 @@ function scene:create( event )
         level4Button = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth/2,
+            x = display.contentWidth*9/17,
             y = display.contentHeight*7/8,
 
             -- Insert the images here
             defaultFile = "Images/ArtLevel4ButtonUnpressedYourName@2x.png",
             overFile = "Images/ArtLevel4ButtonPressedYourName@2x.png",
 
-            width =  250, 
+            width =  260, 
             height = 125,
 
             -- When the button is released, call the Level1 screen transition function
@@ -197,7 +210,7 @@ function scene:create( event )
         sceneGroup:insert(level2Button)
         sceneGroup:insert(level3Button)  
         sceneGroup:insert(level4Button)
-
+        sceneGroup:insert(flyingBall)
         sceneGroup:insert( muteButton )
         sceneGroup:insert( unmuteButton )
     -----------------------------------------------------------------------------------------
@@ -259,8 +272,8 @@ function scene:show( event )
         -- Example: start timers, begin animation, play audio, etc.
         bkgMusicLevel1Channel = audio.play(bkgMusic)
         muteButton:addEventListener("touch", Mute)
-        unmuteButton:addEventListener("touch", UnMute)        
-
+        unmuteButton:addEventListener("touch", UnMute)   
+        Runtime:addEventListener("enterFrame", MoveApple)
     end
 
 end -- function scene:show( event )
