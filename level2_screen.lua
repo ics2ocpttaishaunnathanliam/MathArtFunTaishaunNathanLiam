@@ -121,6 +121,19 @@ local unmuteButton
 local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
+--answers original x and y
+correctAnswerOriginalX = 620
+correctAnswerOriginalY = 400
+
+incorrectAnswer1OriginalX = 620
+incorrectAnswer1OriginalY = 250
+
+incorrectAnswer2OriginalX = 400
+incorrectAnswer2OriginalY = 400
+
+incorrectAnswer3OriginalX = 400
+incorrectAnswer3OriginalY = 250
+
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
 ----------------------------------------------------------------------------------------- 
@@ -225,6 +238,73 @@ local function correctAnswerListener(touch)
     end
 end
 
+local function incorrectAnswer1Listener(touch)
+
+
+    if (touch.phase == "began") then
+        if (correctAnswerAlreadyTouched == false) and (incorrectAnswer2AlreadyTouched == false) 
+            and (incorrectAnswer3AlreadyTouched == false) then
+            incorrectAnswer1AlreadyTouched = true
+        end
+    end
+
+    if ( (touch.phase == "moved") and (incorrectAnswer1AlreadyTouched == true) ) then
+        incorrectAnswer1.x = touch.x
+        incorrectAnswer1.y = touch.y
+    end
+
+    if (touch.phase == "ended") then
+        correctAnswerAlreadyTouched = false
+        incorrectAnswer2AlreadyTouched = false
+        incorrectAnswer3AlreadyTouched = false
+    end
+end
+
+local function incorrectAnswer2Listener(touch)
+
+
+    if (touch.phase == "began") then
+        if (correctAnswerAlreadyTouched == false) and (incorrectAnswer1AlreadyTouched == false) 
+            and (incorrectAnswer3AlreadyTouched == false) then
+            incorrectAnswer2AlreadyTouched = true
+        end
+    end
+
+    if ( (touch.phase == "moved") and (incorrectAnswer2AlreadyTouched == true) ) then
+        incorrectAnswer2.x = touch.x
+        incorrectAnswer2.y = touch.y
+    end
+
+    if (touch.phase == "ended") then
+        correctAnswerAlreadyTouched = false
+        incorrectAnswer1AlreadyTouched = false
+        incorrectAnswer3AlreadyTouched = false
+    end
+end
+
+local function incorrectAnswer3Listener(touch)
+
+
+    if (touch.phase == "began") then
+        if (correctAnswerAlreadyTouched == false) and (incorrectAnswer1AlreadyTouched == false) 
+            and (incorrectAnswer2AlreadyTouched == false) then
+            incorrectAnswer3AlreadyTouched = true
+        end
+    end
+
+    if ( (touch.phase == "moved") and (incorrectAnswer3AlreadyTouched == true) ) then
+        incorrectAnswer3.x = touch.x
+        incorrectAnswer3.y = touch.y
+    end
+
+    if (touch.phase == "ended") then
+        correctAnswerAlreadyTouched = false
+        incorrectAnswer1AlreadyTouched = false
+        incorrectAnswer2AlreadyTouched = false
+    end
+end
+
+
 local function TouchListenerCorrectAnswer(touch)
     --only work if none of the other boxes have been touched
     if (incorrectAnswer1AlreadyTouched == false) and 
@@ -270,13 +350,162 @@ local function TouchListenerCorrectAnswer(touch)
     end                
 end 
 
+local function incorrectAnswer1TouchListener(touch)
+    --only work if none of the other boxes have been touched
+    if (correctAnswerAlreadyTouched == false) and 
+        (incorrectAnswer2AlreadyTouched == false) and
+        (incorrectAnswer3AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+
+            --let other boxes know it has been clicked
+            incorrectAnswer1AlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            incorrectAnswer1.x = touch.x
+            incorrectAnswer1.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            incorrectAnswer1AlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < incorrectAnswer1.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > incorrectAnswer1.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < incorrectAnswer1.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > incorrectAnswer1.y ) ) then
+
+                -- setting the position of the number to be in the center of the box
+                incorrectAnswer1.x = userAnswerBoxPlaceholder.x
+                incorrectAnswer1.y = userAnswerBoxPlaceholder.y
+                --userAnswer = correctAnswer
+
+                -- call the function to check if the user's input is correct or not
+                --CheckUserAnswerInput()
+
+            --else make box go back to where it was
+            else
+                incorrectAnswer1.x = incorrectAnswer1OriginalX
+                incorrectAnswer1.y = incorrectAnswer1OriginalY
+            end
+        end
+    end                
+end
+
+local function incorrectAnswer2TouchListener(touch)
+    --only work if none of the other boxes have been touched
+    if (correctAnswerAlreadyTouched == false) and 
+        (incorrectAnswer1AlreadyTouched == false) and
+        (incorrectAnswer3AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+
+            --let other boxes know it has been clicked
+            incorrectAnswer2AlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            incorrectAnswer2.x = touch.x
+            incorrectAnswer2.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            incorrectAnswer2AlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < incorrectAnswer2.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > incorrectAnswer2.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < incorrectAnswer2.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > incorrectAnswer2.y ) ) then
+
+                -- setting the position of the number to be in the center of the box
+                incorrectAnswer2.x = userAnswerBoxPlaceholder.x
+                incorrectAnswer2.y = userAnswerBoxPlaceholder.y
+                --userAnswer = correctAnswer
+
+                -- call the function to check if the user's input is correct or not
+                --CheckUserAnswerInput()
+
+            --else make box go back to where it was
+            else
+                incorrectAnswer2.x = incorrectAnswer2OriginalX
+                incorrectAnswer2.y = incorrectAnswer2OriginalY
+            end
+        end
+    end                
+end
+
+local function incorrectAnswer3TouchListener(touch)
+    --only work if none of the other boxes have been touched
+    if (correctAnswerAlreadyTouched == false) and 
+        (incorrectAnswer1AlreadyTouched == false) and
+        (incorrectAnswer2AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+
+            --let other boxes know it has been clicked
+            incorrectAnswer3AlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            incorrectAnswer3.x = touch.x
+            incorrectAnswer3.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            incorrectAnswer3AlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < incorrectAnswer3.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > incorrectAnswer3.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < incorrectAnswer3.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > incorrectAnswer3.y ) ) then
+
+                -- setting the position of the number to be in the center of the box
+                incorrectAnswer3.x = userAnswerBoxPlaceholder.x
+                incorrectAnswer3.y = userAnswerBoxPlaceholder.y
+                --userAnswer = correctAnswer
+
+                -- call the function to check if the user's input is correct or not
+                --CheckUserAnswerInput()
+
+            --else make box go back to where it was
+            else
+                incorrectAnswer3.x = incorrectAnswer3OriginalX
+                incorrectAnswer3.y = incorrectAnswer3OriginalY
+            end
+        end
+    end                
+end 
+
 
 local function AddTouchListeners()
     correctAnswer:addEventListener("touch", correctAnswerListener)
+    correctAnswer:addEventListener("touch", TouchListenerCorrectAnswer)
+    incorrectAnswer1:addEventListener("touch", incorrectAnswer1Listener)
+    incorrectAnswer1:addEventListener("touch", incorrectAnswer1TouchListener)
+    incorrectAnswer2:addEventListener("touch", incorrectAnswer2Listener)
+    incorrectAnswer2:addEventListener("touch", incorrectAnswer2TouchListener)
+    incorrectAnswer3:addEventListener("touch", incorrectAnswer3Listener)
+    incorrectAnswer3:addEventListener("touch", incorrectAnswer3TouchListener)
 end
 
 local function RemoveTouchListeners()
     correctAnswer:removeEventListener("touch", correctAnswerListener)
+    correctAnswer:removeEventListener("touch", TouchListenerCorrectAnswer)
+    incorrectAnswer:removeEventListener("touch", incorrectAnswer1Listener)
+    incorrectAnswer1:removeEventListener("touch", incorrectAnswer1TouchListener)
+    incorrectAnswer2:removeEventListener("touch", incorrectAnswer2Listener)
+    incorrectAnswer2:removeEventListener("touch", incorrectAnswer2TouchListener)
+    incorrectAnswer3:removeEventListener("touch", incorrectAnswer3Listener)
+    incorrectAnswer3:removeEventListener("touch", incorrectAnswer3TouchListener)
 end
 
 local function onCollision( self, event )
@@ -315,9 +544,10 @@ function scene:create( event )
     -- questin text above
     titleQuestionObject = display.newText( "Match animal baby names\nto their adult ones!", 518, 610, nil, 50 )
     titleQuestionObject:setTextColor(1, 0, 0)
+    titleQuestionObject.isVisible = false
 
     -- text object
-    questionObject = display.newText( "", 408, 495, nil, 50 )
+    questionObject = display.newText( "", 408, 490, nil, 50 )
     questionObject:setTextColor(0.8, 0.5, 0.3)
 
     -- text object
@@ -338,14 +568,20 @@ function scene:create( event )
 
     -- the black box where the user will drag the answer
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
-    userAnswerBoxPlaceholder.x = display.contentWidth * 0.6
-    userAnswerBoxPlaceholder.y = display.contentHeight * 0.6
+    userAnswerBoxPlaceholder.x = display.contentWidth * 0.58
+    userAnswerBoxPlaceholder.y = display.contentHeight * 0.64
     userAnswerBoxPlaceholder.width = 200
     userAnswerBoxPlaceholder.height = 100
+    userAnswerBoxPlaceholder.isVisible = false
 
+    -- scene groups
     sceneGroup:insert( titleQuestionObject )
     sceneGroup:insert( questionObject )
-    sceneGroup
+    sceneGroup:insert( correctAnswer )
+    sceneGroup:insert( incorrectAnswer1 )
+    sceneGroup:insert( incorrectAnswer2 )
+    sceneGroup:insert( incorrectAnswer3 )
+    sceneGroup:insert( userAnswerBoxPlaceholder )
 end 
     
 
