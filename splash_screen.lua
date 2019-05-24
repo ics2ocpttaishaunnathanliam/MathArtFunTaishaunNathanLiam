@@ -36,6 +36,14 @@ local rotate = 0
 local visible = 0
 
 local scale = 1
+
+----------------------------------------------------------------------------------------
+-- LOCAL SOUND VARIABLES
+-----------------------------------------------------------------------------------------
+local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
+local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
+
+
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 --------------------------------------------------------------------------------------------
@@ -44,6 +52,25 @@ local scale = 1
 local function gotoMainMenu()
     composer.gotoScene( "main_menu" )
 end
+
+local function Mute(touch)
+    if (touch.phase == "ended") then
+        audio.pause(bkgMusicMM)
+        soundOn = false
+        muteButton.isVisible = false
+        unmuteButton.isVisible = true
+    end
+end
+
+local function UnMute(touch)
+    if (touch.phase == "ended") then
+        audio.resume(bkgMusicMM)
+        soundOn = true
+        muteButton.isVisible = true
+        unmuteButton.isVisible = false
+    end
+end
+
 local function AnimateCompanyLogo(event)
     -- add the scroll speed to the x co-ordinate of the logo
     companyLogo.x = companyLogo.x + scrollSpeed
@@ -85,9 +112,22 @@ function scene:create( event )
     companyLogo2.y = display.contentHeight/2
     companyLogo2:scale(3.5, 3.5)
 
+    muteButton = display.newImageRect("Images/Mute.png", 200, 200)
+    muteButton.x = display.contentWidth*1.5/10
+    muteButton.y = display.contentHeight*1.3/10
+    muteButton.isVisible = true
+
+    unmuteButton = display.newImageRect("Images/UnMute.png", 200, 200)
+    unmuteButton.x = display.contentWidth*1.5/10
+    unmuteButton.y = display.contentHeight*1.3/10
+    unmuteButton.isVisible = false
+
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( companyLogo )
     sceneGroup:insert( companyLogo2 )
+
+    sceneGroup:insert( muteButton )
+    sceneGroup:insert( unmuteButton )    
 
 end -- function scene:create( event )
 
@@ -116,6 +156,10 @@ function scene:show( event )
 
         -- Call the moveBeetleship function as soon as we enter the frame.
         Runtime:addEventListener("enterFrame", AnimateCompanyLogo)
+       
+        bkgMusicLevel1Channel = audio.play(bkgMusic)
+        muteButton:addEventListener("touch", Mute)
+        unmuteButton:addEventListener("touch", UnMute)
 
         timer.performWithDelay(2000, PopUpLogo)
         -- Go to the main menu screen after the given time.
@@ -140,7 +184,7 @@ function scene:hide( event )
     -- Insert code here to "pause" the scene.
     -- Example: stop timers, stop animation, stop audio, etc.
     if ( phase == "will" ) then  
-
+    bkgMusicLevel1Channel = audio.stop()
     -----------------------------------------------------------------------------------------
 
     -- Called immediately after scene goes off screen.
