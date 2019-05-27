@@ -60,6 +60,7 @@ local lArrow
 local uArrow
 local dArrow
 
+local numLives = 2
 local heart1
 local heart2
 
@@ -106,6 +107,15 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 }
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------
 
+local function YouLoseTransition2()
+    apple1.isVisible = false
+    apple2.isVisible = false
+    apple3.isVisible = false
+    apple4.isVisible = false
+    apple5.isVisible = false
+    composer.gotoScene( "you_lose" )
+end
+
 -- when right arrow is touched move right
 local function right (touch)
     motionx = SPEED
@@ -151,6 +161,20 @@ local function RemoveArrowEventListeners()
     uArrow:removeEventListener("touch", up)
 end
 
+local function checkLives(event)
+    if (numLives == 1) then
+        -- update hearts
+        heart1.isVisible = true
+           heart2.isVisible = false
+
+    elseif (numLives == 0) then
+        -- update hearts
+        heart1.isVisible = false
+        heart2.isVisible = false
+        timer.performWithDelay(200, YouLoseTransition2)
+    end
+end
+
 local function Mute(touch)
     if (touch.phase == "ended") then
         audio.pause(bkgMusicMM)
@@ -170,6 +194,7 @@ local function UnMute(touch)
 end
 
 local function AddRuntimeListeners()
+    Runtime:addEventListener("enterFrame", checkLives)
     Runtime:addEventListener("enterFrame", movePlayer)
     Runtime:addEventListener("touch", stop)
 end
@@ -224,7 +249,6 @@ local function YouLoseTransition()
     apple3.isVisible = false
     apple4.isVisible = false
     apple5.isVisible = false
-    loseSoundChannel = audio.play(loseSound)
     composer.gotoScene( "you_lose" )
 end
 
@@ -356,6 +380,7 @@ local function onCollision( self, event )
             -- Increment questions answered
             questionsAnswered = questionsAnswered + 1
         end
+        
         if (questionsAnswered == 5) then
             door.isVisible = true
         end
@@ -488,6 +513,22 @@ function ResumeGame()
 
         -- make character visible again
     character.isVisible = true
+    numLives = numLives - 1
+
+    if (questionsAnswered > -1) then
+        if (theApple ~= nil) and (theApple.isBodyActive == true) then
+            physics.removeBody(theApple)
+            theApple.isVisible = false
+        end
+    end
+
+end
+
+function ResumeGame2()
+    print("Called ResumeGame")
+
+        -- make character visible again
+    character.isVisible = true
     
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
@@ -553,6 +594,23 @@ function scene:create( event )
     sceneGroup:insert(apple4)
     sceneGroup:insert(apple5)
 
+        -- Insert the Hearts
+    heart1 = display.newImageRect("Images/heart.png", 80, 80)
+    heart1.x = 300
+    heart1.y = 90
+    heart1.isVisible = true
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( heart1 )
+
+    heart2 = display.newImageRect("Images/heart.png", 80, 80)
+    heart2.x = 390
+    heart2.y = 90
+    heart2.isVisible = true
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( heart2 )
+
         -- Creating Back Button
     backButton = widget.newButton( 
     {
@@ -583,7 +641,7 @@ function scene:create( event )
     -- Associating Buttons with this scene
     sceneGroup:insert( backButton )
 
-    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/9, nil, 50 )
+    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/10, nil, 50 )
 
 
     --Insert the right arrow
@@ -709,7 +767,6 @@ function scene:show( event )
         bkgMusicLevel1Channel = audio.play(bkgMusic)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)    
-
         questionsAnswered = 0
 
         -- make all soccer balls visible
@@ -717,7 +774,6 @@ function scene:show( event )
 
         -- add collision listeners to objects
         AddCollisionListeners()
-
         -- create the character, add physics bodies and runtime listeners
         ReplaceCharacter() 
 

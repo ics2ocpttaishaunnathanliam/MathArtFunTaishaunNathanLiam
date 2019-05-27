@@ -71,6 +71,12 @@ local function BackToLevel1()
     ResumeGame()
 end 
 
+local function Back2Level1() 
+    composer.hideOverlay("crossFade", 400 )
+  
+    ResumeGame2()
+end 
+
 -----------------------------------------------------------------------------------------
 --checking to see if the user pressed the right answer and bring them back to level 1
 local function TouchListenerAnswer(touch)
@@ -78,7 +84,7 @@ local function TouchListenerAnswer(touch)
     
     if (touch.phase == "ended") then
 
-        BackToLevel1( )
+        Back2Level1( )
     
     end 
 end
