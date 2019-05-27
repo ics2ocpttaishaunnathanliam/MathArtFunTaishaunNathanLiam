@@ -33,6 +33,9 @@ local scene = composer.newScene( sceneName )
 -- The local variables for this scene
 local bkg_image
 
+-- back button var
+local backButton
+
 local character
 
 -- create apples
@@ -130,6 +133,10 @@ local function stop (event)
         motionx = 0
         motiony = 0
     end
+end
+
+local function BackTransition( )
+    composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
 end
 
 local function AddArrowEventListeners()
@@ -359,7 +366,7 @@ local function onCollision( self, event )
             if (questionsAnswered == 5) then
                 -- after getting 3 questions right, go to the you win screen
                 winSoundChannel = audio.play(winSound)
-                composer.gotoScene( "you_win" )
+                composer.gotoScene( "level2_screen" )
             end
         end
            
@@ -546,7 +553,37 @@ function scene:create( event )
     sceneGroup:insert(apple4)
     sceneGroup:insert(apple5)
 
-    clockText = display.newText( "" .. secondsLeft .. "", display.contentHeight*1/7, display.contentWidth*1/9, nil, 50 )
+        -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*8/9,
+        y = display.contentHeight*1/7,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnPressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 200,
+        height = 100,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+
+    } )
+
+    backButton.isVisible = false -- change to work or not if thaat is what you wish
+
+    -----------------------------------------------------------------------------------------
+
+    -- Associating Buttons with this scene
+    sceneGroup:insert( backButton )
+
+    clockText = display.newText( "" .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/9, nil, 50 )
 
 
     --Insert the right arrow
