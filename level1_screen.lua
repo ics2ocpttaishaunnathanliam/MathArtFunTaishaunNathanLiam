@@ -245,7 +245,7 @@ local function UpdateTime()
     secondsLeft = secondsLeft - 1
     
     -- display the number of seconds left in the clock object
-    clockText.text = secondsLeft .. ""
+    clockText.text = "Seconds left = " .. secondsLeft .. ""
 
     if (secondsLeft == 0 ) then
         YouLoseTransition()
@@ -583,7 +583,7 @@ function scene:create( event )
     -- Associating Buttons with this scene
     sceneGroup:insert( backButton )
 
-    clockText = display.newText( "" .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/9, nil, 50 )
+    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/9, nil, 50 )
 
 
     --Insert the right arrow
