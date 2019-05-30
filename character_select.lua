@@ -18,11 +18,13 @@ local widget = require( "widget" )
 -----------------------------------------------------------------------------------------
 
 -- Naming Scene
-sceneName = "levels_screen"
+sceneName = "character_select"
 
 -- Creating Scene Object
 scene = composer.newScene( sceneName ) -- This function doesn't accept a string, only a variable containing a string
 
+
+characterNumber = 1
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
@@ -30,10 +32,10 @@ local bkg_image
 
 local backButton
 
-local level1Button
-local level2Button
-local level3Button
-local level4Button
+local character1
+local character2
+local character3
+local character4
 
 local flyingBall
 local flyingBallX = -6000
@@ -41,11 +43,8 @@ local flyingBallX = -6000
 local muteButton
 local unmuteButton
 
-local moose
-local mooseXscale = 0
+local descText
 
-local moose2
-local mooseXscale2 = 0
 -----------------------------------------------------------------------------------------
 -- Sounds
 -----------------------------------------------------------------------------------------
@@ -57,6 +56,82 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=12, loops=-1 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+
+local function Moose1()
+    character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
+    character.x = display.contentWidth*5/10
+    character.y = display.contentHeight*1/10
+end
+
+local function Moose2()
+    character = display.newImageRect("Images/Moose2.png", 200, 200)
+    character.x = display.contentWidth*5/10
+    character.y = display.contentHeight*1/10
+end
+
+local function Moose3()
+    character = display.newImageRect("Images/Moose3.png", 200, 200)
+    character.x = display.contentWidth*5/10
+    character.y = display.contentHeight*1/10
+end
+
+local function Moose4()
+    character = display.newImageRect("Images/Moose4.png", 200, 200)
+    character.x = display.contentWidth*5/10
+    character.y = display.contentHeight*1/10
+end
+
+local function Character1Select(touch)
+    if (touch.phase == "ended") then
+        characterNumber = 1
+        character.isVisible = false
+        Moose1()
+        print(characterNumber)
+    end
+end
+
+local function Character2Select(touch)
+    if (touch.phase == "ended") then
+        characterNumber = 2
+        character.isVisible = false
+        Moose2()
+        print(characterNumber)        
+    end
+end
+
+local function Character3Select(touch)
+    if (touch.phase == "ended") then
+        characterNumber = 3
+        character.isVisible = false
+        Moose3()
+        print(characterNumber)
+    end
+end
+
+local function Character4Select(touch)
+    if (touch.phase == "ended") then
+        characterNumber = 4
+        character.isVisible = false
+        Moose4()
+        print(characterNumber)
+    end
+end
+
+local function AddTextObjectListeners()
+
+    character1:addEventListener("touch", Character1Select)
+    character2:addEventListener("touch", Character2Select)
+    character3:addEventListener("touch", Character3Select)
+    character4:addEventListener("touch", Character4Select)
+end 
+
+local function RemoveTextObjectListeners()
+
+    character1:removeEventListener("touch", Character1Select)
+    character2:removeEventListener("touch", Character2Select)
+    character3:removeEventListener("touch", Character3Select)
+    character4:removeEventListener("touch", Character4Select)
+end
 
 local function MoveApple(event)
     flyingBallX = flyingBallX+1
@@ -72,20 +147,6 @@ local function Mute(touch)
     end
 end
 
-local function SpinMoose(event)
-    mooseXscale = mooseXscale + 0.1
-    moose:rotate(mooseXscale)
-    moose:rotate(mooseXscale)
-    moose:rotate(mooseXscale)
-end
-
-local function SpinMoose2(event)
-    mooseXscale2 = mooseXscale2 + 0.1
-    moose2:rotate(mooseXscale2)
-    moose2:rotate(mooseXscale2)
-    moose2:rotate(mooseXscale2)
-end
-
 local function UnMute(touch)
     if (touch.phase == "ended") then
         audio.resume(bkgMusicMM)
@@ -95,28 +156,13 @@ local function UnMute(touch)
     end
 end
 
+------------------------------------------------------ TRANSITIONS FOR LEVELS --------------------------------------------------------
+
 -- Creating Transitioning Function back to main menu
 local function BackTransition( )
     composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
 end
 
------------------------------------------------------- TRANSITIONS FOR LEVELS --------------------------------------------------------
-
-local function Level1ScreenTransition()
-    composer.gotoScene( "level1_screen", {effect = "zoomOutInFadeRotate", time = 500} ) -- change transition if wanted
-end
-
-local function Level2ScreenTransition()
-    composer.gotoScene( "level2_screen", {effect = "zoomOutInFadeRotate", time = 500} ) -- change transition if wanted
-end
-
-local function Level3ScreenTransition()
-    composer.gotoScene( "level3_screen", {effect = "zoomOutInFadeRotate", time = 500} ) -- change transition if wanted    
-end
-
-local function Level4ScreenTransition()
-    composer.gotoScene( "level4_screen", {effect = "zoomOutInFadeRotate", time = 500} ) -- change transition if wanted    
-end
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -131,7 +177,7 @@ function scene:create( event )
     -- BACKGROUND AND DISPLAY OBJECTS
     -----------------------------------------------------------------------------------------
     -- Insert the background image and set it to the center of the screen
-    bkg_image = display.newImageRect("Images/Level1ScreenNathanC@2x.png", display.contentWidth, display.contentHeight)
+    bkg_image = display.newImageRect("Images/level1ScreenNathanC@2x.png", display.contentWidth, display.contentHeight)
     bkg_image.x = display.contentCenterX
     bkg_image.y = display.contentCenterY
     bkg_image.width = display.contentWidth
@@ -147,91 +193,59 @@ function scene:create( event )
     unmuteButton.y = display.contentHeight*1.3/10
     unmuteButton.isVisible = false
 
+    descText = display.newText("Pick your moose!", 10, 10)
+    descText.x = display.contentWidth/2
+    descText.y = display.contentHeight*3/10
+    descText:scale(2, 2)
+
+
+
+
     flyingBall = display.newImageRect("Images/ApplesNathan@2x.png", 50, 50)
     flyingBall.x = -500
     flyingBall.y = display.contentHeight/2
     flyingBall.isVisible = true
+
+    character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
+    character.x = display.contentWidth*5/10
+    character.y = display.contentHeight*1/10
+    sceneGroup:insert(character)
+
+    character1 = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
+    character1.x = display.contentWidth*1/10
+    character1.y = display.contentHeight*5/10
+    sceneGroup:insert(character1)
+
+    character2 = display.newImageRect("Images/Moose2.png", 200, 200)
+    character2.x = display.contentWidth*3.5/10
+    character2.y = display.contentHeight*5/10
+    sceneGroup:insert(character2)
+
+    character3 = display.newImageRect("Images/Moose3.png", 200, 200)
+    character3.x = display.contentWidth*6/10
+    character3.y = display.contentHeight*5/10
+    sceneGroup:insert(character3)
+
+    character4 = display.newImageRect("Images/Moose4.png", 200, 200)
+    character4.x = display.contentWidth*8.5/10
+    character4.y = display.contentHeight*5/10
+    sceneGroup:insert(character4)
+
+
+
+
+
 
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg_image )
 
     -- Send the background image to the back layer so all other objects can be on top
     bkg_image:toBack()
-        level1Button = widget.newButton( 
-        {   
-            -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*8/17,
-            y = display.contentHeight*1/8,
 
-            -- Insert the images here
-            defaultFile = "Images/MathLevel1ButtonUnpressedYourName@2x.png",
-            overFile = "Images/MathLevel1ButtonPressedYourName@2x.png",
-
-            width =  260, 
-            height = 125,
-
-            -- When the button is released, call the Level1 screen transition function
-            onRelease = Level1ScreenTransition          
-        } )
-
-        level2Button = widget.newButton( 
-        {   
-            -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*9/17,
-            y = display.contentHeight*3/8,
-
-            -- Insert the images here
-            defaultFile = "Images/ArtLevel2ButtonUnpressedYourName@2x.png",
-            overFile = "Images/ArtLevel2ButtonPressedYourName@2x.png",
-
-            width =  260, 
-            height = 125,
-
-            -- When the button is released, call the Level1 screen transition function
-            onRelease = Level2ScreenTransition          
-        } )
-
-        level3Button = widget.newButton( 
-        {   
-            -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*8/17,
-            y = display.contentHeight*5/8,
-
-            -- Insert the images here
-            defaultFile = "Images/MathLevel3ButtonUnpressedYourName@2x.png",
-            overFile = "Images/MathLevel3ButtonPressedYourName@2x.png",
-
-            width =  260, 
-            height = 125,
-
-            -- When the button is released, call the Level1 screen transition function
-            onRelease = Level3ScreenTransition        
-        } )
-
-        level4Button = widget.newButton( 
-        {   
-            -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*9/17,
-            y = display.contentHeight*7/8,
-
-            -- Insert the images here
-            defaultFile = "Images/ArtLevel4ButtonUnpressedYourName@2x.png",
-            overFile = "Images/ArtLevel4ButtonPressedYourName@2x.png",
-
-            width =  260, 
-            height = 125,
-
-            -- When the button is released, call the Level1 screen transition function
-            onRelease = Level4ScreenTransition          
-        } )
-
-        sceneGroup:insert(level1Button)
-        sceneGroup:insert(level2Button)
-        sceneGroup:insert(level3Button)  
-        sceneGroup:insert(level4Button)
-        sceneGroup:insert(flyingBall)
-        sceneGroup:insert( muteButton )
-        sceneGroup:insert( unmuteButton )
+    sceneGroup:insert(flyingBall)
+    sceneGroup:insert( muteButton )
+    sceneGroup:insert( unmuteButton )
+    sceneGroup:insert(descText)
     -----------------------------------------------------------------------------------------
     -- BUTTON WIDGETS
     -----------------------------------------------------------------------------------------
@@ -248,7 +262,7 @@ function scene:create( event )
         -- height = 106,
 
         -- Setting Visual Properties
-        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
+        defaultFile = "Images/BackButtonUnPressedYourName@2x.png",
         overFile = "Images/BackButtonPressedYourName@2x.png",
 
         width = 200,
@@ -264,15 +278,6 @@ function scene:create( event )
     -- Associating Buttons with this scene
     sceneGroup:insert( backButton )
 
-    moose = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
-    moose.x = display.contentWidth*5/6
-    moose.y = display.contentHeight*1/6
-    sceneGroup:insert(moose)
-
-    moose2 = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
-    moose2.x = display.contentWidth*5/6
-    moose2.y = display.contentHeight*5/6
-    sceneGroup:insert(moose2)
 end --function scene:create( event )
 
 -----------------------------------------------------------------------------------------
@@ -298,12 +303,11 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+        AddTextObjectListeners()
         bkgMusicLevel1Channel = audio.play(bkgMusic)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)   
         Runtime:addEventListener("enterFrame", MoveApple)
-        Runtime:addEventListener("enterFrame", SpinMoose)
-        Runtime:addEventListener("enterFrame", SpinMoose2)
     end
 
 end -- function scene:show( event )
@@ -327,12 +331,11 @@ function scene:hide( event )
         -- Insert code here to "pause" the scene.
         -- Example: stop timers, stop animation, stop audio, etc.
         bkgMusicLevel1Channel = audio.stop()
+        RemoveTextObjectListeners()
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
-        Runtime:removeEventListener("enterFrame", SpinMoose)
-        Runtime:removeEventListener("enterFrame", SpinMoose2)        
     end
 
 end --function scene:hide( event )
