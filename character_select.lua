@@ -46,6 +46,9 @@ local unmuteButton
 
 local descText
 
+local red
+local blue
+local green
 -----------------------------------------------------------------------------------------
 -- Sounds
 -----------------------------------------------------------------------------------------
@@ -288,14 +291,6 @@ function scene:create( event )
     character4.y = display.contentHeight*5/10
     sceneGroup:insert(character4)
 
-    red = display.newImageRect(100, 100, 100, 100)
-    
-
-
-
-
-
-
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg_image )
 
@@ -392,6 +387,7 @@ function scene:hide( event )
         -- Example: stop timers, stop animation, stop audio, etc.
         bkgMusicLevel1Channel = audio.stop()
         RemoveTextObjectListeners()
+        character.isVisible = false
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
