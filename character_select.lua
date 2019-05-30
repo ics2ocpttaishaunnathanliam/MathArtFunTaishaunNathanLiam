@@ -25,6 +25,7 @@ scene = composer.newScene( sceneName ) -- This function doesn't accept a string,
 
 
 characterNumber = 1
+characterColor = 1
 -----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
@@ -58,27 +59,83 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=12, loops=-1 
 -----------------------------------------------------------------------------------------
 
 local function Moose1()
-    character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
-    character.x = display.contentWidth*5/10
-    character.y = display.contentHeight*1/10
+    if (characterColor == 1) then -- blue
+        character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10
+    end
+
+    if (characterColor == 2) then -- red
+        character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end 
+
+    if (CharacterColor == 3) then -- green
+        character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end
 end
 
 local function Moose2()
-    character = display.newImageRect("Images/Moose2.png", 200, 200)
-    character.x = display.contentWidth*5/10
-    character.y = display.contentHeight*1/10
+    if (characterColor == 1) then -- blue
+        character = display.newImageRect("Images/Moose2.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10
+    end
+
+    if (characterColor == 2) then -- red
+        character = display.newImageRect("Images/RedMoose2.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end 
+
+    if (CharacterColor == 3) then -- green
+        character = display.newImageRect("Images/GreenMoose2.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end
 end
 
 local function Moose3()
-    character = display.newImageRect("Images/Moose3.png", 200, 200)
-    character.x = display.contentWidth*5/10
-    character.y = display.contentHeight*1/10
+    if (characterColor == 1) then -- blue
+        character = display.newImageRect("Images/Moose3.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10
+    end
+
+    if (characterColor == 2) then -- red
+        character = display.newImageRect("Images/RedMoose3.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end 
+
+    if (CharacterColor == 3) then -- green
+        character = display.newImageRect("Images/GreenMoose3.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end
 end
 
 local function Moose4()
-    character = display.newImageRect("Images/Moose4.png", 200, 200)
-    character.x = display.contentWidth*5/10
-    character.y = display.contentHeight*1/10
+    if (characterColor == 1) then -- blue
+        character = display.newImageRect("Images/Moose4.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10
+    end
+
+    if (characterColor == 2) then -- red
+        character = display.newImageRect("Images/RedMoose4.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end 
+
+    if (CharacterColor == 3) then -- green
+        character = display.newImageRect("Images/GreenMoose4.png", 200, 200)
+        character.x = display.contentWidth*5/10
+        character.y = display.contentHeight*1/10 
+    end
 end
 
 local function Character1Select(touch)
@@ -230,6 +287,9 @@ function scene:create( event )
     character4.x = display.contentWidth*8.5/10
     character4.y = display.contentHeight*5/10
     sceneGroup:insert(character4)
+
+    red = display.newImageRect(100, 100, 100, 100)
+    
 
 
 
