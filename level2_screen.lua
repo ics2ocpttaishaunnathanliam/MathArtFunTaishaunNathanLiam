@@ -139,8 +139,8 @@ local win
 -- timer stuff
 local timerText
 local clockText
-local totalSeconds = 60
-local secondsLeft = 60
+local totalSeconds = 10
+local secondsLeft = 10
 
 -- lives
 local lives = 5
@@ -191,6 +191,11 @@ local function UnMute(touch)
         muteButton.isVisible = true
         unmuteButton.isVisible = false
     end
+end
+
+local function YouLoseTransition()
+    loseSoundChannel = audio.play(loseSound)
+    composer.gotoScene( "you_lose" )
 end
 
 local function UpdateTime()
@@ -245,12 +250,6 @@ local function AskQuestion()
     end
 end
 
-
-local function YouLoseTransition()
-    loseSoundChannel = audio.play(loseSound)
-    composer.gotoScene( "you_lose" )
-end
-
 local function UpdateHearts()
     if (lives == 4) then
         heart5.isVisible = false
@@ -283,8 +282,6 @@ local function win()
         timer.performWithDelay(1600, RestartLevel2)
     end   
 end
-
-
 
 local function RestartLevel2()
     AskQuestion()
@@ -656,20 +653,6 @@ local function incorrectAnswer3TouchListener(touch)
     end                
 end
 
-local function addPhysicsBodies()
-    -- wall physics 
-    physics.addBody(LeftW, "static", {density=1, friction=0.3, bounce=0.2} )
-    physics.addBody(RightW, "static", {density=1, friction=0.3, bounce=0.2} ) 
-    physics.addBody(TopW, "static", {density=1, friction=0.3, bounce=0.2} )
-end
-
-local function removePhysicsBodies()
-    -- remove physics bodies
-    physics.removeBody(LeftW)
-    physics.removeBody(RightW)
-    physics.removeBody(TopW)
-end
-
 
 local function AddTouchListeners()
     correctAnswer:addEventListener("touch", correctAnswerListener)
@@ -849,7 +832,6 @@ function scene:show( event )
         AddRuntimeListeners()
         UpdateTime()
         startTimer()
-        --addPhysicsBodies()
     end
 
 end --function scene:show( event )
@@ -875,8 +857,7 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
-        RemoveTouchListeners()
-        removePhysicsBodies()
+        RemoveTouchListeners()  
     end
 
 end --function scene:hide( event )
