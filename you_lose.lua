@@ -74,7 +74,7 @@ end
     backButton = widget.newButton( 
     {
         -- Setting Position
-        x = display.contentWidth*2/10,
+        x = display.contentWidth*5/10,
         y = display.contentHeight*8/10,
 
         -- Setting Dimensions
@@ -86,7 +86,7 @@ end
         overFile = "Images/BackButtonPressedYourName@2x.png",
 
         width = 250,
-        height = 125,
+        height = 120,
 
         -- Setting Functional Properties
         onRelease = BackTransition

@@ -118,6 +118,7 @@ local userAnswerBoxPlaceholder
 local muteButton
 local unmuteButton
 
+
 local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
@@ -211,12 +212,10 @@ local function UpdateTime()
     end
 end
 
-
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
     composer.gotoScene("level3_screen")
 end 
-
 
 local function startTimer()
     -- start count down timer
@@ -251,20 +250,32 @@ local function AskQuestion()
 end
 
 local function UpdateHearts()
+    lives = 5
+
     if (lives == 4) then
         heart5.isVisible = false
+        heart4.isVisible = true
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
     elseif (lives == 3) then
         heart5.isVisible = false
-        heart4.isVisible = falseS
+        heart4.isVisible = false
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
     elseif (lives == 2) then
         heart5.isVisible = false
         heart4.isVisible = false
         heart3.isVisible = false
+        heart2.isVisible = true
+        heart1.isVisible = true 
     elseif (lives == 1) then
         heart5.isVisible = false
         heart4.isVisible = false
         heart3.isVisible = false
         heart2.isVisible = false
+        heart1.isVisible = true
     elseif (lives == 0) then
         heart5.isVisible = false
         heart4.isVisible = false
@@ -462,6 +473,7 @@ local function TouchListenerCorrectAnswer(touch)
                 bkgMusicMMChannel = audio.pause(bkgMusicMM)
                 -- score change
                 score = score + 1
+                UpdateHearts()
                 if (score == 6) then
                     WinTransition()
                 end 
@@ -519,6 +531,7 @@ local function incorrectAnswer1TouchListener(touch)
 
                 -- life is tak3en away for incorrect answer
                 lives = lives - 1
+                UpdateHearts()
                 if (lives == 0) then
                     YouLoseTransition()
                 else
@@ -577,6 +590,7 @@ local function incorrectAnswer2TouchListener(touch)
 
                 -- life is tak3en away for incorrect answer
                 lives = lives - 1
+                UpdateHearts()
                 if (lives == 0) then
                     YouLoseTransition()
                 else
@@ -635,6 +649,7 @@ local function incorrectAnswer3TouchListener(touch)
 
                 -- life is tak3en away for incorrect answer
                 lives = lives - 1
+                UpdateHearts()
                 if (lives == 0) then
                     YouLoseTransition()
                 else
@@ -663,6 +678,8 @@ local function AddTouchListeners()
     incorrectAnswer2:addEventListener("touch", incorrectAnswer2TouchListener)
     incorrectAnswer3:addEventListener("touch", incorrectAnswer3Listener)
     incorrectAnswer3:addEventListener("touch", incorrectAnswer3TouchListener)
+    unmuteButton:addEventListener("touch", UnMute)
+    muteButton:addEventListener("touch", Mute)
 end
 
 local function RemoveTouchListeners()
@@ -674,6 +691,8 @@ local function RemoveTouchListeners()
     incorrectAnswer2:removeEventListener("touch", incorrectAnswer2TouchListener)
     incorrectAnswer3:removeEventListener("touch", incorrectAnswer3Listener)
     incorrectAnswer3:removeEventListener("touch", incorrectAnswer3TouchListener)
+    unmuteButton:removeEventListener("touch", UnMute)
+    muteButton:removeEventListener("touch", Mute)
 end
 
 local function onCollision( self, event )
@@ -776,6 +795,14 @@ function scene:create( event )
     heart5.x = display.contentWidth * 4.5 / 10
     heart5.y = display.contentHeight * 9.5 / 10
 
+    muteButton = display.newImageRect("Images/Mute.png", 175, 175)
+    muteButton.x = display.contentWidth * 1 / 10
+    muteButton.y = display.contentHeight * 1 / 10 
+
+    unmuteButton = display.newImageRect("Images/UnMute.png", 175, 175)
+    unmuteButton.x = display.contentWidth * 1 / 10
+    unmuteButton.y = display.contentHeight * 1 / 10 
+
     -- the black box where the user will drag the answer
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
     userAnswerBoxPlaceholder.x = display.contentWidth * 0.58
@@ -802,6 +829,8 @@ function scene:create( event )
     sceneGroup:insert( heart3 )
     sceneGroup:insert( heart4 )
     sceneGroup:insert( heart5 )
+    sceneGroup:insert( unmuteButton )
+    sceneGroup:insert( muteButton )
 end 
     
 
@@ -826,11 +855,13 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc
+        secondsLeft = totalSeconds
+        lives = 5
+        score = 0
         UpdateHearts()
         AskQuestion()
         AddTouchListeners()
         AddRuntimeListeners()
-        UpdateTime()
         startTimer()
     end
 
