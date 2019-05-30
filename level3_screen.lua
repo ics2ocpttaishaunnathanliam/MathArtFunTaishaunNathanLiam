@@ -7,7 +7,7 @@
 -- This program is the level 1 screen of the program it is where the user starts to play the game.
 
 -----------------------------------------------------------------------------------------
-
+--
 -----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
@@ -32,6 +32,9 @@ local scene = composer.newScene( sceneName )
 
 -- The local variables for this scene
 local bkg_image
+
+-- back button var
+local backButton
 
 local character
 
@@ -130,6 +133,10 @@ local function stop (event)
         motionx = 0
         motiony = 0
     end
+end
+
+local function BackTransition( )
+    composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
 end
 
 local function AddArrowEventListeners()
@@ -238,13 +245,17 @@ local function UpdateTime()
     secondsLeft = secondsLeft - 1
     
     -- display the number of seconds left in the clock object
-    clockText.text = secondsLeft .. ""
+    clockText.text = "Seconds left = " .. secondsLeft .. ""
 
     if (secondsLeft == 0 ) then
         YouLoseTransition()
         timer.cancel(countDownTimer)
     end
 
+end
+
+local function stopDieTimer()
+    secondsLeft = secondsLeft + 100000000000000
 end
 
 local function Die()
@@ -358,6 +369,7 @@ local function onCollision( self, event )
                 winSoundChannel = audio.play(winSound)
                 composer.gotoScene( "you_win" )
                 timer.cancel(countDownTimer)
+
             end
         end
            
@@ -544,7 +556,37 @@ function scene:create( event )
     sceneGroup:insert(apple4)
     sceneGroup:insert(apple5)
 
-    clockText = display.newText( "" .. secondsLeft .. "", display.contentHeight*1/7, display.contentWidth*1/9, nil, 50 )
+        -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*8/9,
+        y = display.contentHeight*1/7,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnPressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 200,
+        height = 100,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+
+    } )
+
+    backButton.isVisible = false -- change to work or not if thaat is what you wish
+
+    -----------------------------------------------------------------------------------------
+
+    -- Associating Buttons with this scene
+    sceneGroup:insert( backButton )
+
+    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/9, nil, 50 )
 
 
     --Insert the right arrow
@@ -565,7 +607,9 @@ function scene:create( event )
     door.x = display.contentWidth*7.6/8 
     door.y = display.contentHeight*6.4/7
     door.myName = "door"
-    door:scale(.8,.8)
+
+    door:scale(.5,.5)
+    
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
     muteButton.x = display.contentWidth*1.5/10
     muteButton.y = display.contentHeight*1.3/10
@@ -716,6 +760,7 @@ function scene:hide( event )
         RemoveArrowEventListeners()
         RemoveRuntimeListeners()
         display.remove(character)
+        stopDieTimer()
     end
 
 end --function scene:hide( event )

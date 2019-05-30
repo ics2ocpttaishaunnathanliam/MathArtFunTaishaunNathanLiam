@@ -7,7 +7,7 @@
 -- This program is the level 1 screen of the program it is where the user starts to play the game.
 
 -----------------------------------------------------------------------------------------
-
+--
 -----------------------------------------------------------------------------------------
 -- INITIALIZATIONS
 -----------------------------------------------------------------------------------------
@@ -33,6 +33,9 @@ local scene = composer.newScene( sceneName )
 -- The local variables for this scene
 local bkg_image
 
+-- back button var
+local backButton
+
 local character
 
 -- create apples
@@ -57,6 +60,7 @@ local lArrow
 local uArrow
 local dArrow
 
+local numLives = 2
 local heart1
 local heart2
 
@@ -103,6 +107,15 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 }
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------
 
+local function YouLoseTransition2()
+    apple1.isVisible = false
+    apple2.isVisible = false
+    apple3.isVisible = false
+    apple4.isVisible = false
+    apple5.isVisible = false
+    composer.gotoScene( "you_lose" )
+end
+
 -- when right arrow is touched move right
 local function right (touch)
     motionx = SPEED
@@ -132,6 +145,10 @@ local function stop (event)
     end
 end
 
+local function BackTransition( )
+    composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
+end
+
 local function AddArrowEventListeners()
     rArrow:addEventListener("touch", right)
     lArrow:addEventListener("touch", left)
@@ -142,6 +159,20 @@ local function RemoveArrowEventListeners()
     rArrow:removeEventListener("touch", right)
     lArrow:removeEventListener("touch", left)
     uArrow:removeEventListener("touch", up)
+end
+
+local function checkLives(event)
+    if (numLives == 1) then
+        -- update hearts
+        heart1.isVisible = true
+           heart2.isVisible = false
+
+    elseif (numLives == 0) then
+        -- update hearts
+        heart1.isVisible = false
+        heart2.isVisible = false
+        timer.performWithDelay(200, YouLoseTransition2)
+    end
 end
 
 local function Mute(touch)
@@ -163,6 +194,7 @@ local function UnMute(touch)
 end
 
 local function AddRuntimeListeners()
+    Runtime:addEventListener("enterFrame", checkLives)
     Runtime:addEventListener("enterFrame", movePlayer)
     Runtime:addEventListener("touch", stop)
 end
@@ -173,7 +205,7 @@ local function RemoveRuntimeListeners()
 end
 
 local function ReplaceCharacter()
-    print ("***Called ReplaceCharacter")
+    print ("***Called ReplaceCharacter1")
     character = display.newImageRect("Images/MooseCharacterLiamC.png", 100, 150)
     character.x = display.contentWidth * 1 / 8
     character.y = display.contentHeight  * 2.5 / 3
@@ -197,6 +229,80 @@ local function ReplaceCharacter()
     AddRuntimeListeners()
 end
 
+local function ReplaceCharacter2()
+    print ("***Called ReplaceCharacter2")
+    character = display.newImageRect("Images/Moose2.png", 100, 150)
+    character.x = display.contentWidth * 1 / 8
+    character.y = display.contentHeight  * 2.5 / 3
+    character.width = 240
+    character.height = 160
+    character.myName = "Moose"
+
+    -- intialize horizontal movement of character
+    motionx = 0
+
+    -- add physics body
+    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
+
+    -- prevent character from being able to tip over
+    character.isFixedRotation = true
+
+    -- add back arrow listeners
+    AddArrowEventListeners()
+
+    -- add back runtime listeners
+    AddRuntimeListeners()
+end
+
+local function ReplaceCharacter3()
+    print ("***Called ReplaceCharacter3")
+    character = display.newImageRect("Images/Moose3.png", 100, 150)
+    character.x = display.contentWidth * 1 / 8
+    character.y = display.contentHeight  * 2.5 / 3
+    character.width = 240
+    character.height = 160
+    character.myName = "Moose"
+
+    -- intialize horizontal movement of character
+    motionx = 0
+
+    -- add physics body
+    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
+
+    -- prevent character from being able to tip over
+    character.isFixedRotation = true
+
+    -- add back arrow listeners
+    AddArrowEventListeners()
+
+    -- add back runtime listeners
+    AddRuntimeListeners()
+end
+
+local function ReplaceCharacter4()
+    print ("***Called ReplaceCharacter4")
+    character = display.newImageRect("Images/Moose4.png", 100, 150)
+    character.x = display.contentWidth * 1 / 8
+    character.y = display.contentHeight  * 2.5 / 3
+    character.width = 240
+    character.height = 160
+    character.myName = "Moose"
+
+    -- intialize horizontal movement of character
+    motionx = 0
+
+    -- add physics body
+    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
+
+    -- prevent character from being able to tip over
+    character.isFixedRotation = true
+
+    -- add back arrow listeners
+    AddArrowEventListeners()
+
+    -- add back runtime listeners
+    AddRuntimeListeners()
+end
 
 local function MakeAppleVisible()
     apple1.isVisible = true
@@ -217,7 +323,6 @@ local function YouLoseTransition()
     apple3.isVisible = false
     apple4.isVisible = false
     apple5.isVisible = false
-    loseSoundChannel = audio.play(loseSound)
     composer.gotoScene( "you_lose" )
 end
 
@@ -238,7 +343,7 @@ local function UpdateTime()
     secondsLeft = secondsLeft - 1
     
     -- display the number of seconds left in the clock object
-    clockText.text = secondsLeft .. ""
+    clockText.text = "Seconds left = " .. secondsLeft .. ""
 
     if (secondsLeft == 0 ) then
         YouLoseTransition()
@@ -247,7 +352,7 @@ local function UpdateTime()
 end
 
 local function stopDieTimer()
-    secondsLeft = secondsLeft + 100*100*100*100
+    secondsLeft = secondsLeft + 100000000000000
 end
 
 local function Die()
@@ -277,6 +382,21 @@ end
 
 local function RemoveWallPhysics()
     physics.removeBody(appleW)
+end
+
+local function CharacterSelect()
+    if (characterNumber == 1) then
+        ReplaceCharacter()
+
+    elseif (characterNumber == 2) then
+        ReplaceCharacter2()
+
+    elseif (characterNumber == 3) then
+        ReplaceCharacter3()
+
+    elseif (characterNumber == 4) then
+        ReplaceCharacter4()
+    end
 end
 
 local function onCollision( self, event )
@@ -316,7 +436,19 @@ local function onCollision( self, event )
                 -- update hearts
                 heart1.isVisible = true
                 heart2.isVisible = false
-                timer.performWithDelay(200, ReplaceCharacter) 
+
+                if (characterNumber == 1) then
+                    timer.performWithDelay(200, ReplaceCharacter) 
+
+                elseif (characterNumber == 2) then
+                    timer.performWithDelay(200, ReplaceCharacter2)
+
+                elseif (characterNumber == 3) then
+                    timer.performWithDelay(200, ReplaceCharacter3)
+
+                elseif (characterNumber == 4) then
+                    timer.performWithDelay(200, ReplaceCharacter4)
+                end
 
             elseif (numLives == 0) then
                 -- update hearts
@@ -349,6 +481,7 @@ local function onCollision( self, event )
             -- Increment questions answered
             questionsAnswered = questionsAnswered + 1
         end
+        
         if (questionsAnswered == 5) then
             door.isVisible = true
         end
@@ -359,7 +492,7 @@ local function onCollision( self, event )
             if (questionsAnswered == 5) then
                 -- after getting 3 questions right, go to the you win screen
                 winSoundChannel = audio.play(winSound)
-                composer.gotoScene( "you_win" )
+                composer.gotoScene( "level2_screen" )
             end
         end
            
@@ -481,6 +614,22 @@ function ResumeGame()
 
         -- make character visible again
     character.isVisible = true
+    numLives = numLives - 1
+
+    if (questionsAnswered > -1) then
+        if (theApple ~= nil) and (theApple.isBodyActive == true) then
+            physics.removeBody(theApple)
+            theApple.isVisible = false
+        end
+    end
+
+end
+
+function ResumeGame2()
+    print("Called ResumeGame")
+
+        -- make character visible again
+    character.isVisible = true
     
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
@@ -546,7 +695,54 @@ function scene:create( event )
     sceneGroup:insert(apple4)
     sceneGroup:insert(apple5)
 
-    clockText = display.newText( "" .. secondsLeft .. "", display.contentHeight*1/7, display.contentWidth*1/9, nil, 50 )
+        -- Insert the Hearts
+    heart1 = display.newImageRect("Images/heart.png", 80, 80)
+    heart1.x = 300
+    heart1.y = 90
+    heart1.isVisible = true
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( heart1 )
+
+    heart2 = display.newImageRect("Images/heart.png", 80, 80)
+    heart2.x = 390
+    heart2.y = 90
+    heart2.isVisible = true
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( heart2 )
+
+        -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*8/9,
+        y = display.contentHeight*1/7,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 200,
+        height = 100,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+
+    } )
+
+    backButton.isVisible = false -- change to work or not if thaat is what you wish
+
+    -----------------------------------------------------------------------------------------
+
+    -- Associating Buttons with this scene
+    sceneGroup:insert( backButton )
+
+    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/10, nil, 50 )
 
 
     --Insert the right arrow
@@ -568,6 +764,7 @@ function scene:create( event )
     door.y = display.contentHeight*6.4/7
     door.myName = "door"
     door:scale(.5,.5)
+    
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
     muteButton.x = display.contentWidth*1.5/10
     muteButton.y = display.contentHeight*1.3/10
@@ -671,7 +868,6 @@ function scene:show( event )
         bkgMusicLevel1Channel = audio.play(bkgMusic)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)    
-
         questionsAnswered = 0
 
         -- make all soccer balls visible
@@ -679,9 +875,8 @@ function scene:show( event )
 
         -- add collision listeners to objects
         AddCollisionListeners()
-
         -- create the character, add physics bodies and runtime listeners
-        ReplaceCharacter() 
+        CharacterSelect() 
 
         AddPhysicsBodies()
 
