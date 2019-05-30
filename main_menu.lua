@@ -221,12 +221,12 @@ function scene:create( event )
     characterSelectButton = widget.newButton( 
         {   
             -- Set its position on the screen relative to the screen size
-            x = display.contentWidth*4/8,
+            x = display.contentWidth*7/8,
             y = display.contentHeight*5/8,
 
             -- Insert the images here
-            defaultFile = "Images/LevelsButtonUnpressedYourName@2x.png",
-            overFile = "Images/LevelsButtonPressedYourName@2x.png",
+            defaultFile = "Images/CharacterSelectButtonUnpressed.png",
+            overFile = "Images/CharacterSelectButtonPressed.png",
 
             width =  200, 
             height = 100,

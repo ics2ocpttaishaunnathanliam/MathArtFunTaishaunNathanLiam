@@ -35,8 +35,12 @@ local scene = composer.newScene( sceneName )
 -- The local variables for this scene
 local questionText
 
+
+local randomOperation
 local firstNumber
 local secondNumber
+local thirdNumber
+local fourthNumber 
 
 local answer
 local wrongAnswer1
@@ -59,6 +63,7 @@ local Y2 = display.contentHeight*5.5/7
 
 local userAnswer
 local textTouched = false
+local numLives 
 
 -----------------------------------------------------------------------------------------
 --LOCAL FUNCTIONS
@@ -136,30 +141,55 @@ local function RemoveTextListeners()
 end
 
 local function DisplayQuestion()
-    --creating random numbers
-    firstNumber = math.random (0,15)
-    secondNumber = math.random (0,15)
+    randomOperation = math.random(1,2)
+    -- If randomOperation = 1, the operation used is multiplication
+    if (randomOperation == 1) then 
 
-    -- calculate answer
-    answer = firstNumber + secondNumber
+        firstNumber = math.random(2,7) 
+        secondNumber = math.random(2,7)
 
-    -- calculate wrong answers
-    wrongAnswer1 = answer + math.random(1, 3)
-    wrongAnswer2 = answer + math.random(4, 6)
-    wrongAnswer3 = answer - math.random(1, 3)
+        -- calculate the correct answer
+        answer = firstNumber * secondNumber
 
+        -- create question in text object 
+        questionText.text = firstNumber .. " * " .. secondNumber .. " = " 
 
-    --creating the question depending on the selcetion number
-    questionText.text = firstNumber .. " + " .. secondNumber .. " ="
+        wrongAnswer1 = answer + math.random(2, 3)
+        wrongAnswer2 = answer - math.random(1, 3)
+        wrongAnswer3 = answer + math.random(4, 6)
 
-    --creating answer text from list it corispondes with the animals list
-    answerText.text = answer
+        answerText.text = answer 
+
+        wrongText1.text = wrongAnswer1
+        wrongText2.text = wrongAnswer2
+        wrongText3.text = wrongAnswer3
+
+        -- If randomOperation = 2, the operation used is addition
+        elseif (randomOperation == 2) then
+            thirdNumber = math.random(0,15)
+            fourthNumber = math.random(0,15)
+
+            -- calculate the correct answer
+            answer = thirdNumber + fourthNumber
+
+            -- create question in text object
+            questionText.text = thirdNumber .. " + " .. fourthNumber .. " = "   
+
+            -- calculate wrong answers
+            wrongAnswer1 = answer + math.random(1, 3)
+            wrongAnswer2 = answer + math.random(4, 6)
+            wrongAnswer3 = answer - math.random(1, 3)
+
+            --creating answer text from list it corispondes with the animals list
+            answerText.text = answer
     
-    --creating wrong answers
-    wrongText1.text = wrongAnswer1
-    wrongText2.text = wrongAnswer2
-    wrongText3.text = wrongAnswer3
-end
+            --creating wrong answers
+            wrongText1.text = wrongAnswer1
+            wrongText2.text = wrongAnswer2
+            wrongText3.text = wrongAnswer3
+        end
+    end
+
 
 local function PositionAnswers()
 
@@ -168,8 +198,8 @@ local function PositionAnswers()
 
     if (answerPosition == 1) then
 
-        answerText.x = X1
-        answerText.y = Y1
+        answerText.x = X2
+        answerText.y = Y2
         
         wrongText1.x = X2
         wrongText1.y = Y1
@@ -177,20 +207,20 @@ local function PositionAnswers()
         wrongText2.x = X1
         wrongText2.y = Y2
 
-        wrongText3.x = X2
-        wrongText3.y = Y2
+        wrongText3.x = X1
+        wrongText3.y = Y1
 
         
     elseif (answerPosition == 2) then
 
         answerText.x = X2
-        answerText.y = Y2
+        answerText.y = Y1
             
         wrongText1.x = X1
         wrongText1.y = Y1
             
         wrongText2.x = X2
-        wrongText2.y = Y1
+        wrongText2.y = Y2
 
         wrongText3.x = X1
         wrongText3.y = Y2
@@ -355,6 +385,9 @@ scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 
 
+-----------------------------------------------------------------------------------------
+-- Call Function
+-----------------------------------------------------------------------------------------  
 
 -----------------------------------------------------------------------------------------
 
