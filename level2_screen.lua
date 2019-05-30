@@ -27,6 +27,12 @@ sceneName = "level2_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- GLOBAL VARIABLES
+-----------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -46,6 +52,7 @@ local tiger = 10
 local bkg_image
 
 local score = 0
+local lives = 5
 
 -- text objects
 local titleQuestionObject
@@ -123,19 +130,17 @@ local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
-correctAnswerOriginalX = 620
-correctAnswerOriginalY = 380
+local correctAnswerOriginalX = 620
+local correctAnswerOriginalY = 380
 
-incorrectAnswer1OriginalX = 620
-incorrectAnswer1OriginalY = 250
+local incorrectAnswer1OriginalX = 620
+local incorrectAnswer1OriginalY = 250
 
-incorrectAnswer2OriginalX = 400
-incorrectAnswer2OriginalY = 380
+local incorrectAnswer2OriginalX = 400
+local incorrectAnswer2OriginalY = 380
 
-incorrectAnswer3OriginalX = 400
-incorrectAnswer3OriginalY = 250
-
-local win
+local incorrectAnswer3OriginalX = 400
+local incorrectAnswer3OriginalY = 250
 
 -- timer stuff
 local timerText
@@ -144,7 +149,6 @@ local totalSeconds = 10
 local secondsLeft = 10
 
 -- lives
-local lives = 5
 local heart5
 local heart4
 local heart3
@@ -205,8 +209,7 @@ local function UpdateTime()
     -- display the seconds left for the timer
     clockText.text = secondsLeft .. ""
     -- stop timer at 0
-    if (secondsLeft <= 0) then
-        timer.cancel(countDownTimer)
+    if (secondsLeft <= 0) then        
         lives = 0
         YouLoseTransition()
     end
@@ -250,9 +253,14 @@ local function AskQuestion()
 end
 
 local function UpdateHearts()
-    lives = 5
+    if (lives == 5) then
+        heart5.isVisible = true
+        heart4.isVisible = true
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
 
-    if (lives == 4) then
+    elseif (lives == 4) then
         heart5.isVisible = false
         heart4.isVisible = true
         heart3.isVisible = true
@@ -314,9 +322,6 @@ local function RestartLevel2()
     incorrectAnswer3.y = incorrectAnswer3OriginalY
 end
 
-local function RandomlyPositionAnswers()
-
-end
 
 local function DisplayingQuestion()
 
@@ -695,16 +700,6 @@ local function RemoveTouchListeners()
     muteButton:removeEventListener("touch", Mute)
 end
 
-local function onCollision( self, event )
-    -- for testing purposes
-    --print( event.target )        --the first object in the collision
-    --print( event.other )         --the second object in the collision
-    --print( event.selfElement )   --the element (number) of the first object which was hit in the collision
-    --print( event.otherElement )  --the element (number) of the second object which was hit in the collision
-    --print( event.target.myName .. ": collision began with " .. event.other.myName )
-    if ( event.phase == "began" ) then
-    end    
-end
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
@@ -889,6 +884,7 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
         RemoveTouchListeners()  
+        timer.cancel(countDownTimer)
     end
 
 end --function scene:hide( event )
