@@ -14,6 +14,8 @@ local composer = require( "composer" )
 
 local widget = require( "widget" )
 
+local backButton
+
 -----------------------------------------------------------------------------------------
 
 -- Naming Scene
@@ -37,6 +39,9 @@ local loseSoundChannel
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
 
+local function BackTransition()
+    composer.gotoScene("main_menu", {effect = "fromTop", time = 500})
+end
 --------------------------------------------------------------------------------------
 -- The function called when the screen doesn't exist
 function scene:create( event )
@@ -53,16 +58,40 @@ function scene:create( event )
    
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg )
+    sceneGroup:insert( backButton )
 
     loseSoundChannel = audio.play(loseSound)
   
-end    
+end
+
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
-
+--Create Objects
 -----------------------------------------------------------------------------------------
+-- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*5/10,
+        y = display.contentHeight*8/10,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 250,
+        height = 120,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+
+    } )
 
 -- The function called when the scene is issued to appear on screen
 function scene:show( event )

@@ -205,7 +205,7 @@ local function RemoveRuntimeListeners()
 end
 
 local function ReplaceCharacter()
-    print ("***Called ReplaceCharacter")
+    print ("***Called ReplaceCharacter1")
     character = display.newImageRect("Images/MooseCharacterLiamC.png", 100, 150)
     character.x = display.contentWidth * 1 / 8
     character.y = display.contentHeight  * 2.5 / 3
@@ -229,6 +229,80 @@ local function ReplaceCharacter()
     AddRuntimeListeners()
 end
 
+local function ReplaceCharacter2()
+    print ("***Called ReplaceCharacter2")
+    character = display.newImageRect("Images/Moose2.png", 100, 150)
+    character.x = display.contentWidth * 1 / 8
+    character.y = display.contentHeight  * 2.5 / 3
+    character.width = 240
+    character.height = 160
+    character.myName = "Moose"
+
+    -- intialize horizontal movement of character
+    motionx = 0
+
+    -- add physics body
+    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
+
+    -- prevent character from being able to tip over
+    character.isFixedRotation = true
+
+    -- add back arrow listeners
+    AddArrowEventListeners()
+
+    -- add back runtime listeners
+    AddRuntimeListeners()
+end
+
+local function ReplaceCharacter3()
+    print ("***Called ReplaceCharacter3")
+    character = display.newImageRect("Images/Moose3.png", 100, 150)
+    character.x = display.contentWidth * 1 / 8
+    character.y = display.contentHeight  * 2.5 / 3
+    character.width = 240
+    character.height = 160
+    character.myName = "Moose"
+
+    -- intialize horizontal movement of character
+    motionx = 0
+
+    -- add physics body
+    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
+
+    -- prevent character from being able to tip over
+    character.isFixedRotation = true
+
+    -- add back arrow listeners
+    AddArrowEventListeners()
+
+    -- add back runtime listeners
+    AddRuntimeListeners()
+end
+
+local function ReplaceCharacter4()
+    print ("***Called ReplaceCharacter4")
+    character = display.newImageRect("Images/Moose4.png", 100, 150)
+    character.x = display.contentWidth * 1 / 8
+    character.y = display.contentHeight  * 2.5 / 3
+    character.width = 240
+    character.height = 160
+    character.myName = "Moose"
+
+    -- intialize horizontal movement of character
+    motionx = 0
+
+    -- add physics body
+    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
+
+    -- prevent character from being able to tip over
+    character.isFixedRotation = true
+
+    -- add back arrow listeners
+    AddArrowEventListeners()
+
+    -- add back runtime listeners
+    AddRuntimeListeners()
+end
 
 local function MakeAppleVisible()
     apple1.isVisible = true
@@ -310,6 +384,21 @@ local function RemoveWallPhysics()
     physics.removeBody(appleW)
 end
 
+local function CharacterSelect()
+    if (characterNumber == 1) then
+        ReplaceCharacter()
+
+    elseif (characterNumber == 2) then
+        ReplaceCharacter2()
+
+    elseif (characterNumber == 3) then
+        ReplaceCharacter3()
+
+    elseif (characterNumber == 4) then
+        ReplaceCharacter4()
+    end
+end
+
 local function onCollision( self, event )
     -- for testing purposes
     --print( event.target )        --the first object in the collision
@@ -347,7 +436,19 @@ local function onCollision( self, event )
                 -- update hearts
                 heart1.isVisible = true
                 heart2.isVisible = false
-                timer.performWithDelay(200, ReplaceCharacter) 
+
+                if (characterNumber == 1) then
+                    timer.performWithDelay(200, ReplaceCharacter) 
+
+                elseif (characterNumber == 2) then
+                    timer.performWithDelay(200, ReplaceCharacter2)
+
+                elseif (characterNumber == 3) then
+                    timer.performWithDelay(200, ReplaceCharacter3)
+
+                elseif (characterNumber == 4) then
+                    timer.performWithDelay(200, ReplaceCharacter4)
+                end
 
             elseif (numLives == 0) then
                 -- update hearts
@@ -623,7 +724,7 @@ function scene:create( event )
         -- height = 106,
 
         -- Setting Visual Properties
-        defaultFile = "Images/BackButtonUnPressedYourName@2x.png",
+        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
         overFile = "Images/BackButtonPressedYourName@2x.png",
 
         width = 200,
@@ -775,7 +876,7 @@ function scene:show( event )
         -- add collision listeners to objects
         AddCollisionListeners()
         -- create the character, add physics bodies and runtime listeners
-        ReplaceCharacter() 
+        CharacterSelect() 
 
         AddPhysicsBodies()
 

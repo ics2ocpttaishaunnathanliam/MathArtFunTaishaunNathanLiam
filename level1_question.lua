@@ -44,9 +44,9 @@ local wrongAnswer2
 local wrongAnswer3
 
 local answerText 
-local wrongAnswerText1
-local wrongAnswerText2
-local wrongAnswerText3
+local wrongText1
+local wrongText2
+local wrongText3
 
 local answerPosition = 1
 local bkg

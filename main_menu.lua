@@ -45,6 +45,7 @@ local bkg_image
 local playButton
 local creditsButton
 local instructionsButton
+local characterSelectButton
 
 local muteButton
 local unmuteButton
@@ -96,6 +97,9 @@ local function LevelsScreenTransition( )
     composer.gotoScene( "levels_screen", {effect = "zoomInOutRotate", time = 1000})
 end
 
+local function CharacterSelectTransition( )
+    composer.gotoScene( "character_select", {effect = "zoomInOutRotate", time = 1000})
+end
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
 
 -----------------------------------------------------------------------------------------
@@ -214,6 +218,22 @@ function scene:create( event )
             onRelease = LevelsScreenTransition          
         } )
 
+    characterSelectButton = widget.newButton( 
+        {   
+            -- Set its position on the screen relative to the screen size
+            x = display.contentWidth*7/8,
+            y = display.contentHeight*5/8,
+
+            -- Insert the images here
+            defaultFile = "Images/CharacterSelectButtonUnpressed.png",
+            overFile = "Images/CharacterSelectButtonPressed.png",
+
+            width =  200, 
+            height = 100,
+
+            -- When the button is released, call the Level1 screen transition function
+            onRelease = CharacterSelectTransition          
+        } )
     -----------------------------------------------------------------------------------------
 
     -- Associating button widgets with this scene
@@ -223,6 +243,7 @@ function scene:create( event )
     sceneGroup:insert( levelsButton )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( unmuteButton )
+    sceneGroup:insert( characterSelectButton )
 
 
 end -- function scene:create( event )   

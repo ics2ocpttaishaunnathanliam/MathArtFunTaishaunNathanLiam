@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------
 --
--- level1_screen.lua
+-- level3_screen.lua
 -- Title: SSG (SuperSlamGames)
 -- Name: Liam Csiffary
 -- Course: ICS2O/3C
@@ -19,7 +19,7 @@ local widget = require( "widget" )
 -----------------------------------------------------------------------------------------
 
 -- Naming Scene
-sceneName = "level1_screen"
+sceneName = "level3_screen"
 
 -----------------------------------------------------------------------------------------
 
@@ -60,6 +60,7 @@ local lArrow
 local uArrow
 local dArrow
 
+local numLives = 2
 local heart1
 local heart2
 
@@ -81,8 +82,8 @@ local theArrow
 
 
 -- timer vars
-local totalSeconds = 45
-local secondsLeft = 45
+local totalSeconds = 40
+local secondsLeft = 40
 local clockText
 local countDownTimer
 
@@ -249,6 +250,7 @@ local function UpdateTime()
 
     if (secondsLeft == 0 ) then
         YouLoseTransition()
+        timer.cancel(countDownTimer)
     end
 
 end
@@ -351,7 +353,7 @@ local function onCollision( self, event )
             character.isVisible = false
 
             -- show overlay with math question
-            composer.showOverlay( "level1_question", { isModal = true, effect = "fade", time = 100})
+            composer.showOverlay( "level3_question", { isModal = true, effect = "fade", time = 150})
 
             -- Increment questions answered
             questionsAnswered = questionsAnswered + 1
@@ -366,7 +368,9 @@ local function onCollision( self, event )
             if (questionsAnswered == 5) then
                 -- after getting 3 questions right, go to the you win screen
                 winSoundChannel = audio.play(winSound)
-                composer.gotoScene( "level2_screen" )
+                composer.gotoScene( "you_win" )
+                timer.cancel(countDownTimer)
+
             end
         end
            
@@ -488,6 +492,7 @@ function ResumeGame()
 
         -- make character visible again
     character.isVisible = true
+    numLives = numLives - 1
     
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
@@ -507,7 +512,7 @@ function scene:create( event )
     -----------------------------------------------------------------------------------------
 
     -- Insert the background image
-    bkg_image = display.newImageRect("Images/Level1ScreenNathanC@2x.png", display.contentWidth, display.contentHeight)
+    bkg_image = display.newImageRect("Images/Level3ScreenTaishaunJ@2x.png", display.contentWidth, display.contentHeight)
     bkg_image.x = display.contentCenterX
     bkg_image.y = display.contentCenterY
     bkg_image.width = display.contentWidth
@@ -604,6 +609,7 @@ function scene:create( event )
     door.x = display.contentWidth*7.6/8 
     door.y = display.contentHeight*6.4/7
     door.myName = "door"
+
     door:scale(.5,.5)
     
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)

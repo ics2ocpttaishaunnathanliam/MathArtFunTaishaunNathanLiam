@@ -27,6 +27,12 @@ sceneName = "level2_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- GLOBAL VARIABLES
+-----------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
 
@@ -46,6 +52,7 @@ local tiger = 10
 local bkg_image
 
 local score = 0
+local lives = 5
 
 -- text objects
 local titleQuestionObject
@@ -118,32 +125,30 @@ local userAnswerBoxPlaceholder
 local muteButton
 local unmuteButton
 
+
 local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
-correctAnswerOriginalX = 620
-correctAnswerOriginalY = 380
+local correctAnswerOriginalX = 620
+local correctAnswerOriginalY = 380
 
-incorrectAnswer1OriginalX = 620
-incorrectAnswer1OriginalY = 250
+local incorrectAnswer1OriginalX = 620
+local incorrectAnswer1OriginalY = 250
 
-incorrectAnswer2OriginalX = 400
-incorrectAnswer2OriginalY = 380
+local incorrectAnswer2OriginalX = 400
+local incorrectAnswer2OriginalY = 380
 
-incorrectAnswer3OriginalX = 400
-incorrectAnswer3OriginalY = 250
-
-local win
+local incorrectAnswer3OriginalX = 400
+local incorrectAnswer3OriginalY = 250
 
 -- timer stuff
 local timerText
 local clockText
-local totalSeconds = 60
-local secondsLeft = 60
+local totalSeconds = 10
+local secondsLeft = 10
 
 -- lives
-local lives = 5
 local heart5
 local heart4
 local heart3
@@ -193,25 +198,27 @@ local function UnMute(touch)
     end
 end
 
+local function YouLoseTransition()
+    loseSoundChannel = audio.play(loseSound)
+    composer.gotoScene( "you_lose" )
+end
+
 local function UpdateTime()
     -- the number of seconds the timer goes by
     secondsLeft = secondsLeft - 1
     -- display the seconds left for the timer
     clockText.text = secondsLeft .. ""
     -- stop timer at 0
-    if (secondsLeft <= 0) then
-        timer.cancel(countDownTimer)
+    if (secondsLeft <= 0) then        
         lives = 0
         YouLoseTransition()
     end
 end
 
-
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
     composer.gotoScene("level3_screen")
 end 
-
 
 local function startTimer()
     -- start count down timer
@@ -245,27 +252,38 @@ local function AskQuestion()
     end
 end
 
-
-local function YouLoseTransition()
-    loseSoundChannel = audio.play(loseSound)
-    composer.gotoScene( "you_lose" )
-end
-
 local function UpdateHearts()
-    if (lives == 4) then
+    if (lives == 5) then
+        heart5.isVisible = true
+        heart4.isVisible = true
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
+
+    elseif (lives == 4) then
         heart5.isVisible = false
+        heart4.isVisible = true
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
     elseif (lives == 3) then
         heart5.isVisible = false
-        heart4.isVisible = falseS
+        heart4.isVisible = false
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
     elseif (lives == 2) then
         heart5.isVisible = false
         heart4.isVisible = false
         heart3.isVisible = false
+        heart2.isVisible = true
+        heart1.isVisible = true 
     elseif (lives == 1) then
         heart5.isVisible = false
         heart4.isVisible = false
         heart3.isVisible = false
         heart2.isVisible = false
+        heart1.isVisible = true
     elseif (lives == 0) then
         heart5.isVisible = false
         heart4.isVisible = false
@@ -283,8 +301,6 @@ local function win()
         timer.performWithDelay(1600, RestartLevel2)
     end   
 end
-
-
 
 local function RestartLevel2()
     AskQuestion()
@@ -306,9 +322,6 @@ local function RestartLevel2()
     incorrectAnswer3.y = incorrectAnswer3OriginalY
 end
 
-local function RandomlyPositionAnswers()
-
-end
 
 local function DisplayingQuestion()
 
@@ -465,6 +478,7 @@ local function TouchListenerCorrectAnswer(touch)
                 bkgMusicMMChannel = audio.pause(bkgMusicMM)
                 -- score change
                 score = score + 1
+                UpdateHearts()
                 if (score == 6) then
                     WinTransition()
                 end 
@@ -522,6 +536,7 @@ local function incorrectAnswer1TouchListener(touch)
 
                 -- life is tak3en away for incorrect answer
                 lives = lives - 1
+                UpdateHearts()
                 if (lives == 0) then
                     YouLoseTransition()
                 else
@@ -580,6 +595,7 @@ local function incorrectAnswer2TouchListener(touch)
 
                 -- life is tak3en away for incorrect answer
                 lives = lives - 1
+                UpdateHearts()
                 if (lives == 0) then
                     YouLoseTransition()
                 else
@@ -638,6 +654,7 @@ local function incorrectAnswer3TouchListener(touch)
 
                 -- life is tak3en away for incorrect answer
                 lives = lives - 1
+                UpdateHearts()
                 if (lives == 0) then
                     YouLoseTransition()
                 else
@@ -656,20 +673,6 @@ local function incorrectAnswer3TouchListener(touch)
     end                
 end
 
-local function addPhysicsBodies()
-    -- wall physics 
-    physics.addBody(LeftW, "static", {density=1, friction=0.3, bounce=0.2} )
-    physics.addBody(RightW, "static", {density=1, friction=0.3, bounce=0.2} ) 
-    physics.addBody(TopW, "static", {density=1, friction=0.3, bounce=0.2} )
-end
-
-local function removePhysicsBodies()
-    -- remove physics bodies
-    physics.removeBody(LeftW)
-    physics.removeBody(RightW)
-    physics.removeBody(TopW)
-end
-
 
 local function AddTouchListeners()
     correctAnswer:addEventListener("touch", correctAnswerListener)
@@ -680,6 +683,8 @@ local function AddTouchListeners()
     incorrectAnswer2:addEventListener("touch", incorrectAnswer2TouchListener)
     incorrectAnswer3:addEventListener("touch", incorrectAnswer3Listener)
     incorrectAnswer3:addEventListener("touch", incorrectAnswer3TouchListener)
+    unmuteButton:addEventListener("touch", UnMute)
+    muteButton:addEventListener("touch", Mute)
 end
 
 local function RemoveTouchListeners()
@@ -691,18 +696,10 @@ local function RemoveTouchListeners()
     incorrectAnswer2:removeEventListener("touch", incorrectAnswer2TouchListener)
     incorrectAnswer3:removeEventListener("touch", incorrectAnswer3Listener)
     incorrectAnswer3:removeEventListener("touch", incorrectAnswer3TouchListener)
+    unmuteButton:removeEventListener("touch", UnMute)
+    muteButton:removeEventListener("touch", Mute)
 end
 
-local function onCollision( self, event )
-    -- for testing purposes
-    --print( event.target )        --the first object in the collision
-    --print( event.other )         --the second object in the collision
-    --print( event.selfElement )   --the element (number) of the first object which was hit in the collision
-    --print( event.otherElement )  --the element (number) of the second object which was hit in the collision
-    --print( event.target.myName .. ": collision began with " .. event.other.myName )
-    if ( event.phase == "began" ) then
-    end    
-end
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
@@ -793,6 +790,14 @@ function scene:create( event )
     heart5.x = display.contentWidth * 4.5 / 10
     heart5.y = display.contentHeight * 9.5 / 10
 
+    muteButton = display.newImageRect("Images/Mute.png", 175, 175)
+    muteButton.x = display.contentWidth * 1 / 10
+    muteButton.y = display.contentHeight * 1 / 10 
+
+    unmuteButton = display.newImageRect("Images/UnMute.png", 175, 175)
+    unmuteButton.x = display.contentWidth * 1 / 10
+    unmuteButton.y = display.contentHeight * 1 / 10 
+
     -- the black box where the user will drag the answer
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
     userAnswerBoxPlaceholder.x = display.contentWidth * 0.58
@@ -819,6 +824,8 @@ function scene:create( event )
     sceneGroup:insert( heart3 )
     sceneGroup:insert( heart4 )
     sceneGroup:insert( heart5 )
+    sceneGroup:insert( unmuteButton )
+    sceneGroup:insert( muteButton )
 end 
     
 
@@ -843,13 +850,14 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc
+        secondsLeft = totalSeconds
+        lives = 5
+        score = 0
         UpdateHearts()
         AskQuestion()
         AddTouchListeners()
         AddRuntimeListeners()
-        UpdateTime()
         startTimer()
-        --addPhysicsBodies()
     end
 
 end --function scene:show( event )
@@ -875,8 +883,8 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
-        RemoveTouchListeners()
-        removePhysicsBodies()
+        RemoveTouchListeners()  
+        timer.cancel(countDownTimer)
     end
 
 end --function scene:hide( event )
