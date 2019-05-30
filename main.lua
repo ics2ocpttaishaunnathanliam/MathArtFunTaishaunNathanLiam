@@ -15,4 +15,6 @@ local composer = require( "composer" )
 characterNumber = 1
 characterColor = 1
 -- Go to the intro screen
+
 composer.gotoScene( "levels_screen" )
+
