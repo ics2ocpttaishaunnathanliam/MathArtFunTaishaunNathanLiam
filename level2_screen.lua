@@ -145,8 +145,8 @@ local incorrectAnswer3OriginalY = 250
 -- timer stuff
 local timerText
 local clockText
-local totalSeconds = 10
-local secondsLeft = 10
+local totalSeconds = 60
+local secondsLeft = 60
 
 -- lives
 local heart5
