@@ -152,7 +152,7 @@ local function DisplayQuestion()
         answer = firstNumber * secondNumber
 
         -- create question in text object 
-        questionText.text = firstNumber .. " * " .. secondNumber .. " = " 
+        questionText.text = firstNumber .. " x " .. secondNumber .. " = " 
 
         wrongAnswer1 = answer + math.random(2, 3)
         wrongAnswer2 = answer - math.random(1, 3)
