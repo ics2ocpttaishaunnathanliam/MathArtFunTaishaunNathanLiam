@@ -107,12 +107,7 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 }
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------
 
-local function YouLoseTransition2()
-    apple1.isVisible = false
-    apple2.isVisible = false
-    apple3.isVisible = false
-    apple4.isVisible = false
-    apple5.isVisible = false
+local function YouLoseTransition()
     composer.gotoScene( "you_lose" )
 end
 
@@ -171,7 +166,9 @@ local function checkLives(event)
         -- update hearts
         heart1.isVisible = false
         heart2.isVisible = false
-        timer.performWithDelay(200, YouLoseTransition2)
+        numLives = 2
+        timer.cancel(countDownTimer)
+        timer.performWithDelay(200, YouLoseTransition)
     end
 end
 
@@ -201,6 +198,7 @@ end
 
 local function RemoveRuntimeListeners()
     Runtime:removeEventListener("enterFrame", movePlayer)
+    Runtime:removeEventListener("enterFrame", checkLives)
     Runtime:removeEventListener("touch", stop)
 end
 
@@ -317,15 +315,6 @@ local function MakeHeartsVisible()
     heart2.isVisible = true
 end
 
-local function YouLoseTransition()
-    apple1.isVisible = false
-    apple2.isVisible = false
-    apple3.isVisible = false
-    apple4.isVisible = false
-    apple5.isVisible = false
-    composer.gotoScene( "you_lose" )
-end
-
 local transitionOptions_SlideDown = (
     {
         effect = "slideDown", -- The animation it's going to use when transitioning
@@ -347,6 +336,8 @@ local function UpdateTime()
 
     if (secondsLeft == 0 ) then
         YouLoseTransition()
+        timer.cancel(countDownTimer) 
+        secondsLeft = totalSeconds
     end
 
 end
@@ -605,6 +596,24 @@ local function StartTimer()
     countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
 end
 
+local function StopTmers()
+    countDownTimer = timer.stop
+end
+
+local function StopEveryThing()
+    timer.cancel(countDownTimer)
+    secondsLeft = totalSeconds
+    numLives = 2
+    apple1.isVisible = true
+    apple2.isVisible = true
+    apple3.isVisible = true
+    apple4.isVisible = true
+    apple5.isVisible = true
+    heart1.isVisible = true
+    heart2.isVisible = true
+
+
+end
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -914,6 +923,9 @@ function scene:hide( event )
         RemoveRuntimeListeners()
         display.remove(character)
         stopDieTimer()
+        StopTmers()
+
+        StopEveryThing()
     end
 
 end --function scene:hide( event )

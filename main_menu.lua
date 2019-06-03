@@ -125,12 +125,12 @@ function scene:create( event )
     bkg_image.height = display.contentHeight
 
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
-    muteButton.x = display.contentWidth*1.5/10
+    muteButton.x = display.contentWidth*5/10
     muteButton.y = display.contentHeight*1.3/10
     muteButton.isVisible = true
 
     unmuteButton = display.newImageRect("Images/UnMute.png", 200, 200)
-    unmuteButton.x = display.contentWidth*1.5/10
+    unmuteButton.x = display.contentWidth*5/10
     unmuteButton.y = display.contentHeight*1.3/10
     unmuteButton.isVisible = false
 
@@ -149,7 +149,7 @@ function scene:create( event )
         {   
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth/2,
-            y = display.contentHeight*7/8,
+            y = display.contentHeight*3.4/8,
 
             -- Insert the images here
             defaultFile = "Images/PlayButtonUnpressedYourName@2x.png",
@@ -169,7 +169,7 @@ function scene:create( event )
         {
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth*7/8,
-            y = display.contentHeight*7/8,
+            y = display.contentHeight*3.8/8,
 
             -- Insert the images here
             defaultFile = "Images/CreditsButtonUnpressedYourName@2x.png",
@@ -187,7 +187,7 @@ function scene:create( event )
         {   
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth*1/8,
-            y = display.contentHeight*7/8,
+            y = display.contentHeight*3.8/8,
 
             -- Insert the images here
             defaultFile = "Images/InstructionsButtonUnpressedTaishaunJ@2x.png",
@@ -205,7 +205,7 @@ function scene:create( event )
         {   
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth*1/8,
-            y = display.contentHeight*5/8,
+            y = display.contentHeight*2/8,
 
             -- Insert the images here
             defaultFile = "Images/LevelsButtonUnpressedYourName@2x.png",
@@ -222,7 +222,7 @@ function scene:create( event )
         {   
             -- Set its position on the screen relative to the screen size
             x = display.contentWidth*7/8,
-            y = display.contentHeight*5/8,
+            y = display.contentHeight*2/8,
 
             -- Insert the images here
             defaultFile = "Images/CharacterSelectButtonUnpressed.png",

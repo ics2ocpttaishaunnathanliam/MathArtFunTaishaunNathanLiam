@@ -40,8 +40,17 @@ local loseSoundChannel
 -----------------------------------------------------------------------------------------
 
 local function BackTransition()
-    composer.gotoScene("main_menu", {effect = "fromTop", time = 500})
+    --composer.gotoScene("main_menu", {effect = "fromTop", time = 500})
+    print("HAHAAH")
+    composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
 end
+
+function BackTransition2()
+    --composer.gotoScene("main_menu", {effect = "fromTop", time = 500})
+    print("HAHAAH")
+    composer.gotoScene( "main_menu" )
+end
+
 --------------------------------------------------------------------------------------
 -- The function called when the screen doesn't exist
 function scene:create( event )
@@ -89,7 +98,7 @@ end
         height = 120,
 
         -- Setting Functional Properties
-        onRelease = BackTransition
+        onRelease = BackTransition2
 
     } )
 
