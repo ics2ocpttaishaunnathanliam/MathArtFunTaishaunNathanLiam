@@ -352,7 +352,7 @@ local function UpdateTime()
 end
 
 local function stopDieTimer()
-    secondsLeft = secondsLeft + 100000000000000
+    secondsLeft = totalSeconds
 end
 
 local function Die()
