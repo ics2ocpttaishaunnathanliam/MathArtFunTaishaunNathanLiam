@@ -164,6 +164,9 @@ local RightW
 local TopW
 local BottomW
 
+-- randomizing answers
+local randomAnswer
+
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
 ----------------------------------------------------------------------------------------- 
@@ -226,7 +229,7 @@ local function startTimer()
 end
 
 local function AskQuestion()
-    randomAnimalName = math.random(1,3)
+    randomAnimalName = math.random(1,10)
 
     if (randomAnimalName == 1) then
         questionObject.text = "Tiger"
@@ -243,12 +246,61 @@ local function AskQuestion()
         incorrectAnswer2.text = "Piglet"
         incorrectAnswer3.text = "Goaty"
     end
-      if (randomAnimalName == 3) then
+        if (randomAnimalName == 3) then
         questionObject.text = "Mole"
         correctAnswer.text = "Pup"
         incorrectAnswer1.text = "Wellow"
         incorrectAnswer2.text = "Kit"
         incorrectAnswer3.text = "Supole"
+    end
+        if (randomAnimalName == 4) then
+            questionObject.text = "Bat"
+            correctAnswer.text = "Pup"
+            incorrectAnswer1.text = "Infant"
+            incorrectAnswer2.text = "Wriggler"
+            incorrectAnswer3.text = "Pluteus"
+    end
+        if (randomAnimalName == 5) then
+            questionObject.text = "Shark"
+            correctAnswer.text = "Pup"
+            incorrectAnswer1.text = "Sharkling"
+            incorrectAnswer2.text = "Sharkster"
+            incorrectAnswer3.text = "Smolt"
+    end
+        if (randomAnimalName == 6) then
+            questionObject.text = "Cod"
+            correctAnswer.text = "Codling"
+            incorrectAnswer1.text = "Eft"
+            incorrectAnswer2.text = "Whelp"
+            incorrectAnswer3.text = "Calf"
+    end
+        if (randomAnimalName == 7) then
+            questionObject.text = "Aardvark"
+            correctAnswer.text = "Cub"
+            incorrectAnswer1.text = "Pup"
+            incorrectAnswer2.text = "Varky"
+            incorrectAnswer3.text = "Puggle"
+    end
+        if (randomAnimalName == 8) then
+            questionObject.text = "Monkey"
+            correctAnswer.text = "Infant"
+            incorrectAnswer1.text = "Ape"
+            incorrectAnswer2.text = "Pup"
+            incorrectAnswer3.text = "Munk"
+    end
+        if (randomAnimalName == 9) then
+            questionObject.text = "Wolf"
+            correctAnswer.text = "Cub"
+            incorrectAnswer1.text = "Wolves"
+            incorrectAnswer2.text = "Kitten"
+            incorrectAnswer3.text = "Fawn"
+    end
+        if (randomAnimalName == 10) then
+            questionObject.text = "Sheep"
+            correctAnswer.text = "Lamb"
+            incorrectAnswer1.text = "Sheepling"
+            incorrectAnswer2.text = "Pup"
+            incorrectAnswer3.text = "Snoop"
     end
 end
 
@@ -294,6 +346,18 @@ local function UpdateHearts()
     end
 end
 
+local function DisplayingAnswers()
+    -- set random answer area
+    randomAnswer = math.random(1,1)
+
+    if (randomAnswer == 1) then
+        correctAnswerOriginalY = incorrectAnswer1OriginalY
+        correctAnswerOriginalX = incorrectAnswer1OriginalX
+        incorrectAnswer1OriginalY = correctAnswerOriginalY
+        incorrectAnswer1OriginalX = correctAnswerOriginalX
+    end
+end
+
 local function win()
     if ( userAnswer == correctAnswer ) then
         hitSoundChannel = audio.play(hitSound)
@@ -303,8 +367,9 @@ local function win()
 end
 
 local function RestartLevel2()
+    DisplayingAnswers()
     AskQuestion()
-
+    
     -- set back to original x and y 
     correctAnswer.x = correctAnswerOriginalX
     correctAnswer.y = correctAnswerOriginalY
@@ -340,8 +405,6 @@ local function DisplayingQuestion()
     alternateAnswerBox2ALreadyTouched = false
     alternateAnswerBox3AlreadyTouched = false
 end
-
-
 
 local function AddRuntimeListeners()
     Runtime:addEventListener("enterFrame", win)
@@ -729,7 +792,7 @@ function scene:create( event )
     titleQuestionObject.isVisible = false
 
     -- text object
-    questionObject = display.newText( "", 408, 490, nil, 55 )
+    questionObject = display.newText( "", 400, 490, nil, 55 )
     questionObject:setTextColor(0.8, 0.5, 0.3)
 
     -- text object
@@ -855,6 +918,7 @@ function scene:show( event )
         score = 0
         UpdateHearts()
         AskQuestion()
+        DisplayingAnswers()
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()
