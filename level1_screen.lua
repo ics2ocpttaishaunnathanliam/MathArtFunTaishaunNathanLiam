@@ -175,7 +175,6 @@ local function checkLives(event)
         heart2.isVisible = false
         heart3.isVisible = false
         numLives = 2
-        timer.cancel(countDownTimer)
         timer.performWithDelay(200, YouLoseTransition)
     end
 end
@@ -344,7 +343,6 @@ local function UpdateTime()
 
     if (secondsLeft == 0 ) then
         YouLoseTransition()
-        timer.cancel(countDownTimer) 
         secondsLeft = totalSeconds
     end
 
@@ -613,7 +611,7 @@ local function StopEveryThing()
     --timer.cancel(countDownTimer)
     countDownTimer = timer.stop
     secondsLeft = totalSeconds
-    numLives = 2
+    numLives = 3
     apple1.isVisible = true
     apple2.isVisible = true
     apple3.isVisible = true
@@ -621,6 +619,7 @@ local function StopEveryThing()
     apple5.isVisible = true
     heart1.isVisible = true
     heart2.isVisible = true
+    heart3.isVisible = true
     pointerArrow.isVisible = true
     pointerArrow2.isVisible = true
     pointerArrow3.isVisible = true
