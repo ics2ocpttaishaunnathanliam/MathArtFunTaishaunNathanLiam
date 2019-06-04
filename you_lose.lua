@@ -98,7 +98,7 @@ end
         height = 120,
 
         -- Setting Functional Properties
-        onRelease = BackTransition2
+        onRelease = BackTransition
 
     } )
 

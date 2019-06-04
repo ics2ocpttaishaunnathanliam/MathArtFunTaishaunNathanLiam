@@ -60,9 +60,10 @@ local lArrow
 local uArrow
 local dArrow
 
-local numLives = 2
+local numLives = 3
 local heart1
 local heart2
+local heart3
 
 local leftW 
 local rightW
@@ -157,15 +158,22 @@ local function RemoveArrowEventListeners()
 end
 
 local function checkLives(event)
-    if (numLives == 1) then
+    if (numLives == 2) then
+        heart1.isVisible = true
+        heart2.isVisible = true
+        heart3.isVisible = false
+
+    elseif (numLives == 1) then
         -- update hearts
         heart1.isVisible = true
-           heart2.isVisible = false
+        heart2.isVisible = false
+        heart3.isVisible = false
 
     elseif (numLives == 0) then
         -- update hearts
         heart1.isVisible = false
         heart2.isVisible = false
+        heart3.isVisible = false
         numLives = 2
         timer.cancel(countDownTimer)
         timer.performWithDelay(200, YouLoseTransition)
@@ -483,7 +491,8 @@ local function onCollision( self, event )
             if (questionsAnswered == 5) then
                 -- after getting 3 questions right, go to the you win screen
                 winSoundChannel = audio.play(winSound)
-                composer.gotoScene( "level2_screen" )
+                character.isVisible = false
+                composer.gotoScene( "level2_screen", {effect = "zoomOutInFadeRotate", time = 500})
             end
         end
            
@@ -601,7 +610,8 @@ local function StopTmers()
 end
 
 local function StopEveryThing()
-    timer.cancel(countDownTimer)
+    --timer.cancel(countDownTimer)
+    countDownTimer = timer.stop
     secondsLeft = totalSeconds
     numLives = 2
     apple1.isVisible = true
@@ -611,7 +621,11 @@ local function StopEveryThing()
     apple5.isVisible = true
     heart1.isVisible = true
     heart2.isVisible = true
-
+    pointerArrow.isVisible = true
+    pointerArrow2.isVisible = true
+    pointerArrow3.isVisible = true
+    pointerArrow4.isVisible = true
+    pointerArrow5.isVisible = true
 
 end
 -----------------------------------------------------------------------------------------
@@ -624,7 +638,7 @@ function ResumeGame()
         -- make character visible again
     character.isVisible = true
     numLives = numLives - 1
-
+    hitSoundChannel = audio.play(hitSound)
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
             physics.removeBody(theApple)
@@ -639,7 +653,7 @@ function ResumeGame2()
 
         -- make character visible again
     character.isVisible = true
-    
+    winSoundChannel = audio.play(winSound)
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
             physics.removeBody(theApple)
@@ -706,7 +720,7 @@ function scene:create( event )
 
         -- Insert the Hearts
     heart1 = display.newImageRect("Images/heart.png", 80, 80)
-    heart1.x = 300
+    heart1.x = 250
     heart1.y = 90
     heart1.isVisible = true
 
@@ -714,12 +728,18 @@ function scene:create( event )
     sceneGroup:insert( heart1 )
 
     heart2 = display.newImageRect("Images/heart.png", 80, 80)
-    heart2.x = 390
+    heart2.x = 340
     heart2.y = 90
     heart2.isVisible = true
 
+    heart3 = display.newImageRect("Images/heart.png", 80, 80)
+    heart3.x = 430
+    heart3.y = 90
+    heart3.isVisible = true    
+
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( heart2 )
+    sceneGroup:insert( heart3 )
 
         -- Creating Back Button
     backButton = widget.newButton( 
@@ -751,7 +771,7 @@ function scene:create( event )
     -- Associating Buttons with this scene
     sceneGroup:insert( backButton )
 
-    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*1/10, nil, 50 )
+    clockText = display.newText( "Seconds left = " .. secondsLeft .. "", display.contentHeight*8/9, display.contentWidth*0.8/10, nil, 50 )
 
 
     --Insert the right arrow
@@ -775,12 +795,12 @@ function scene:create( event )
     door:scale(.5,.5)
     
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
-    muteButton.x = display.contentWidth*1.5/10
+    muteButton.x = display.contentWidth*1/10
     muteButton.y = display.contentHeight*1.3/10
     muteButton.isVisible = true
 
     unmuteButton = display.newImageRect("Images/UnMute.png", 200, 200)
-    unmuteButton.x = display.contentWidth*1.5/10
+    unmuteButton.x = display.contentWidth*1/10
     unmuteButton.y = display.contentHeight*1.3/10
     unmuteButton.isVisible = false
 
