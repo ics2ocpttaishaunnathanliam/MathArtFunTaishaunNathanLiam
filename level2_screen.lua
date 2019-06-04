@@ -130,6 +130,11 @@ local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
+local Y1 = 380
+local Y2 = 250
+local X1 = 620
+local X2 = 400
+
 local correctAnswerOriginalX = 620
 local correctAnswerOriginalY = 380
 
@@ -346,17 +351,6 @@ local function UpdateHearts()
     end
 end
 
-local function DisplayingAnswers()
-    -- set random answer area
-    randomAnswer = math.random(1,1)
-
-    if (randomAnswer == 1) then
-        correctAnswerOriginalY = incorrectAnswer1OriginalY
-        correctAnswerOriginalX = incorrectAnswer1OriginalX
-        incorrectAnswer1OriginalY = correctAnswerOriginalY
-        incorrectAnswer1OriginalX = correctAnswerOriginalX
-    end
-end
 
 local function win()
     if ( userAnswer == correctAnswer ) then
@@ -366,9 +360,74 @@ local function win()
     end   
 end
 
+local function PositionAnswers()
+
+    --creating random start position in a cretain area
+    answerPosition = math.random(1,4)
+
+    if (answerPosition == 1) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y2
+        
+        incorrectAnswer1.x = X2
+        incorrectAnswer1.y = Y1
+        
+        incorrectAnswer2.x = X1
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y1
+
+        
+    elseif (answerPosition == 2) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y1
+            
+        incorrectAnswer1.x = X1
+        incorrectAnswer1.y = Y1
+            
+        incorrectAnswer2.x = X2
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y2
+
+
+    elseif (answerPosition == 3) then
+
+        correctAnswer.x = X1
+        correctAnswer.y = Y2
+            
+        incorrectAnswer1.x = X2
+        incorrectAnswer1.y = Y2
+            
+        incorrectAnswer2.x = X1
+        incorrectAnswer2.y = Y1
+
+        incorrectAnswer3.x = X2
+        incorrectAnswer3.y = Y1
+
+    elseif (answerPosition == 4) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y1
+            
+        incorrectAnswer1.x = X1
+        incorrectAnswer1.y = Y2
+            
+        incorrectAnswer2.x = X2
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y1
+    end
+end
+
 local function RestartLevel2()
-    DisplayingAnswers()
     AskQuestion()
+    PositionAnswers()
     
     -- set back to original x and y 
     correctAnswer.x = correctAnswerOriginalX
@@ -387,24 +446,6 @@ local function RestartLevel2()
     incorrectAnswer3.y = incorrectAnswer3OriginalY
 end
 
-
-local function DisplayingQuestion()
-
-    --set random question 
-    randomAnimalName = math.random(1, 1)
-
-    --set correct answer to equal the number of the question
-    --correctAnswer = randomAnimalName
-
-    -- put the correct answer in the answer box
-    --answerBox.text = correctAnswer
-
-    -- make possible to click on answers again
-    answerBoxAlreadyTouched = false
-    alternateAnswerBox1AlreadyTouched = false
-    alternateAnswerBox2ALreadyTouched = false
-    alternateAnswerBox3AlreadyTouched = false
-end
 
 local function AddRuntimeListeners()
     Runtime:addEventListener("enterFrame", win)
@@ -542,7 +583,7 @@ local function TouchListenerCorrectAnswer(touch)
                 -- score change
                 score = score + 1
                 UpdateHearts()
-                if (score == 6) then
+                if (score == 5) then
                     WinTransition()
                 end 
                 -- play sound
@@ -611,8 +652,8 @@ local function incorrectAnswer1TouchListener(touch)
 
             --else make box go back to where it was
             else
-                incorrectAnswer1.x = incorrectAnswer1OriginalX
-                incorrectAnswer1.y = incorrectAnswer1OriginalY
+            incorrectAnswer1.x = incorrectAnswer1OriginalX
+            incorrectAnswer1.y = incorrectAnswer1OriginalY
             end
         end
     end                
@@ -917,8 +958,8 @@ function scene:show( event )
         lives = 5
         score = 0
         UpdateHearts()
+        PositionAnswers()
         AskQuestion()
-        DisplayingAnswers()
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()
