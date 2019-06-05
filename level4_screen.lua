@@ -170,6 +170,7 @@ end
 
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
+    trophy4 = 1
     composer.gotoScene("you_Win")
 end 
 
