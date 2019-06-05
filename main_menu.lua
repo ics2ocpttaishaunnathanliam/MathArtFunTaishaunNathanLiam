@@ -288,6 +288,11 @@ function scene:create( event )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( characterSelectButton )
+    sceneGroup:insert( trophy1Object )
+    sceneGroup:insert( trophy2Object )
+    sceneGroup:insert( trophy3Object )
+    sceneGroup:insert( trophy4Object )
+
 
 
 end -- function scene:create( event )   

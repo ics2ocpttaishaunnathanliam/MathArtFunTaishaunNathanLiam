@@ -170,6 +170,7 @@ end
 --
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
+    trophy2 = 1
     composer.gotoScene("level3_screen")
 end 
 

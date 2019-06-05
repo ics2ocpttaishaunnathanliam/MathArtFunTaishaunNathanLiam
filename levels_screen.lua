@@ -56,10 +56,6 @@ local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
 local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=12, loops=-1 } )
 
 -----------------------------------------------------------------------------------------
--- GLOBAL VARS
------------------------------------------------------------------------------------------
-hiddenEasterEgg = 0
------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
 local function FlyingBallTouch(touch)
