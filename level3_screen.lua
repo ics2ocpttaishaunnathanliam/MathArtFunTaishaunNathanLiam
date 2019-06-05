@@ -2,9 +2,9 @@
 --
 -- level3_screen.lua
 -- Title: SSG (SuperSlamGames)
--- Name: Liam Csiffary
+-- Name: Nathan Cook
 -- Course: ICS2O/3C
--- This program is the level 1 screen of the program it is where the user starts to play the game.
+-- This program is the level 2 screen of the program it is where the user starts to play the game.
 
 -----------------------------------------------------------------------------------------
 --
