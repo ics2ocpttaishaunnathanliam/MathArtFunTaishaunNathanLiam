@@ -36,7 +36,7 @@ local level3Button
 local level4Button
 
 local flyingBall
-local flyingBallX = -6000
+local flyingBallX = -3000
 
 local muteButton
 local unmuteButton
@@ -46,6 +46,8 @@ local mooseXscale = 0
 
 local moose2
 local mooseXscale2 = 0
+
+local hiddenText
 -----------------------------------------------------------------------------------------
 -- Sounds
 -----------------------------------------------------------------------------------------
@@ -53,13 +55,20 @@ local mooseXscale2 = 0
 local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
 local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=12, loops=-1 } )
 
-
+-----------------------------------------------------------------------------------------
+-- GLOBAL VARS
+-----------------------------------------------------------------------------------------
+hiddenEasterEgg = 0
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+local function FlyingBallTouch(touch)
+    hiddenEasterEgg = 1
+    hiddenText.isVisible = true
+end
 
 local function MoveApple(event)
-    flyingBallX = flyingBallX+1
+    flyingBallX = flyingBallX+2
     flyingBall.x = flyingBallX
 end
 
@@ -152,6 +161,13 @@ function scene:create( event )
     flyingBall.y = display.contentHeight/2
     flyingBall.isVisible = true
 
+    hiddenText = display.newText("Congrats You found the hiddenEasterEgg", 0, 0)
+    hiddenText.isVisible = false
+    hiddenText.x = display.contentWidth/2
+    hiddenText.y = 580
+    hiddenText:scale(2, 2)
+    hiddenText:setTextColor(0, 1, 0)
+
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg_image )
 
@@ -232,6 +248,7 @@ function scene:create( event )
         sceneGroup:insert(flyingBall)
         sceneGroup:insert( muteButton )
         sceneGroup:insert( unmuteButton )
+        sceneGroup:insert( hiddenText )
     -----------------------------------------------------------------------------------------
     -- BUTTON WIDGETS
     -----------------------------------------------------------------------------------------
@@ -300,7 +317,8 @@ function scene:show( event )
         -- Example: start timers, begin animation, play audio, etc.
         bkgMusicLevel1Channel = audio.play(bkgMusic)
         muteButton:addEventListener("touch", Mute)
-        unmuteButton:addEventListener("touch", UnMute)   
+        unmuteButton:addEventListener("touch", UnMute)
+        flyingBall:addEventListener("touch", FlyingBallTouch)   
         Runtime:addEventListener("enterFrame", MoveApple)
         Runtime:addEventListener("enterFrame", SpinMoose)
         Runtime:addEventListener("enterFrame", SpinMoose2)
