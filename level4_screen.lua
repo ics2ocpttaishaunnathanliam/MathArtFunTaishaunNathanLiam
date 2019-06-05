@@ -19,7 +19,7 @@ local widget = require( "widget" )
 -----------------------------------------------------------------------------------------
 
 -- Naming Scene
-sceneName = "level1_screen"
+sceneName = "level2_screen"
 
 -----------------------------------------------------------------------------------------
 
@@ -27,45 +27,94 @@ sceneName = "level1_screen"
 local scene = composer.newScene( sceneName )
 
 -----------------------------------------------------------------------------------------
+-- GLOBAL VARIABLES
+-----------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
+
+local randomAnimalName
 
 -- The local variables for this scene
 local bkg_image
 
-local character
+local score = 0
+local lives = 5
 
--- create apples
-local apple1
-local apple2
-local apple3
-local apple4
-local apple5
-local apple6
+-- text objects
+local titleQuestionObject
 
-local theApple
+local questionObject
+local correctAnswer
+local incorrectAnswer1
+local incorrectAnswer2
+local incorrectAnswer3
 
-local motionx = 0
-local motiony = 0
-local SPEED = 6
-local SPEEDR = -6
-local LINEAR_VELOCITY = -100
-local GRAVITY = 4
+local correctAnswerAlreadyTouched = false
+local incorrectAnswer1AlreadyTouched = false
+local incorrectAnswer2AlreadyTouched = false
+local incorrectAnswer3AlreadyTouched = false
 
-local rArrow
-local lArrow
-local uArrow
-local dArrow
 
-local heart1
+--Users answer 
+local userAnswer
+
+-- the answer box where the user puts his or her answer
+local userAnswerBoxPlaceholder
+
+--sound
+local muteButton
+local unmuteButton
+
+
+local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
+local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
+
+--answers original x and y
+local Y1 = 380
+local Y2 = 250
+local X1 = 620
+local X2 = 400
+
+local correctAnswerOriginalX = X1
+local correctAnswerOriginalY = Y1
+
+local incorrectAnswer1OriginalX = X1
+local incorrectAnswer1OriginalY = Y2
+
+local incorrectAnswer2OriginalX = X2
+local incorrectAnswer2OriginalY = Y1
+
+local incorrectAnswer3OriginalX = X2
+local incorrectAnswer3OriginalY = Y2
+
+-- timer stuff
+local timerText
+local clockText
+local totalSeconds = 30
+local secondsLeft = 30
+
+-- lives
+local heart5
+local heart4
+local heart3
 local heart2
+local heart1
 
-local leftW 
-local rightW
-local topW
-local floor
+-- score
+local score = 0
 
-local door
+-- wallls
+local LeftW
+local RightW
+local TopW
+local BottomW
+
+-- randomizing answers
+local randomAnswer
 
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
@@ -82,256 +131,589 @@ local winSoundChannel
 
 ----------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
-----------------------------------------------------------------------
-
--- when right arrow is touched move right
-local function right (touch)
-    print("***Called right")
-    motionx = SPEED
-    character.xScale = 1
-end
-
--- when right arrow is touched move right
-local function left (touch)
-    motionx = -SPEED
-    character.xScale = -1
-end
-
--- when right arrow is touched move right
-local function up (touch)
-    motiony = -SPEED
-end
-
-local function movePlayer (event)
-    print ("***Called movePlayer")
-    character.x = character.x + motionx
-    character.y = character.y + motiony
-end
-
-local function stop (event)
-    if (event.phase == "ended") then
-        motionx = 0
-        motiony = 0
+------------------------------------------------------------------- 
+local function Mute(touch)
+    if (touch.phase == "ended") then
+        audio.pause(bkgMusicMM)
+        soundOn = false
+        muteButton.isVisible = false
+        unmuteButton.isVisible = true
     end
 end
 
-local function AddArrowEventListeners()
-    print ("***Called AddArrowEventListeners")
-    rArrow:addEventListener("touch", right)
-    lArrow:addEventListener("touch", left)
-    uArrow:addEventListener("touch", up)
-end
-
-local function RemoveArrowEventListeners()
-    rArrow:removeEventListener("touch", right)
-    lArrow:removeEventListener("touch", left)
-    uArrow:removeEventListener("touch", up)
-end
-
-local function AddRuntimeListeners()
-    print ("***Called AddRuntimeListeners")
-    Runtime:addEventListener("enterFrame", movePlayer)
-    Runtime:addEventListener("touch", stop)
-end
-
-local function RemoveRuntimeListeners()
-    Runtime:removeEventListener("enterFrame", movePlayer)
-    Runtime:removeEventListener("touch", stop)
-end
-
-local function ReplaceCharacter()
-    print ("***Called ReplaceCharacter")
-    character = display.newImageRect("Images/MooseCharacterLiamC.png", 100, 150)
-    character.x = display.contentWidth * 1 / 8
-    character.y = display.contentHeight  * 0.1 / 3
-    character.width = 240
-    character.height = 160
-    character.myName = "Moose"
-
-    -- intialize horizontal movement of character
-    motionx = 0
-
-    -- add physics body
-    physics.addBody( character, "dynamic", { density=0, friction=0.5, bounce=0, rotation=0 } )
-
-    -- prevent character from being able to tip over
-    character.isFixedRotation = true
-
-    -- add back arrow listeners
-    AddArrowEventListeners()
-
-    -- add back runtime listeners
-    AddRuntimeListeners()
-end
-
-
-local function MakeAppleVisible()
-    apple1.isVisible = true
-    apple2.isVisible = true
-    apple3.isVisible = true
-    apple4.isVisible = true
-    apple5.isVisible = true
-    apple6.isVisible = true
-end
-
-local function MakeHeartsVisible()
-    heart1.isVisible = true
-    heart2.isVisible = true
+local function UnMute(touch)
+    if (touch.phase == "ended") then
+        audio.resume(bkgMusicMM)
+        soundOn = true
+        muteButton.isVisible = true
+        unmuteButton.isVisible = false
+    end
 end
 
 local function YouLoseTransition()
-    apple1.isVisible = false
-    apple2.isVisible = false
-    apple3.isVisible = false
-    apple4.isVisible = false
-    apple5.isVisible = false
-    apple6.isVisible = false
     loseSoundChannel = audio.play(loseSound)
     composer.gotoScene( "you_lose" )
 end
 
-local function onCollision( self, event )
-    -- for testing purposes
-    --print( event.target )        --the first object in the collision
-    --print( event.other )         --the second object in the collision
-    --print( event.selfElement )   --the element (number) of the first object which was hit in the collision
-    --print( event.otherElement )  --the element (number) of the second object which was hit in the collision
-    --print( event.target.myName .. ": collision began with " .. event.other.myName )
-
-    if ( event.phase == "began" ) then
-
-        if  (event.target.myName == "no apple1") or 
-            (event.target.myName == "no apple2") or
-            (event.target.myName == "no apple3") or 
-            (event.target.myName == "no apple4") or
-            (event.target.myName == "no apple5") or 
-            (event.target.myName == "no apple6") or
-            (event.target.myName == "no apple7") or 
-            (event.target.myName == "no apple8") or
-            (event.target.myName == "no apple9") then ------------- NONE OF THIS SHOULD HAPPEN AS YOU NEVER LOSE LIVES -----------------------------
-
-            -- add sound effect here
-
-            -- remove runtime listeners that move the character
-            RemoveArrowEventListeners()
-            RemoveRuntimeListeners()
-
-            -- remove the character from the display
-            display.remove(character)
-
-            -- decrease number of lives
-            numLives = numLives - 1
-
-            -- make sound for when the character gets hit
-            hitSoundChannel = audio.play(hitSound)
-
-            if (numLives == 1) then
-                -- update hearts
-                heart1.isVisible = true
-                heart2.isVisible = false
-                timer.performWithDelay(200, ReplaceCharacter) 
-
-            elseif (numLives == 0) then
-                -- update hearts
-                heart1.isVisible = false
-                heart2.isVisible = false
-                timer.performWithDelay(200, YouLoseTransition)
-            end
-        end
-
-        if  (event.target.myName == "apple1") or
-            (event.target.myName == "apple2") or
-            (event.target.myName == "apple3") or
-            (event.target.myName == "apple4") or  
-            (event.target.myName == "apple5") or
-            (event.target.myName == "apple6") then
-
-
-            -- get the ball that the user hit
-            theApple = event.target
-
-            -- stop the character from moving
-            motionx = 0
-
-            -- make the character invisible
-            character.isVisible = false
-
-            -- show overlay with math question
-            composer.showOverlay( "level1_question", { isModal = true, effect = "fade", time = 100})
-
-            -- Increment questions answered
-            questionsAnswered = questionsAnswered + 1
-        end
-
-        if (event.target.myName == "door") then
-            print(questionsAnswered)
-            --check to see if the user has answered 5 questions
-            if (questionsAnswered == 6) then
-                -- after getting 3 questions right, go to the you win screen
-                winSoundChannel = audio.play(winSound)
-                composer.gotoScene( "you_win" )
-            end
-        end        
-
+local function UpdateTime()
+    -- the number of seconds the timer goes by
+    secondsLeft = secondsLeft - 1
+    -- display the seconds left for the timer
+    clockText.text = secondsLeft .. ""
+    -- stop timer at 0
+    if (secondsLeft <= 0) then        
+        lives = 0
+        YouLoseTransition()
     end
 end
 
-local function AddCollisionListeners()
-    -- if character collides with ball, onCollision will be called
-    apple1.collision = onCollision
-    apple1:addEventListener( "collision" )
-    apple2.collision = onCollision
-    apple2:addEventListener( "collision" )
-    apple3.collision = onCollision
-    apple3:addEventListener( "collision" )
-    apple4.collision = onCollision
-    apple4:addEventListener( "collision" )
-    apple5.collision = onCollision
-    apple5:addEventListener( "collision" )
-    apple6.collision = onCollision
-    apple6:addEventListener( "collision" )
 
-    door.collision = onCollision
-    door:addEventListener( "collision" )    
+local function WinTransition()
+    winSoundChannel = audio.play(winSound)
+    composer.gotoScene("you_Win")
+end 
 
+
+local function startTimer()
+    -- start count down timer
+    countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
 end
 
-local function RemoveCollisionListeners()
-    apple1:removeEventListener( "collision" )
-    apple2:removeEventListener( "collision" )
-    apple3:removeEventListener( "collision" )
-    apple4:removeEventListener( "collision" )
-    apple5:removeEventListener( "collision" )
-    apple6:removeEventListener( "collision" )
+local function AskQuestion()
+    randomAnimalName = math.random(1,10)
 
-    door:removeEventListener( "collision" )
-end     
+    if (randomAnimalName == 1) then
+        questionObject.text = "Tiger"
+        correctAnswer.text = "Kitten"
+        incorrectAnswer1.text = "Pup"
+        incorrectAnswer2.text = "Larva"
+        incorrectAnswer3.text = "Owlet"
 
-local function AddPhysicsBodies()
-    physics.addBody(leftW, "static", {density=1, friction=0.3, bounce=0.2} )
-    physics.addBody(rightW, "static", {density=1, friction=0.3, bounce=0.2} ) 
-    physics.addBody(topW, "static", {density=1, friction=0.3, bounce=0.2} )
-    physics.addBody(floor, "static", {density=1, friction=0.3, bounce=0.2} )
+    elseif (randomAnimalName == 2) then
+        questionObject.text = "Goat"
+        correctAnswer.text = "Kid"
+        incorrectAnswer1.text = "Pup"
+        incorrectAnswer2.text = "Piglet"
+        incorrectAnswer3.text = "Goaty"
 
-    physics.addBody(apple1, "static", {density=0, friction=0, bounce=0} ) 
-    physics.addBody(apple2, "static", {density=0, friction=0, bounce=0} ) 
-    physics.addBody(apple3, "static", {density=0, friction=0, bounce=0} ) 
-    physics.addBody(apple4, "static", {density=0, friction=0, bounce=0} ) 
-    physics.addBody(apple5, "static", {density=0, friction=0, bounce=0} ) 
-    physics.addBody(apple6, "static", {density=0, friction=0, bounce=0} ) 
+    elseif (randomAnimalName == 3) then
+        questionObject.text = "Mole"
+        correctAnswer.text = "Pup"
+        incorrectAnswer1.text = "Wellow"
+        incorrectAnswer2.text = "Kit"
+        incorrectAnswer3.text = "Supole"
 
-    physics.addBody(door, "static", {density=1, friction=0.3, bounce=0.2} )
+    elseif (randomAnimalName == 4) then
+        questionObject.text = "Bat"
+        correctAnswer.text = "Pup"
+        incorrectAnswer1.text = "Infant"
+        incorrectAnswer2.text = "Wriggler"
+        incorrectAnswer3.text = "Pluteus"
 
+    elseif (randomAnimalName == 5) then
+        questionObject.text = "Shark"
+        correctAnswer.text = "Pup"
+        incorrectAnswer1.text = "Sharkling"
+        incorrectAnswer2.text = "Sharkster"
+        incorrectAnswer3.text = "Smolt"
+
+    elseif (randomAnimalName == 6) then
+        questionObject.text = "Cod"
+        correctAnswer.text = "Codling"
+        incorrectAnswer1.text = "Eft"
+        incorrectAnswer2.text = "Whelp"
+        incorrectAnswer3.text = "Calf"
+
+    elseif (randomAnimalName == 7) then
+        questionObject.text = "Aardvark"
+        correctAnswer.text = "Cub"
+        incorrectAnswer1.text = "Pup"
+        incorrectAnswer2.text = "Varky"
+        incorrectAnswer3.text = "Puggle"
+
+    elseif (randomAnimalName == 8) then
+        questionObject.text = "Monkey"
+        correctAnswer.text = "Infant"
+        incorrectAnswer1.text = "Ape"
+        incorrectAnswer2.text = "Pup"
+        incorrectAnswer3.text = "Munk"
+
+    elseif (randomAnimalName == 9) then
+        questionObject.text = "Wolf"
+        correctAnswer.text = "Cub"
+        incorrectAnswer1.text = "Wolves"
+        incorrectAnswer2.text = "Kitten"
+        incorrectAnswer3.text = "Fawn"
+
+    elseif (randomAnimalName == 10) then
+        questionObject.text = "Sheep"
+        correctAnswer.text = "Lamb"
+        incorrectAnswer1.text = "Sheepling"
+        incorrectAnswer2.text = "Pup"
+        incorrectAnswer3.text = "Snoop"
+    end
 end
 
-local function RemovePhysicsBodies()
-    physics.removeBody(leftW)
-    physics.removeBody(rightW)
-    physics.removeBody(topW)
-    physics.removeBody(floor)
+local function UpdateHearts()
+    if (lives == 5) then
+        heart5.isVisible = true
+        heart4.isVisible = true
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
 
-    physics.removeBody(door)
- 
+    elseif (lives == 4) then
+        heart5.isVisible = false
+        heart4.isVisible = true
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
+    elseif (lives == 3) then
+        heart5.isVisible = false
+        heart4.isVisible = false
+        heart3.isVisible = true
+        heart2.isVisible = true
+        heart1.isVisible = true
+    elseif (lives == 2) then
+        heart5.isVisible = false
+        heart4.isVisible = false
+        heart3.isVisible = false
+        heart2.isVisible = true
+        heart1.isVisible = true 
+    elseif (lives == 1) then
+        heart5.isVisible = false
+        heart4.isVisible = false
+        heart3.isVisible = false
+        heart2.isVisible = false
+        heart1.isVisible = true
+    elseif (lives == 0) then
+        heart5.isVisible = false
+        heart4.isVisible = false
+        heart3.isVisible = false
+        heart2.isVisible = false
+        heart1.isVisible = false
+        timer.performWithDelay(1000, YouLoseTransition)
+    end
+end
+
+
+local function win()
+    if ( userAnswer == correctAnswer ) then
+        hitSoundChannel = audio.play(hitSound)
+        bkgMusicMMChannel = audio.pause(bkgMusicMM)
+        timer.performWithDelay(1600, RestartLevel2)
+    end   
+end
+
+local function PositionAnswers()
+
+    --creating random start position in a cretain area
+    answerPosition = math.random(1,4)
+
+    if (answerPosition == 1) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y2        
+        
+        incorrectAnswer1.x = X2
+        incorrectAnswer1.y = Y1
+        
+        incorrectAnswer2.x = X1
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y1
+
+        
+    elseif (answerPosition == 2) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y1
+            
+        incorrectAnswer1.x = X1
+        incorrectAnswer1.y = Y1
+            
+        incorrectAnswer2.x = X2
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y2
+
+
+    elseif (answerPosition == 3) then
+
+        correctAnswer.x = X1
+        correctAnswer.y = Y2
+            
+        incorrectAnswer1.x = X2
+        incorrectAnswer1.y = Y2
+            
+        incorrectAnswer2.x = X1
+        incorrectAnswer2.y = Y1
+
+        incorrectAnswer3.x = X2
+        incorrectAnswer3.y = Y1
+
+    elseif (answerPosition == 4) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y1
+            
+        incorrectAnswer1.x = X1
+        incorrectAnswer1.y = Y2
+            
+        incorrectAnswer2.x = X2
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y1
+    end
+
+    -- remember all the original positions
+    correctAnswerOriginalX = correctAnswer.x
+    correctAnswerOriginalY = correctAnswer.y
+    -- incorrect 1
+    incorrectAnswer1OriginalX = incorrectAnswer1.x
+    incorrectAnswer1OriginalY = incorrectAnswer1.y
+    --incorrect 2
+    incorrectAnswer2OriginalX = incorrectAnswer2.x
+    incorrectAnswer2OriginalY = incorrectAnswer2.y
+    --incorrect 3
+    incorrectAnswer3OriginalX = incorrectAnswer3.x
+    incorrectAnswer3OriginalY = incorrectAnswer3.y
+end
+
+local function RestartLevel2()
+    AskQuestion()
+    PositionAnswers()
+end
+
+
+local function AddRuntimeListeners()
+    Runtime:addEventListener("enterFrame", win)
+end
+
+
+local function incorrectAnswer1Listener(touch)
+
+
+    if (touch.phase == "began") then
+        if (correctAnswerAlreadyTouched == false) and (incorrectAnswer2AlreadyTouched == false) 
+            and (incorrectAnswer3AlreadyTouched == false) then
+            incorrectAnswer1AlreadyTouched = true
+        end
+    end
+
+    if ( (touch.phase == "moved") and (incorrectAnswer1AlreadyTouched == true) ) then
+        incorrectAnswer1.x = touch.x
+        incorrectAnswer1.y = touch.y
+    end
+
+    if (touch.phase == "ended") then
+        correctAnswerAlreadyTouched = false
+        incorrectAnswer2AlreadyTouched = false
+        incorrectAnswer3AlreadyTouched = false
+    end
+end
+
+local function incorrectAnswer2Listener(touch)
+
+
+    if (touch.phase == "began") then
+        if (correctAnswerAlreadyTouched == false) and (incorrectAnswer1AlreadyTouched == false) 
+            and (incorrectAnswer3AlreadyTouched == false) then
+            incorrectAnswer2AlreadyTouched = true
+        end
+    end
+
+    if ( (touch.phase == "moved") and (incorrectAnswer2AlreadyTouched == true) ) then
+        incorrectAnswer2.x = touch.x
+        incorrectAnswer2.y = touch.y
+    end
+
+    if (touch.phase == "ended") then
+        correctAnswerAlreadyTouched = false
+        incorrectAnswer1AlreadyTouched = false
+        incorrectAnswer3AlreadyTouched = false
+    end
+end
+
+local function incorrectAnswer3Listener(touch)
+
+
+    if (touch.phase == "began") then
+        if (correctAnswerAlreadyTouched == false) and (incorrectAnswer1AlreadyTouched == false) 
+            and (incorrectAnswer2AlreadyTouched == false) then
+            incorrectAnswer3AlreadyTouched = true
+        end
+    end
+
+    if ( (touch.phase == "moved") and (incorrectAnswer3AlreadyTouched == true) ) then
+        incorrectAnswer3.x = touch.x
+        incorrectAnswer3.y = touch.y
+    end
+
+    if (touch.phase == "ended") then
+        correctAnswerAlreadyTouched = false
+        incorrectAnswer1AlreadyTouched = false
+        incorrectAnswer2AlreadyTouched = false
+    end
+end
+
+
+local function TouchListenerCorrectAnswer(touch)
+    --only work if none of the other boxes have been touched
+    if (incorrectAnswer1AlreadyTouched == false) and 
+        (incorrectAnswer2AlreadyTouched == false) and
+        (incorrectAnswer3AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+            --let other boxes know it has been clicked
+            correctAnswerAlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            correctAnswer.x = touch.x
+            correctAnswer.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            correctAnswerAlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < correctAnswer.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > correctAnswer.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < correctAnswer.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > correctAnswer.y ) ) then
+        
+
+                -- setting the position of the number to be in the center of the box
+                correctAnswer.x = userAnswerBoxPlaceholder.x
+                correctAnswer.y = userAnswerBoxPlaceholder.y
+
+
+                -- pause background music
+                bkgMusicMMChannel = audio.pause(bkgMusicMM)
+                -- play sound
+                winSoundChannel = audio.play(winSound)
+
+                -- score change
+                score = score + 1
+                if (score == 8) then
+                    WinTransition()
+                else 
+                    -- restart the level after 1.6 seconds
+                    timer.performWithDelay(1600, RestartLevel2)
+                end 
+            -- if they release the textbox before the answerbox, then return it to its original position
+            else                 
+                -- setting the position of the number to be in the center of the box
+                correctAnswer.x = correctAnswerOriginalX
+                correctAnswer.y = correctAnswerOriginalY
+            end
+            
+        end
+    end                
+end 
+
+local function incorrectAnswer1TouchListener(touch)
+    --only work if none of the other boxes have been touched
+    if (correctAnswerAlreadyTouched == false) and 
+        (incorrectAnswer2AlreadyTouched == false) and
+        (incorrectAnswer3AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+
+            --let other boxes know it has been clicked
+            incorrectAnswer1AlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            incorrectAnswer1.x = touch.x
+            incorrectAnswer1.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            incorrectAnswer1AlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < incorrectAnswer1.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > incorrectAnswer1.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < incorrectAnswer1.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > incorrectAnswer1.y ) ) then
+
+                -- setting the position of the number to be in the center of the box
+                incorrectAnswer1.x = userAnswerBoxPlaceholder.x
+                incorrectAnswer1.y = userAnswerBoxPlaceholder.y
+                --userAnswer = correctAnswer
+
+                -- call the function to check if the user's input is correct or not
+                --CheckUserAnswerInput()
+                -- pause background music
+                bkgMusicMMChannel = audio.pause(bkgMusicMM)
+
+                -- life is tak3en away for incorrect answer
+                lives = lives - 1
+                UpdateHearts()
+                if (lives == 0) then
+                    YouLoseTransition()
+                else
+                    -- play sound
+                    hitSoundChannel = audio.play(hitSound)
+                    -- restart the level after 1.6 seconds
+                    timer.performWithDelay(1600, RestartLevel2)
+                end
+
+            --else make box go back to where it was
+            else
+                incorrectAnswer1.x = incorrectAnswer1OriginalX
+                incorrectAnswer1.y = incorrectAnswer1OriginalY
+            end
+        end
+    end                
+end
+
+local function incorrectAnswer2TouchListener(touch)
+    --only work if none of the other boxes have been touched
+    if (correctAnswerAlreadyTouched == false) and 
+        (incorrectAnswer1AlreadyTouched == false) and
+        (incorrectAnswer3AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+
+            --let other boxes know it has been clicked
+            incorrectAnswer2AlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            incorrectAnswer2.x = touch.x
+            incorrectAnswer2.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            incorrectAnswer2AlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < incorrectAnswer2.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > incorrectAnswer2.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < incorrectAnswer2.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > incorrectAnswer2.y ) ) then
+
+                -- setting the position of the number to be in the center of the box
+                incorrectAnswer2.x = userAnswerBoxPlaceholder.x
+                incorrectAnswer2.y = userAnswerBoxPlaceholder.y
+                --userAnswer = correctAnswer
+
+                -- call the function to check if the user's input is correct or not
+                --CheckUserAnswerInput()
+                -- pause background music
+                bkgMusicMMChannel = audio.pause(bkgMusicMM)
+
+                -- life is tak3en away for incorrect answer
+                lives = lives - 1
+                UpdateHearts()
+                if (lives == 0) then
+                    YouLoseTransition()
+                else
+                    -- play sound
+                    hitSoundChannel = audio.play(hitSound)
+                    -- restart the level after 1.6 seconds
+                    timer.performWithDelay(1600, RestartLevel2)
+                end
+
+            --else make box go back to where it was
+            else
+                incorrectAnswer2.x = incorrectAnswer2OriginalX
+                incorrectAnswer2.y = incorrectAnswer2OriginalY
+            end
+        end
+    end                
+end
+
+local function incorrectAnswer3TouchListener(touch)
+    --only work if none of the other boxes have been touched
+    if (correctAnswerAlreadyTouched == false) and 
+        (incorrectAnswer1AlreadyTouched == false) and
+        (incorrectAnswer2AlreadyTouched == false) then
+
+        if (touch.phase == "began") then
+
+            --let other boxes know it has been clicked
+            incorrectAnswer3AlreadyTouched = true
+
+        --drag the answer to follow the mouse
+        elseif (touch.phase == "moved") then
+            
+            incorrectAnswer3.x = touch.x
+            incorrectAnswer3.y = touch.y
+
+        -- this occurs when they release the mouse
+        elseif (touch.phase == "ended") then
+
+            incorrectAnswer3AlreadyTouched = false
+
+              -- if the number is dragged into the userAnswerBox, place it in the center of it
+            if (((userAnswerBoxPlaceholder.x - userAnswerBoxPlaceholder.width/2) < incorrectAnswer3.x ) and
+                ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > incorrectAnswer3.x ) and 
+                ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < incorrectAnswer3.y ) and 
+                ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > incorrectAnswer3.y ) ) then
+
+                -- setting the position of the number to be in the center of the box
+                incorrectAnswer3.x = userAnswerBoxPlaceholder.x
+                incorrectAnswer3.y = userAnswerBoxPlaceholder.y
+                --userAnswer = correctAnswer
+
+                -- call the function to check if the user's input is correct or not
+                --CheckUserAnswerInput()
+                -- pause background music
+                bkgMusicMMChannel = audio.pause(bkgMusicMM)
+
+                -- life is tak3en away for incorrect answer
+                lives = lives - 1
+                UpdateHearts()
+                if (lives == 0) then
+                    YouLoseTransition()
+                else
+                    -- play sound
+                    hitSoundChannel = audio.play(hitSound)
+                    -- restart the level after 1.6 seconds
+                    timer.performWithDelay(1600, RestartLevel2)
+                end
+
+            --else make box go back to where it was
+            else
+                incorrectAnswer3.x = incorrectAnswer3OriginalX
+                incorrectAnswer3.y = incorrectAnswer3OriginalY
+            end
+        end
+    end                
+end
+
+
+local function AddTouchListeners()
+    correctAnswer:addEventListener("touch", TouchListenerCorrectAnswer)
+    incorrectAnswer1:addEventListener("touch", incorrectAnswer1TouchListener)
+    incorrectAnswer2:addEventListener("touch", incorrectAnswer2TouchListener)
+    incorrectAnswer3:addEventListener("touch", incorrectAnswer3TouchListener)
+    unmuteButton:addEventListener("touch", UnMute)
+    muteButton:addEventListener("touch", Mute)
+end
+
+local function RemoveTouchListeners()
+    correctAnswer:removeEventListener("touch", TouchListenerCorrectAnswer)
+    incorrectAnswer1:removeEventListener("touch", incorrectAnswer1TouchListener)
+    incorrectAnswer2:removeEventListener("touch", incorrectAnswer2Listener)
+    incorrectAnswer2:removeEventListener("touch", incorrectAnswer2TouchListener)
+    incorrectAnswer3:removeEventListener("touch", incorrectAnswer3Listener)
+    incorrectAnswer3:removeEventListener("touch", incorrectAnswer3TouchListener)
+    unmuteButton:removeEventListener("touch", UnMute)
+    muteButton:removeEventListener("touch", Mute)
 end
 
 
@@ -339,19 +721,6 @@ end
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
 
-function ResumeGame()
-
-        -- make character visible again
-    character.isVisible = true
-    
-    if (questionsAnswered > 0) then
-        if (theApple ~= nil) and (theApple.isBodyActive == true) then
-            physics.removeBody(theApple)
-            theApple.isVisible = false
-        end
-    end
-
-end
 
 -- The function called when the screen doesn't exist
 function scene:create( event )
@@ -359,115 +728,120 @@ function scene:create( event )
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
-    -----------------------------------------------------------------------------------------
-
-    -- Insert the background image
-    bkg_image = display.newImageRect("Images/Level1ScreenNathan@2x.png", display.contentWidth, display.contentHeight)
+    ----------------------------------------------------------------------------------------- 
+            -- Insert the background image
+    bkg_image = display.newImageRect("Images/Level2ScreenNathan@2x.png", display.contentWidth, display.contentHeight)
     bkg_image.x = display.contentCenterX
     bkg_image.y = display.contentCenterY
     bkg_image.width = display.contentWidth
     bkg_image.height = display.contentHeight
 
         -- Insert background image into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( bkg_image )    
+    sceneGroup:insert( bkg_image )
+    
+    -- questin text above
+    titleQuestionObject = display.newText( "Match animal baby names\nto their adult ones!", 518, 610, nil, 50 )
+    titleQuestionObject:setTextColor(1, 0, 0)
+    titleQuestionObject.isVisible = false
 
-    -- create apples
-    apple1 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
-    apple1.x = 390
-    apple1.y = 730
-    apple1:scale(.3,.3)
-    apple1.myName = "apple1"
+    -- text object
+    questionObject = display.newText( "", 400, 490, nil, 55 )
+    questionObject:setTextColor(0.8, 0.5, 0.3)
 
-    apple2 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
-    apple2.x = 490
-    apple2.y = 640
-    apple2:scale(.3,.3)
-    apple2.myName = "apple2"
+    -- text object
+    correctAnswer = display.newText( "", 620, 380, nil, 50 )
+    correctAnswer:setTextColor(0.8, 0.2, 0.5)
 
-    apple3 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
-    apple3.x = 530
-    apple3.y = 730
-    apple3:scale(.3,.3)
-    apple3.myName = "apple3"
+    --text object 2
+    incorrectAnswer1 = display.newText( "", 620, 250, nil, 50)
+    incorrectAnswer1 :setTextColor(0.8, 0.2, 0.5)
 
-    apple4 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
-    apple4.x = 630
-    apple4.y = 670
-    apple4:scale(.3,.3)
-    apple4.myName = "apple4"
+    -- text object 3
+    incorrectAnswer2  = display.newText( "", 400, 380, nil, 50 )
+    incorrectAnswer2:setTextColor(0.8, 0.2, 0.5)
 
-    apple5 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
-    apple5.x = 660
-    apple5.y = 730
-    apple5:scale(.3,.3)
-    apple5.myName = "apple5"
+    -- text object 4
+    incorrectAnswer3  = display.newText( "", 400, 250, nil, 50)
+    incorrectAnswer3:setTextColor(0.8, 0.2, 0.5)
 
-    apple6 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
-    apple6.x = 750
-    apple6.y = 680
-    apple6:scale(.3,.3)
-    apple6.myName = "apple6"
+    -- displays text for timer
+    timerText = display.newText( "Timer", 680, 670, nil, 55)
 
-    sceneGroup:insert(apple1)
-    sceneGroup:insert(apple2)
-    sceneGroup:insert(apple3)
-    sceneGroup:insert(apple4)
-    sceneGroup:insert(apple5)
-    sceneGroup:insert(apple6)
-
-    --Insert the right arrow
-    rArrow = display.newImageRect("Images/RightArrowUnpressed.png", 100, 50)
-    rArrow.x = display.contentWidth * 9.2 / 10
-    rArrow.y = display.contentHeight * 9.5 / 10
-
-    -- insert image fpor up arrow
-    uArrow = display.newImageRect("Images/UpArrowUnpressed.png", 50, 100)
-    uArrow.x = display.contentWidth * 8.2 / 10
-    uArrow.y = display.contentHeight * 8.5 / 10
-
-    lArrow = display.newImageRect("Images/LeftArrowUnpressed.png", 100, 50)
-    lArrow.x = display.contentWidth * 7.2 / 10
-    lArrow.y = display.contentHeight * 9.5 / 10
-
-    door = display.newImage("Images/Level-1Door.png", 200, 200)
-    door.x = display.contentWidth*7/8 
-    door.y = display.contentHeight*6.1/7
-    door.myName = "door"
+    -- displays actual time for timer
+    clockText = display.newText( "", 680, 735, nil, 55)
 
     --WALLS--
 
-    leftW = display.newLine( 0, 0, 0, display.contentHeight)
-    leftW.isVisible = true
+    LeftW = display.newLine( 0, 0, 0, display.contentHeight)
+    LeftW.isVisible = true
 
-     -- Insert objects into the scene group in order to ONLY be associated with this scene
-
-    rightW = display.newLine( 1024, 0, 1024, display.contentHeight)
-    rightW.isVisible = true
-
-     -- Insert objects into the scene group in order to ONLY be associated with this scene   
-
-    topW = display.newLine( 0, 0, display.contentWidth, 0)
-    topW.isVisible = true
-
-    -- Insert objects into the scene group in order to ONLY be associated with this scene    
-    floor = display.newImageRect("Images/Ground.png", 1000, 100)
-    floor.x = display.contentCenterX
-    floor.y = display.contentHeight * 2.1/2
-    
     -- Insert objects into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( floor )
-    sceneGroup:insert( topW )
-    sceneGroup:insert( rightW )
-    sceneGroup:insert( leftW )
-    sceneGroup:insert( door )
-    sceneGroup:insert( lArrow )
-    sceneGroup:insert( rArrow )
-    sceneGroup:insert( uArrow ) 
 
+    RightW = display.newLine( 1024, 0, 1024, display.contentHeight)
+    RightW.isVisible = true
 
+    -- Insert objects into the scene group in order to ONLY be associated with this scene   
 
- 
-end --function scene:create( event )
+    TopW = display.newLine( 0, 0, display.contentWidth, 0)
+    TopW.isVisible = true
+
+    -- hearts
+    heart1 = display.newImageRect("Images/heart@2x.png", 75, 75)
+    heart1.x = display.contentWidth * 0.5 / 10
+    heart1.y = display.contentHeight * 9.5 / 10
+
+    heart2 = display.newImageRect("Images/heart@2x.png", 75, 75)
+    heart2.x = display.contentWidth * 1.5 / 10
+    heart2.y = display.contentHeight * 9.5 / 10
+
+    heart3 = display.newImageRect("Images/heart@2x.png", 75, 75)
+    heart3.x = display.contentWidth * 2.5 / 10
+    heart3.y = display.contentHeight * 9.5 / 10
+
+    heart4 = display.newImageRect("Images/heart@2x.png", 75, 75)
+    heart4.x = display.contentWidth * 3.5 / 10
+    heart4.y = display.contentHeight * 9.5 / 10
+
+    heart5 = display.newImageRect("Images/heart@2x.png", 75, 75)
+    heart5.x = display.contentWidth * 4.5 / 10
+    heart5.y = display.contentHeight * 9.5 / 10
+
+    muteButton = display.newImageRect("Images/Mute.png", 175, 175)
+    muteButton.x = display.contentWidth * 1 / 10
+    muteButton.y = display.contentHeight * 1 / 10 
+
+    unmuteButton = display.newImageRect("Images/UnMute.png", 175, 175)
+    unmuteButton.x = display.contentWidth * 1 / 10
+    unmuteButton.y = display.contentHeight * 1 / 10 
+
+    -- the black box where the user will drag the answer
+    userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  200, 100)
+    userAnswerBoxPlaceholder.x = display.contentWidth * 0.58
+    userAnswerBoxPlaceholder.y = display.contentHeight * 0.64
+    userAnswerBoxPlaceholder.isVisible = false
+
+    -- scene groups
+    sceneGroup:insert( titleQuestionObject )
+    sceneGroup:insert( questionObject )
+    sceneGroup:insert( correctAnswer )
+    sceneGroup:insert( incorrectAnswer1 )
+    sceneGroup:insert( incorrectAnswer2 )
+    sceneGroup:insert( incorrectAnswer3 )
+    sceneGroup:insert( userAnswerBoxPlaceholder )
+    sceneGroup:insert( timerText )
+    sceneGroup:insert( clockText )
+    sceneGroup:insert( LeftW )
+    sceneGroup:insert( RightW )
+    sceneGroup:insert( TopW )
+    sceneGroup:insert( heart1 )
+    sceneGroup:insert( heart2 )
+    sceneGroup:insert( heart3 )
+    sceneGroup:insert( heart4 )
+    sceneGroup:insert( heart5 )
+    sceneGroup:insert( unmuteButton )
+    sceneGroup:insert( muteButton )
+end 
+    
 
 -----------------------------------------------------------------------------------------
 
@@ -484,29 +858,21 @@ function scene:show( event )
 
         -- Called when the scene is still off screen (but is about to come on screen).
     -----------------------------------------------------------------------------------------
-        physics.start()
 
     elseif ( phase == "did" ) then
 
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
-        -- Example: start timers, begin animation, play audio, etc.
-
-
-        questionsAnswered = 0
-
-        -- make all soccer balls visible
-        MakeAppleVisible()
-
-        -- add collision listeners to objects
-        AddCollisionListeners()
-
-        -- create the character, add physics bodies and runtime listeners
-        ReplaceCharacter() 
-
-        AddPhysicsBodies()
-
-
+        -- Example: start timers, begin animation, play audio, etc
+        secondsLeft = totalSeconds
+        lives = 5
+        score = 0
+        UpdateHearts()
+        PositionAnswers()
+        AskQuestion()
+        AddTouchListeners()
+        AddRuntimeListeners()
+        startTimer()
     end
 
 end --function scene:show( event )
@@ -527,17 +893,13 @@ function scene:hide( event )
         -- Insert code here to "pause" the scene.
         -- Example: stop timers, stop animation, stop audio, etc.
 
+
     -----------------------------------------------------------------------------------------
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
-        RemoveCollisionListeners()
-        RemovePhysicsBodies()
-
-        physics.stop()
-        RemoveArrowEventListeners()
-        RemoveRuntimeListeners()
-        display.remove(character)
+        RemoveTouchListeners()  
+        timer.cancel(countDownTimer)
     end
 
 end --function scene:hide( event )
