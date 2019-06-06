@@ -94,8 +94,8 @@ local incorrectAnswer3OriginalY = Y2
 -- timer stuff
 local timerText
 local clockText
-local totalSeconds = 45
-local secondsLeft = 45
+local totalSeconds = 35
+local secondsLeft = 35
 
 -- lives
 local heart5
@@ -524,8 +524,8 @@ local function TouchListenerCorrectAnswer(touch)
 
                 -- score change
                 score = score + 1
-                scoreText.text = score .. "/6"
-                if (score == 6) then
+                scoreText.text = score .. "/8"
+                if (score == 8) then
                     WinTransition()
                 else 
                     -- restart the level after 1.6 seconds
@@ -761,16 +761,15 @@ function scene:create( event )
     bkg_image.height = display.contentHeight
 
         -- Insert background image into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( bkg_image )
+    
 
     -- questin text above
-    titleQuestionObject = display.newText( "Match animal baby names\n   to their adult ones!", 475, 90, nil, 35 )
+    titleQuestionObject = display.newText( "Match animal baby names\n      to their adult ones!", 505, 93, nil, 35 )
     titleQuestionObject:setTextColor(0, 0, 0)
     titleQuestionObject.isVisible = true
-    myGroup:insert( titleQuestionObject )
 
     -- text object
-    questionObject = display.newText( "", 400, 490, nil, 55 )
+    questionObject = display.newText( "", 395, 490, nil, 55 )
     questionObject:setTextColor(0.8, 0.5, 0.3)
 
     -- text object
@@ -848,7 +847,7 @@ function scene:create( event )
     --rectangle
     rectangle = display.newPolygon( 505, 95, vertices1)
     --set fill colour
-    rectangle:setFillColor(1, 1, 1)
+    rectangle:setFillColor(255/255, 153/255, 153/255)
     -- set stroke width
     rectangle.strokeWidth = 5
     --set colour of the border
@@ -856,13 +855,14 @@ function scene:create( event )
     rectangle.isVisible = true
 
     --score text
-    scoreText = display.newText( score .. "/6", 930, 375, nil, 45)
+    scoreText = display.newText( score .. "/8", 930, 375, nil, 45)
     scoreText:setTextColor(1, 0.3, 0.3)
 
     scoreTitle = display.newText( "Score =", 922, 320, nil, 50)
     scoreTitle:setTextColor(0.1, 0.3, 0.7)
 
     -- scene groups
+    sceneGroup:insert( bkg_image )
     sceneGroup:insert( rectangle )
     sceneGroup:insert( titleQuestionObject )
     sceneGroup:insert( questionObject )
@@ -910,7 +910,7 @@ function scene:show( event )
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc
         secondsLeft = totalSeconds
-        lives = 5
+        lives = 3
         score = 0
         UpdateHearts()
         PositionAnswers()

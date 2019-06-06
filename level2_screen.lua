@@ -178,7 +178,6 @@ end
 --
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
-    trophy2 = 1
     composer.gotoScene("level3_screen")
 end 
 
@@ -189,7 +188,7 @@ local function startTimer()
 end
 
 local function AskQuestion()
-    randomAnimalName = math.random(1,10)
+    randomAnimalName = math.random(1,12)
 
     if (randomAnimalName == 1) then
         questionObject.text = "Tiger"
@@ -227,38 +226,53 @@ local function AskQuestion()
         incorrectAnswer3.text = "Smolt"
 
     elseif (randomAnimalName == 6) then
-            questionObject.text = "Cod"
-            correctAnswer.text = "Codling"
-            incorrectAnswer1.text = "Eft"
-            incorrectAnswer2.text = "Whelp"
-            incorrectAnswer3.text = "Calf"
+        questionObject.text = "Cod"
+        correctAnswer.text = "Codling"
+        incorrectAnswer1.text = "Eft"
+        incorrectAnswer2.text = "Whelp"
+        incorrectAnswer3.text = "Calf"
 
     elseif (randomAnimalName == 7) then
-            questionObject.text = "Aardvark"
-            correctAnswer.text = "Cub"
-            incorrectAnswer1.text = "Pup"
-            incorrectAnswer2.text = "Varky"
-            incorrectAnswer3.text = "Puggle"
+        questionObject.text = "Aardvark"
+        correctAnswer.text = "Cub"
+        incorrectAnswer1.text = "Pup"
+        incorrectAnswer2.text = "Varky"
+        incorrectAnswer3.text = "Puggle"
 
     elseif (randomAnimalName == 8) then
-            questionObject.text = "Monkey"
-            correctAnswer.text = "Infant"
-            incorrectAnswer1.text = "Ape"
-            incorrectAnswer2.text = "Pup"
-            incorrectAnswer3.text = "Munk"
+        questionObject.text = "Monkey"
+        correctAnswer.text = "Infant"
+        incorrectAnswer1.text = "Ape"
+        incorrectAnswer2.text = "Pup"
+        incorrectAnswer3.text = "Munk"
 
     elseif (randomAnimalName == 9) then
-            questionObject.text = "Wolf"
-            correctAnswer.text = "Cub"
-            incorrectAnswer1.text = "Wolves"
-            incorrectAnswer2.text = "Kitten"
-            incorrectAnswer3.text = "Fawn"
+        questionObject.text = "Wolf"
+        correctAnswer.text = "Cub"
+        incorrectAnswer1.text = "Wolves"
+        incorrectAnswer2.text = "Kitten"
+        incorrectAnswer3.text = "Fawn"
+
     elseif (randomAnimalName == 10) then
-            questionObject.text = "Sheep"
-            correctAnswer.text = "Lamb"
-            incorrectAnswer1.text = "Sheepling"
-            incorrectAnswer2.text = "Pup"
-            incorrectAnswer3.text = "Snoop"
+        questionObject.text = "Sheep"
+        correctAnswer.text = "Lamb"
+        incorrectAnswer1.text = "Sheepling"
+        incorrectAnswer2.text = "Pup"
+        incorrectAnswer3.text = "Snoop"
+
+    elseif (randomAnimalName == 11) then
+        questionObject.text = "Crow"
+        correctAnswer.text = "Chick"
+        incorrectAnswer1.text = "Fawn"
+        incorrectAnswer2.text = "Squab"
+        incorrectAnswer3.text = "Duckling"
+
+    elseif (randomAnimalName == 12) then
+        questionObject.text = "Elephant"
+        correctAnswer.text = "Calf"
+        incorrectAnswer1.text = "Kid"
+        incorrectAnswer2.text = "Billy"
+        incorrectAnswer3.text = "Eyas"
     end
 end
 
@@ -746,16 +760,14 @@ function scene:create( event )
     bkg_image.height = display.contentHeight
 
         -- Insert background image into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( bkg_image )
 
     -- questin text above
-    titleQuestionObject = display.newText( "Match animal baby names\n   to their adult ones!", 475, 90, nil, 35 )
+    titleQuestionObject = display.newText( "Match animal baby names\n      to their adult ones!", 505, 93, nil, 35 )
     titleQuestionObject:setTextColor(0, 0, 0)
     titleQuestionObject.isVisible = true
-    myGroup:insert( titleQuestionObject )
 
     -- text object
-    questionObject = display.newText( "", 400, 490, nil, 55 )
+    questionObject = display.newText( "", 390, 490, nil, 55 )
     questionObject:setTextColor(0.8, 0.5, 0.3)
 
     -- text object
@@ -833,7 +845,7 @@ function scene:create( event )
     --rectangle
     rectangle = display.newPolygon( 505, 95, vertices1)
     --set fill colour
-    rectangle:setFillColor(1, 1, 1)
+    rectangle:setFillColor(255/255, 153/255, 153/255)
     -- set stroke width
     rectangle.strokeWidth = 5
     --set colour of the border
@@ -848,6 +860,8 @@ function scene:create( event )
     scoreTitle:setTextColor(0.1, 0.3, 0.7)
 
     -- scene groups
+    sceneGroup:insert( bkg_image )
+    sceneGroup:insert( rectangle )
     sceneGroup:insert( titleQuestionObject )
     sceneGroup:insert( questionObject )
     sceneGroup:insert( correctAnswer )
@@ -867,7 +881,6 @@ function scene:create( event )
     sceneGroup:insert( heart5 )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( muteButton )
-    sceneGroup:insert( rectangle )
     sceneGroup:insert( scoreText )
     sceneGroup:insert( scoreTitle )
 end 
