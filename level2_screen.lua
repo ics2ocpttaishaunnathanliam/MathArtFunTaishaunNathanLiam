@@ -106,6 +106,8 @@ local heart1
 
 -- score
 local score = 0
+local scoreText
+local scoreTitle
 
 -- wallls
 local LeftW
@@ -115,6 +117,12 @@ local BottomW
 
 -- randomizing answers
 local randomAnswer
+
+-- rectangle
+local rectangle
+local vertices1 = { 320,115, 320,10, 780,10, 780,115 }
+
+local myGroup = display.newGroup()
 
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
@@ -500,8 +508,8 @@ local function TouchListenerCorrectAnswer(touch)
 
                 -- score change
                 score = score + 1
-
-                if (score == 5) then
+                scoreText.text = score .. "/6"
+                if (score == 6) then
                     WinTransition()
                 else 
                     -- restart the level after 1.6 seconds
@@ -738,11 +746,12 @@ function scene:create( event )
 
         -- Insert background image into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( bkg_image )
-    
+
     -- questin text above
-    titleQuestionObject = display.newText( "Match animal baby names\nto their adult ones!", 518, 610, nil, 50 )
-    titleQuestionObject:setTextColor(1, 0, 0)
-    titleQuestionObject.isVisible = false
+    titleQuestionObject = display.newText( "Match animal baby names\n   to their adult ones!", 475, 90, nil, 35 )
+    titleQuestionObject:setTextColor(0, 0, 0)
+    titleQuestionObject.isVisible = true
+    myGroup:insert( titleQuestionObject )
 
     -- text object
     questionObject = display.newText( "", 400, 490, nil, 55 )
@@ -820,6 +829,23 @@ function scene:create( event )
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.64
     userAnswerBoxPlaceholder.isVisible = false
 
+    --rectangle
+    rectangle = display.newPolygon( 505, 95, vertices1)
+    --set fill colour
+    rectangle:setFillColor(1, 1, 1)
+    -- set stroke width
+    rectangle.strokeWidth = 5
+    --set colour of the border
+    rectangle:setStrokeColor(1, 0, 0)
+    rectangle.isVisible = true
+
+    --score text
+    scoreText = display.newText( score .. "/6", 930, 375, nil, 45)
+    scoreText:setTextColor(1, 0.3, 0.3)
+
+    scoreTitle = display.newText( "Score =", 922, 320, nil, 50)
+    scoreTitle:setTextColor(0.1, 0.3, 0.7)
+
     -- scene groups
     sceneGroup:insert( titleQuestionObject )
     sceneGroup:insert( questionObject )
@@ -840,6 +866,9 @@ function scene:create( event )
     sceneGroup:insert( heart5 )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( muteButton )
+    sceneGroup:insert( rectangle )
+    sceneGroup:insert( scoreText )
+    sceneGroup:insert( scoreTitle )
 end 
     
 
