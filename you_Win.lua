@@ -35,10 +35,42 @@ local bkg
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+ function BackTransition2()
+    --composer.gotoScene("main_menu", {effect = "fromTop", time = 500})
+    print("HAHAAH")
+    composer.gotoScene( "main_menu" )
+end
 
 --------------------------------------------------------------------------------------
 -- The function called when the screen doesn't exist
 function scene:create( event )
+
+    -----------------------------------------------------------------------------------------
+    -- BUTTON WIDGETS
+    -----------------------------------------------------------------------------------------
+
+    -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*1/8,
+        y = display.contentHeight*15/16,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 250,
+        height = 125,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition2
+
+    } )
 
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
@@ -52,6 +84,7 @@ function scene:create( event )
    
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg )
+    sceneGroup:insert( backButton )
   
 end    
 
