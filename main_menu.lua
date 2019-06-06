@@ -47,6 +47,8 @@ local creditsButton
 local instructionsButton
 local characterSelectButton
 
+local trophy
+
 local muteButton
 local unmuteButton
 -----------------------------------------------------------------------------------------
@@ -77,6 +79,23 @@ local function UnMute(touch)
     end
 end
 
+local function EasterEggMaker()
+    if (hiddenEasterEgg == 1) then
+        trophy.isVisible = true
+    end
+    if (trophy1 == 1) then
+        trophy1Object.isVisible = true
+    end
+    if (trophy2 == 1) then
+        trophy2Object.isVisible = true
+    end
+    if (trophy3 == 1) then
+        trophy3Object.isVisible = true
+    end
+    if (trophy4 == 1) then
+        trophy4Object.isVisible = true
+    end
+end
 -- Creating Transition Function to Credits Page
 local function CreditsTransition( )       
     composer.gotoScene( "credits_screen", {effect = "zoomInOutFade", time = 500})
@@ -133,6 +152,31 @@ function scene:create( event )
     unmuteButton.x = display.contentWidth*5/10
     unmuteButton.y = display.contentHeight*1.3/10
     unmuteButton.isVisible = false
+
+    trophy = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
+    trophy.x = display.contentWidth*1/3 - 30
+    trophy.y = display.contentHeight/2 - 63
+    trophy.isVisible = false
+
+    trophy1Object = display.newImageRect("Images/Level1Trophy.png", 100, 100)
+    trophy1Object.x = display.contentWidth*3/7
+    trophy1Object.y = display.contentHeight*3/4
+    trophy1Object.isVisible = false
+
+    trophy2Object = display.newImageRect("Images/Level2Trophy.png", 100, 100)
+    trophy2Object.x = display.contentWidth*4/7
+    trophy2Object.y = display.contentHeight*3/4
+    trophy2Object.isVisible = false
+
+    trophy3Object = display.newImageRect("Images/Level3Trophy.png", 100, 100)
+    trophy3Object.x = display.contentWidth*5/7
+    trophy3Object.y = display.contentHeight*3/4
+    trophy3Object.isVisible = false
+
+    trophy4Object = display.newImageRect("Images/Level4Trophy.png", 100, 100)
+    trophy4Object.x = display.contentWidth*6/7
+    trophy4Object.y = display.contentHeight*3/4
+    trophy4Object.isVisible = false
 
     -- Associating display objects with this scene 
     sceneGroup:insert( bkg_image )
@@ -244,6 +288,11 @@ function scene:create( event )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( characterSelectButton )
+    sceneGroup:insert( trophy1Object )
+    sceneGroup:insert( trophy2Object )
+    sceneGroup:insert( trophy3Object )
+    sceneGroup:insert( trophy4Object )
+
 
 
 end -- function scene:create( event )   
@@ -273,7 +322,7 @@ function scene:show( event )
     -- Insert code here to make the scene come alive.
     -- Example: start timers, begin animation, play audio, etc.
     elseif ( phase == "did" ) then       
-        
+        EasterEggMaker()
         bkgMusicMMChannel = audio.play(bkgMusicMM)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)

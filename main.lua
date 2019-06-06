@@ -14,6 +14,11 @@ local composer = require( "composer" )
 -----------------------------------------------------------------------------------------
 characterNumber = 1
 characterColor = 1
+hiddenEasterEgg = 0
+trophy1 = 0
+trophy2 = 0
+trophy3 = 0
+trophy4 = 0
 -- Go to the intro screen
 
 composer.gotoScene( "splash_screen" )

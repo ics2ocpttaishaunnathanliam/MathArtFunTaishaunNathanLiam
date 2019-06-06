@@ -37,16 +37,6 @@ local scene = composer.newScene( sceneName )
 -----------------------------------------------------------------------------------------
 
 local randomAnimalName
-local elephant = 1
-local swan = 2
-local koalas = 3
-local turtle = 4
-local fish = 5
-local goat = 6
-local narwhal = 7
-local cow = 8
-local fox = 9
-local tiger = 10
 
 -- The local variables for this scene
 local bkg_image
@@ -63,60 +53,14 @@ local incorrectAnswer1
 local incorrectAnswer2
 local incorrectAnswer3
 
-local userAnswerBoxPlaceholder
-
 local correctAnswerAlreadyTouched = false
 local incorrectAnswer1AlreadyTouched = false
 local incorrectAnswer2AlreadyTouched = false
 local incorrectAnswer3AlreadyTouched = false
 
-local correctAnswerOriginalX
-local incorrectAnswer1OriginalX
-local incorrectAnswer2OriginalX
-local incorrectAnswer3OriginalX
-
-local correctAnswerOriginalY
-local incorrectAnswer1OriginalY
-local incorrectAnswer2OriginalY
-local incorrectAnswer3OriginalY
-
--- correct and alternate answers
-local correctAnswer
-local alternateAnswer1
-local alternateAnswer2
-local alternateAnswer3
-
 
 --Users answer 
 local userAnswer
-
--- boolean variables that tell me which answer box was touched 
-local answerBoxAlreadyTouched = false
-local alternateAnswerBox1AlreadyTouched = false
-local alternateAnswerBox2ALreadyTouched = false
-local alternateAnswerBox3AlreadyTouched = false
-
-
---create text boxes that hold answers and alternate answers
-local answerBox
-local alternateAnswerBox1
-local alternateAnswerBox2
-local alternateAnswerBox3
-
---create variables that will hold the previous x and y positions so --
--- that they will return back to its previous position after
-local answerBoxPreviousY
-local AlternateAnswerBox1PreviousY
-local AlternateAnswerBox2PreviousY
-local AlternateAnswerBox3PreviousY
-
-
--- and x position
-local answerBoxPreviousX
-local AlternateAnswerBox1PreviousX
-local AlternateAnswerBox2PreviousX
-local AlternateAnswerBox3PreviousX
-
 
 -- the answer box where the user puts his or her answer
 local userAnswerBoxPlaceholder
@@ -130,23 +74,28 @@ local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
-local correctAnswerOriginalX = 620
-local correctAnswerOriginalY = 380
+local Y1 = 380
+local Y2 = 250
+local X1 = 620
+local X2 = 400
 
-local incorrectAnswer1OriginalX = 620
-local incorrectAnswer1OriginalY = 250
+local correctAnswerOriginalX = X1
+local correctAnswerOriginalY = Y1
 
-local incorrectAnswer2OriginalX = 400
-local incorrectAnswer2OriginalY = 380
+local incorrectAnswer1OriginalX = X1
+local incorrectAnswer1OriginalY = Y2
 
-local incorrectAnswer3OriginalX = 400
-local incorrectAnswer3OriginalY = 250
+local incorrectAnswer2OriginalX = X2
+local incorrectAnswer2OriginalY = Y1
+
+local incorrectAnswer3OriginalX = X2
+local incorrectAnswer3OriginalY = Y2
 
 -- timer stuff
 local timerText
 local clockText
-local totalSeconds = 60
-local secondsLeft = 60
+local totalSeconds = 45
+local secondsLeft = 45
 
 -- lives
 local heart5
@@ -218,10 +167,13 @@ local function UpdateTime()
     end
 end
 
+--
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
+    trophy2 = 1
     composer.gotoScene("level3_screen")
 end 
+
 
 local function startTimer()
     -- start count down timer
@@ -237,65 +189,63 @@ local function AskQuestion()
         incorrectAnswer1.text = "Pup"
         incorrectAnswer2.text = "Larva"
         incorrectAnswer3.text = "Owlet"
-    end
 
-        if (randomAnimalName == 2) then
+    elseif (randomAnimalName == 2) then
         questionObject.text = "Goat"
         correctAnswer.text = "Kid"
         incorrectAnswer1.text = "Pup"
         incorrectAnswer2.text = "Piglet"
         incorrectAnswer3.text = "Goaty"
-    end
-        if (randomAnimalName == 3) then
+
+    elseif (randomAnimalName == 3) then
         questionObject.text = "Mole"
         correctAnswer.text = "Pup"
         incorrectAnswer1.text = "Wellow"
         incorrectAnswer2.text = "Kit"
         incorrectAnswer3.text = "Supole"
-    end
-        if (randomAnimalName == 4) then
-            questionObject.text = "Bat"
-            correctAnswer.text = "Pup"
-            incorrectAnswer1.text = "Infant"
-            incorrectAnswer2.text = "Wriggler"
-            incorrectAnswer3.text = "Pluteus"
-    end
-        if (randomAnimalName == 5) then
-            questionObject.text = "Shark"
-            correctAnswer.text = "Pup"
-            incorrectAnswer1.text = "Sharkling"
-            incorrectAnswer2.text = "Sharkster"
-            incorrectAnswer3.text = "Smolt"
-    end
-        if (randomAnimalName == 6) then
+
+    elseif (randomAnimalName == 4) then
+        questionObject.text = "Bat"
+        correctAnswer.text = "Pup"
+        incorrectAnswer1.text = "Infant"
+        incorrectAnswer2.text = "Wriggler"
+        incorrectAnswer3.text = "Pluteus"
+
+    elseif (randomAnimalName == 5) then
+        questionObject.text = "Shark"
+        correctAnswer.text = "Pup"
+        incorrectAnswer1.text = "Sharkling"
+        incorrectAnswer2.text = "Sharkster"
+        incorrectAnswer3.text = "Smolt"
+
+    elseif (randomAnimalName == 6) then
             questionObject.text = "Cod"
             correctAnswer.text = "Codling"
             incorrectAnswer1.text = "Eft"
             incorrectAnswer2.text = "Whelp"
             incorrectAnswer3.text = "Calf"
-    end
-        if (randomAnimalName == 7) then
+
+    elseif (randomAnimalName == 7) then
             questionObject.text = "Aardvark"
             correctAnswer.text = "Cub"
             incorrectAnswer1.text = "Pup"
             incorrectAnswer2.text = "Varky"
             incorrectAnswer3.text = "Puggle"
-    end
-        if (randomAnimalName == 8) then
+
+    elseif (randomAnimalName == 8) then
             questionObject.text = "Monkey"
             correctAnswer.text = "Infant"
             incorrectAnswer1.text = "Ape"
             incorrectAnswer2.text = "Pup"
             incorrectAnswer3.text = "Munk"
-    end
-        if (randomAnimalName == 9) then
+
+    elseif (randomAnimalName == 9) then
             questionObject.text = "Wolf"
             correctAnswer.text = "Cub"
             incorrectAnswer1.text = "Wolves"
             incorrectAnswer2.text = "Kitten"
             incorrectAnswer3.text = "Fawn"
-    end
-        if (randomAnimalName == 10) then
+    elseif (randomAnimalName == 10) then
             questionObject.text = "Sheep"
             correctAnswer.text = "Lamb"
             incorrectAnswer1.text = "Sheepling"
@@ -346,17 +296,6 @@ local function UpdateHearts()
     end
 end
 
-local function DisplayingAnswers()
-    -- set random answer area
-    randomAnswer = math.random(1,1)
-
-    if (randomAnswer == 1) then
-        correctAnswerOriginalY = incorrectAnswer1OriginalY
-        correctAnswerOriginalX = incorrectAnswer1OriginalX
-        incorrectAnswer1OriginalY = correctAnswerOriginalY
-        incorrectAnswer1OriginalX = correctAnswerOriginalX
-    end
-end
 
 local function win()
     if ( userAnswer == correctAnswer ) then
@@ -366,73 +305,94 @@ local function win()
     end   
 end
 
-local function RestartLevel2()
-    DisplayingAnswers()
-    AskQuestion()
-    
-    -- set back to original x and y 
-    correctAnswer.x = correctAnswerOriginalX
-    correctAnswer.y = correctAnswerOriginalY
+local function PositionAnswers()
 
+    --creating random start position in a cretain area
+    answerPosition = math.random(1,4)
+
+    if (answerPosition == 1) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y2        
+        
+        incorrectAnswer1.x = X2
+        incorrectAnswer1.y = Y1
+        
+        incorrectAnswer2.x = X1
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y1
+
+        
+    elseif (answerPosition == 2) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y1
+            
+        incorrectAnswer1.x = X1
+        incorrectAnswer1.y = Y1
+            
+        incorrectAnswer2.x = X2
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y2
+
+
+    elseif (answerPosition == 3) then
+
+        correctAnswer.x = X1
+        correctAnswer.y = Y2
+            
+        incorrectAnswer1.x = X2
+        incorrectAnswer1.y = Y2
+            
+        incorrectAnswer2.x = X1
+        incorrectAnswer2.y = Y1
+
+        incorrectAnswer3.x = X2
+        incorrectAnswer3.y = Y1
+
+    elseif (answerPosition == 4) then
+
+        correctAnswer.x = X2
+        correctAnswer.y = Y1
+            
+        incorrectAnswer1.x = X1
+        incorrectAnswer1.y = Y2
+            
+        incorrectAnswer2.x = X2
+        incorrectAnswer2.y = Y2
+
+        incorrectAnswer3.x = X1
+        incorrectAnswer3.y = Y1
+    end
+
+    -- remember all the original positions
+    correctAnswerOriginalX = correctAnswer.x
+    correctAnswerOriginalY = correctAnswer.y
     -- incorrect 1
-    incorrectAnswer1.x = incorrectAnswer1OriginalX
-    incorrectAnswer1.y = incorrectAnswer1OriginalY
-
-    -- incorrect 2
-    incorrectAnswer2.x = incorrectAnswer2OriginalX
-    incorrectAnswer2.y = incorrectAnswer2OriginalY
-
-    -- incorrect 3
-    incorrectAnswer3.x = incorrectAnswer3OriginalX
-    incorrectAnswer3.y = incorrectAnswer3OriginalY
+    incorrectAnswer1OriginalX = incorrectAnswer1.x
+    incorrectAnswer1OriginalY = incorrectAnswer1.y
+    --incorrect 2
+    incorrectAnswer2OriginalX = incorrectAnswer2.x
+    incorrectAnswer2OriginalY = incorrectAnswer2.y
+    --incorrect 3
+    incorrectAnswer3OriginalX = incorrectAnswer3.x
+    incorrectAnswer3OriginalY = incorrectAnswer3.y
 end
 
-
-local function DisplayingQuestion()
-
-    --set random question 
-    randomAnimalName = math.random(1, 1)
-
-    --set correct answer to equal the number of the question
-    --correctAnswer = randomAnimalName
-
-    -- put the correct answer in the answer box
-    --answerBox.text = correctAnswer
-
-    -- make possible to click on answers again
-    answerBoxAlreadyTouched = false
-    alternateAnswerBox1AlreadyTouched = false
-    alternateAnswerBox2ALreadyTouched = false
-    alternateAnswerBox3AlreadyTouched = false
+local function RestartLevel2()
+    AskQuestion()
+    PositionAnswers()
 end
+
 
 local function AddRuntimeListeners()
     Runtime:addEventListener("enterFrame", win)
 end
 
-local function correctAnswerListener(touch)
-
-    -- play sound
-    --touchedSoundChannel = audio.play(touchedSound)
-
-    if (touch.phase == "began") then
-        if (incorrectAnswer1AlreadyTouched == false) and (incorrectAnswer2AlreadyTouched == false) 
-            and (incorrectAnswer3AlreadyTouched == false) then
-            correctAnswerAlreadyTouched = true
-        end
-    end
-
-    if ( (touch.phase == "moved") and (correctAnswerAlreadyTouched == true) ) then
-        correctAnswer.x = touch.x
-        correctAnswer.y = touch.y
-    end
-
-    if (touch.phase == "ended") then
-        incorrectAnswer1AlreadyTouched= false
-        incorrectAnswer2AlreadyTouched = false
-        incorrectAnswer3AlreadyTouched = false
-    end
-end
 
 local function incorrectAnswer1Listener(touch)
 
@@ -508,7 +468,6 @@ local function TouchListenerCorrectAnswer(touch)
         (incorrectAnswer3AlreadyTouched == false) then
 
         if (touch.phase == "began") then
-
             --let other boxes know it has been clicked
             correctAnswerAlreadyTouched = true
 
@@ -528,33 +487,34 @@ local function TouchListenerCorrectAnswer(touch)
                 ((userAnswerBoxPlaceholder.x + userAnswerBoxPlaceholder.width/2) > correctAnswer.x ) and 
                 ((userAnswerBoxPlaceholder.y - userAnswerBoxPlaceholder.height/2) < correctAnswer.y ) and 
                 ((userAnswerBoxPlaceholder.y + userAnswerBoxPlaceholder.height/2) > correctAnswer.y ) ) then
+        
 
                 -- setting the position of the number to be in the center of the box
                 correctAnswer.x = userAnswerBoxPlaceholder.x
                 correctAnswer.y = userAnswerBoxPlaceholder.y
-                --userAnswer = correctAnswer
 
-                -- call the function to check if the user's input is correct or not
-                --CheckUserAnswerInput()
 
                 -- pause background music
                 bkgMusicMMChannel = audio.pause(bkgMusicMM)
-                -- score change
-                score = score + 1
-                UpdateHearts()
-                if (score == 6) then
-                    WinTransition()
-                end 
                 -- play sound
                 winSoundChannel = audio.play(winSound)
-                -- restart the level after 1.6 seconds
-                timer.performWithDelay(1600, RestartLevel2)
 
-            --else make box go back to where it was
-            else
+                -- score change
+                score = score + 1
+
+                if (score == 5) then
+                    WinTransition()
+                else 
+                    -- restart the level after 1.6 seconds
+                    timer.performWithDelay(1600, RestartLevel2)
+                end 
+            -- if they release the textbox before the answerbox, then return it to its original position
+            else                 
+                -- setting the position of the number to be in the center of the box
                 correctAnswer.x = correctAnswerOriginalX
                 correctAnswer.y = correctAnswerOriginalY
             end
+            
         end
     end                
 end 
@@ -738,22 +698,16 @@ end
 
 
 local function AddTouchListeners()
-    correctAnswer:addEventListener("touch", correctAnswerListener)
     correctAnswer:addEventListener("touch", TouchListenerCorrectAnswer)
-    incorrectAnswer1:addEventListener("touch", incorrectAnswer1Listener)
     incorrectAnswer1:addEventListener("touch", incorrectAnswer1TouchListener)
-    incorrectAnswer2:addEventListener("touch", incorrectAnswer2Listener)
     incorrectAnswer2:addEventListener("touch", incorrectAnswer2TouchListener)
-    incorrectAnswer3:addEventListener("touch", incorrectAnswer3Listener)
     incorrectAnswer3:addEventListener("touch", incorrectAnswer3TouchListener)
     unmuteButton:addEventListener("touch", UnMute)
     muteButton:addEventListener("touch", Mute)
 end
 
 local function RemoveTouchListeners()
-    correctAnswer:removeEventListener("touch", correctAnswerListener)
     correctAnswer:removeEventListener("touch", TouchListenerCorrectAnswer)
-    incorrectAnswer1:removeEventListener("touch", incorrectAnswer1Listener)
     incorrectAnswer1:removeEventListener("touch", incorrectAnswer1TouchListener)
     incorrectAnswer2:removeEventListener("touch", incorrectAnswer2Listener)
     incorrectAnswer2:removeEventListener("touch", incorrectAnswer2TouchListener)
@@ -862,11 +816,9 @@ function scene:create( event )
     unmuteButton.y = display.contentHeight * 1 / 10 
 
     -- the black box where the user will drag the answer
-    userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  130, 130, 0, 0)
+    userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  200, 100)
     userAnswerBoxPlaceholder.x = display.contentWidth * 0.58
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.64
-    userAnswerBoxPlaceholder.width = 200
-    userAnswerBoxPlaceholder.height = 100
     userAnswerBoxPlaceholder.isVisible = false
 
     -- scene groups
@@ -917,8 +869,8 @@ function scene:show( event )
         lives = 5
         score = 0
         UpdateHearts()
+        PositionAnswers()
         AskQuestion()
-        DisplayingAnswers()
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()

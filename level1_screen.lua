@@ -623,7 +623,7 @@ function ResumeGame()
 
         -- make character visible again
     character.isVisible = true
-
+    numLives = numLives - 1  
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
             physics.removeBody(theApple)
@@ -637,8 +637,7 @@ function ResumeGame2()
     print("Called ResumeGame")
 
         -- make character visible again
-    character.isVisible = true
-    numLives = numLives - 1    
+    character.isVisible = true  
     if (questionsAnswered > -1) then
         if (theApple ~= nil) and (theApple.isBodyActive == true) then
             physics.removeBody(theApple)
