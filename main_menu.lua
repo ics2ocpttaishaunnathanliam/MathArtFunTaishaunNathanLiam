@@ -48,6 +48,7 @@ local instructionsButton
 local characterSelectButton
 
 local trophy
+local trophy2
 
 local muteButton
 local unmuteButton
@@ -82,6 +83,9 @@ end
 local function EasterEggMaker()
     if (hiddenEasterEgg == 1) then
         trophy.isVisible = true
+    end
+    if (hiddenEasterEgg2 == 1) then
+        trophy2.isVisible = true
     end
     if (trophy1 == 1) then
         trophy1Object.isVisible = true
@@ -157,6 +161,11 @@ function scene:create( event )
     trophy.x = display.contentWidth*1/3 - 30
     trophy.y = display.contentHeight/2 - 63
     trophy.isVisible = false
+
+    trophy2 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
+    trophy2.x = display.contentWidth*2/3 + 30
+    trophy2.y = display.contentHeight/2 - 63
+    trophy2.isVisible = false
 
     trophy1Object = display.newImageRect("Images/Level1Trophy.png", 100, 100)
     trophy1Object.x = display.contentWidth*3/7
@@ -288,6 +297,8 @@ function scene:create( event )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( characterSelectButton )
+    sceneGroup:insert( trophy )
+    sceneGroup:insert( trophy2)
     sceneGroup:insert( trophy1Object )
     sceneGroup:insert( trophy2Object )
     sceneGroup:insert( trophy3Object )

@@ -490,7 +490,7 @@ local function onCollision( self, event )
                 -- after getting 3 questions right, go to the you win screen
                 winSoundChannel = audio.play(winSound)
                 character.isVisible = false
-                trophy1 = 1s
+                trophy1 = 1
                 composer.gotoScene( "level2_screen", {effect = "zoomOutInFadeRotate", time = 500})
             end
         end
@@ -764,7 +764,7 @@ function scene:create( event )
 
     } )
 
-    backButton.isVisible = false -- change to work or not if thaat is what you wish
+    backButton.isVisible = true -- change to work or not if thaat is what you wish
 
     -----------------------------------------------------------------------------------------
 

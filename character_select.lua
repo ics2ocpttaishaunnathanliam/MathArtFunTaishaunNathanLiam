@@ -50,7 +50,7 @@ local red
 local blue
 local green
 -----------------------------------------------------------------------------------------
--- Sounds
+-- Sounds--
 -----------------------------------------------------------------------------------------
 
 local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
@@ -60,6 +60,10 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=12, loops=-1 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+local function FlyingBallTouch(touch)
+    hiddenEasterEgg2 = 1
+    hiddenText.isVisible = true
+end
 
 local function Moose1()
     if (characterColor == 1) then -- blue
@@ -259,6 +263,12 @@ function scene:create( event )
     descText:scale(2, 2)
 
 
+    hiddenText = display.newText("Congrats You found the hiddenEasterEgg", 0, 0)
+    hiddenText.isVisible = false
+    hiddenText.x = display.contentWidth/2
+    hiddenText.y = 580
+    hiddenText:scale(2, 2)
+    hiddenText:setTextColor(0, 1, 0)
 
 
     flyingBall = display.newImageRect("Images/ApplesNathan@2x.png", 50, 50)
@@ -301,6 +311,7 @@ function scene:create( event )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert(descText)
+    sceneGroup:insert( hiddenText )
     -----------------------------------------------------------------------------------------
     -- BUTTON WIDGETS
     -----------------------------------------------------------------------------------------
@@ -363,6 +374,7 @@ function scene:show( event )
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)   
         Runtime:addEventListener("enterFrame", MoveApple)
+        flyingBall:addEventListener("touch", FlyingBallTouch)          
     end
 
 end -- function scene:show( event )
