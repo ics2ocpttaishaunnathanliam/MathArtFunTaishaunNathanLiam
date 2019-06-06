@@ -335,8 +335,7 @@ local function UpdateTime()
     clockText.text = "Seconds left = " .. secondsLeft .. ""
 
     if (secondsLeft == 0 ) then
-        YouLoseTransition()
-        timer.cancel(countDownTimer) 
+        YouLoseTransition() 
         secondsLeft = totalSeconds
     end
 
@@ -603,7 +602,7 @@ local function StopTmers()
 end
 
 local function StopEveryThing()
-    timer.cancel(countDownTimer)
+    countDownTimer = timer.stop
     secondsLeft = totalSeconds
     numLives = 2
     apple1.isVisible = true
@@ -725,7 +724,7 @@ function scene:create( event )
     backButton = widget.newButton( 
     {
         -- Setting Position
-        x = display.contentWidth*8/9,
+        x = display.contentWidth*8.5/9,
         y = display.contentHeight*1/7,
 
         -- Setting Dimensions
@@ -736,8 +735,8 @@ function scene:create( event )
         defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
         overFile = "Images/BackButtonPressedYourName@2x.png",
 
-        width = 200,
-        height = 100,
+        width = 130,
+        height = 65,
 
         -- Setting Functional Properties
         onRelease = BackTransition
@@ -768,11 +767,11 @@ function scene:create( event )
     lArrow.x = display.contentWidth * 7.2 / 10
     lArrow.y = display.contentHeight * 9 / 10
 
-    door = display.newImage("Images/Level-1Door.png", 50, 50)
+    door = display.newImage("Images/coolDogHouse.png", 50, 50)
     door.x = display.contentWidth*7.6/8 
     door.y = display.contentHeight*6.4/7
     door.myName = "door"
-    door:scale(.5,.5)
+    door:scale(0.8,0.8)
     
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
     muteButton.x = display.contentWidth*1.5/10
