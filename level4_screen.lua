@@ -863,6 +863,7 @@ function scene:create( event )
     scoreTitle:setTextColor(0.1, 0.3, 0.7)
 
     -- scene groups
+    sceneGroup:insert( rectangle )
     sceneGroup:insert( titleQuestionObject )
     sceneGroup:insert( questionObject )
     sceneGroup:insert( correctAnswer )
@@ -882,7 +883,6 @@ function scene:create( event )
     sceneGroup:insert( heart5 )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( muteButton )
-    sceneGroup:insert( rectangle )
     sceneGroup:insert( scoreText )
     sceneGroup:insert( scoreTitle )
 end 
