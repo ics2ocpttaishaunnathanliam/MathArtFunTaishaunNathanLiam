@@ -15,6 +15,7 @@ local composer = require( "composer" )
 characterNumber = 1
 characterColor = 1
 hiddenEasterEgg = 0
+hiddenEasterEgg2 = 0
 trophy1 = 0
 trophy2 = 0
 trophy3 = 0

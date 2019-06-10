@@ -60,9 +60,10 @@ local lArrow
 local uArrow
 local dArrow
 
-local numLives = 2
+local numLives = 3
 local heart1
 local heart2
+local heart3
 
 local leftW 
 local rightW
@@ -157,16 +158,23 @@ local function RemoveArrowEventListeners()
 end
 
 local function checkLives(event)
-    if (numLives == 1) then
+    if (numLives == 2) then
+        heart1.isVisible = true
+        heart2.isVisible = true
+        heart3.isVisible = false
+
+    elseif (numLives == 1) then
         -- update hearts
         heart1.isVisible = true
-           heart2.isVisible = false
+        heart2.isVisible = false
+        heart3.isVisible = false
 
     elseif (numLives == 0) then
         -- update hearts
         heart1.isVisible = false
         heart2.isVisible = false
-        numLives = 2
+        heart3.isVisible = false
+        numLives = 3
         timer.cancel(countDownTimer)
         timer.performWithDelay(200, YouLoseTransition)
     end
@@ -594,17 +602,19 @@ end
 
 local function StartTimer()
     -- create countdown timer that loops infinetely
+    secondsLeft = totalSeconds
     countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
 end
 
 local function StopTmers()
-    countDownTimer = timer.stop
+    timer.cancel(countDownTimer)
 end
 
 local function StopEveryThing()
     countDownTimer = timer.stop
     secondsLeft = totalSeconds
-    numLives = 2
+    character.isVisible = false
+    numLives = 3
     apple1.isVisible = true
     apple2.isVisible = true
     apple3.isVisible = true
@@ -612,6 +622,7 @@ local function StopEveryThing()
     apple5.isVisible = true
     heart1.isVisible = true
     heart2.isVisible = true
+    heart3.isVisible = true
 
 
 end
@@ -705,7 +716,7 @@ function scene:create( event )
 
         -- Insert the Hearts
     heart1 = display.newImageRect("Images/heart.png", 80, 80)
-    heart1.x = 300
+    heart1.x = 270
     heart1.y = 90
     heart1.isVisible = true
 
@@ -713,12 +724,19 @@ function scene:create( event )
     sceneGroup:insert( heart1 )
 
     heart2 = display.newImageRect("Images/heart.png", 80, 80)
-    heart2.x = 390
+    heart2.x = 360
     heart2.y = 90
     heart2.isVisible = true
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( heart2 )
+
+    heart3 = display.newImageRect("Images/heart.png", 80, 80)
+    heart3.x = 450
+    heart3.y = 90
+    heart3.isVisible = true
+    sceneGroup:insert( heart3 )
+
 
         -- Creating Back Button
     backButton = widget.newButton( 
@@ -762,6 +780,7 @@ function scene:create( event )
     uArrow = display.newImageRect("Images/UpArrowUnpressed.png", 50, 100)
     uArrow.x = display.contentWidth * 8.2 / 10
     uArrow.y = display.contentHeight * 8 / 10
+    uArrow.isVisible = false
 
     lArrow = display.newImageRect("Images/LeftArrowUnpressed.png", 100, 50)
     lArrow.x = display.contentWidth * 7.2 / 10
@@ -796,7 +815,7 @@ function scene:create( event )
      -- Insert objects into the scene group in order to ONLY be associated with this scene   
 
     topW = display.newLine( 0, 0, display.contentWidth, 0)
-    topW.isVisible = true
+    topW.isVisible = false
 
     appleW = display.newLine(0, 550, display.contentWidth, 550)
     -- Insert objects into the scene group in order to ONLY be associated with this scene    
@@ -923,7 +942,6 @@ function scene:hide( event )
         display.remove(character)
         stopDieTimer()
         StopTmers()
-
         StopEveryThing()
     end
 

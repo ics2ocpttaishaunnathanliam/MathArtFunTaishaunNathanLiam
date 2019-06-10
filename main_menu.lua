@@ -80,7 +80,7 @@ local function UnMute(touch)
     end
 end
 
-local function EasterEggMaker()
+local function EasterEggMaker(event)
     if (hiddenEasterEgg == 1) then
         trophy.isVisible = true
     end
@@ -337,6 +337,7 @@ function scene:show( event )
         bkgMusicMMChannel = audio.play(bkgMusicMM)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)
+        Runtime:addEventListener("enterFrame", EasterEggMaker)
     end
 
 end -- function scene:show( event )
@@ -366,6 +367,7 @@ function scene:hide( event )
         -- Called immediately after scene goes off screen.
         muteButton:removeEventListener("touch", Mute)
         unmuteButton:removeEventListener("touch", UnMute)
+        Runtime:removeEventListener("enterFrame", EasterEggMaker)
     end
 
 end -- function scene:hide( event )
