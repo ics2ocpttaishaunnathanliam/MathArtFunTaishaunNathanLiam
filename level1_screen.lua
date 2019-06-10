@@ -45,9 +45,10 @@ local apple3
 local apple4
 local apple5
 local apple6
-
+-- so you can retreive the apple you touched
 local theApple
 
+-- all the varws required to move the moose
 local motionx = 0
 local motiony = 0
 local SPEED = 6
@@ -55,30 +56,36 @@ local SPEEDR = -6
 local LINEAR_VELOCITY = -100
 local GRAVITY = 4
 
+-- the arrows you touch to move the moose
 local rArrow
 local lArrow
 local uArrow
 local dArrow
 
+-- the life vars (hearts, and number of lives)
 local numLives = 3
 local heart1
 local heart2
 local heart3
 
+-- walls thqat stop the moose from escaping the arena
 local leftW 
 local rightW
 local topW
 local floor
 local appleW
 
+-- door to next level
 local door
 
+-- direcrter arrows
 local pointerArrow
 local pointerArrow2
 local pointerArrow3
 local pointerArrow4
 local pointerArrow5
 
+-- to delete the arrows
 local theArrow
 
 
@@ -91,23 +98,26 @@ local countDownTimer
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
 ----------------------------------------------------------------------------------------- 
-
+-- sound whne you go to the "you lose screen"
 local loseSound = audio.loadSound( "Sounds/YouLose.mp3" )
 local loseSoundChannel
 
+-- hit sound when you loose a life
 local hitSound = audio.loadSound( "Sounds/Pop.mp3" )
 local hitSoundChannel
 
+-- when you get an answer right
 local winSound = audio.loadSound( "Sounds/Cheer.m4a" )
 local winSoundChannel
 
+-- background sound
 local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
 local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
 
 ----------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------
-
+-- bring to you to "you lose screen" when called
 local function YouLoseTransition()
     composer.gotoScene( "you_lose" )
 end
@@ -128,7 +138,7 @@ end
 local function up (touch)
     motiony = -SPEED
 end
-
+-- moves the player 
 local function movePlayer (event)
     character.x = character.x + motionx
     character.y = character.y + motiony
@@ -610,10 +620,11 @@ local function StopTmers()
     timer.cancel(countDownTimer)
 end
 
+-- basicaly resets the game so if you were to reload it it wouldnt break/dissapear
 local function StopEveryThing()
     countDownTimer = timer.stop
     secondsLeft = totalSeconds
-    character.isVisible = false
+    character.isVisible = true
     numLives = 3
     apple1.isVisible = true
     apple2.isVisible = true
@@ -623,6 +634,12 @@ local function StopEveryThing()
     heart1.isVisible = true
     heart2.isVisible = true
     heart3.isVisible = true
+    pointerArrow.isVisible = true
+    pointerArrow2.isVisible = true
+    pointerArrow3.isVisible = true
+    pointerArrow4.isVisible = true
+    pointerArrow5.isVisible = true
+
 
 
 end
@@ -630,6 +647,7 @@ end
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
 
+-- deletes the apple you touched if you are wrong
 function ResumeGame()
     print("Called ResumeGame")
 
@@ -644,7 +662,7 @@ function ResumeGame()
     end
 
 end
-
+-- deletes the apple you touched if you are right
 function ResumeGame2()
     print("Called ResumeGame")
 
@@ -776,27 +794,31 @@ function scene:create( event )
     rArrow.x = display.contentWidth * 9.2 / 10
     rArrow.y = display.contentHeight * 9 / 10
 
-    -- insert image fpor up arrow
+    -- insert image for up arrow
     uArrow = display.newImageRect("Images/UpArrowUnpressed.png", 50, 100)
     uArrow.x = display.contentWidth * 8.2 / 10
     uArrow.y = display.contentHeight * 8 / 10
     uArrow.isVisible = false
 
+    -- insert image for left arrow
     lArrow = display.newImageRect("Images/LeftArrowUnpressed.png", 100, 50)
     lArrow.x = display.contentWidth * 7.2 / 10
     lArrow.y = display.contentHeight * 9 / 10
 
+    -- display door
     door = display.newImage("Images/coolDogHouse.png", 50, 50)
     door.x = display.contentWidth*7.6/8 
     door.y = display.contentHeight*6.4/7
     door.myName = "door"
     door:scale(0.8,0.8)
     
+    -- create mute button
     muteButton = display.newImageRect("Images/Mute.png", 200, 200)
     muteButton.x = display.contentWidth*1.5/10
     muteButton.y = display.contentHeight*1.3/10
     muteButton.isVisible = true
 
+    -- create unmute button
     unmuteButton = display.newImageRect("Images/UnMute.png", 200, 200)
     unmuteButton.x = display.contentWidth*1.5/10
     unmuteButton.y = display.contentHeight*1.3/10
@@ -807,22 +829,21 @@ function scene:create( event )
     leftW = display.newLine( 0, 0, 0, display.contentHeight)
     leftW.isVisible = true
 
-     -- Insert objects into the scene group in order to ONLY be associated with this scene
-
     rightW = display.newLine( 1024, 0, 1024, display.contentHeight)
     rightW.isVisible = true
-
-     -- Insert objects into the scene group in order to ONLY be associated with this scene   
 
     topW = display.newLine( 0, 0, display.contentWidth, 0)
     topW.isVisible = false
 
+    -- this wall exists as a saftey so the game doesnt crash.
     appleW = display.newLine(0, 550, display.contentWidth, 550)
-    -- Insert objects into the scene group in order to ONLY be associated with this scene    
+
+    -- create floor   
     floor = display.newImageRect("Images/Ground.png", 1000, 100)
     floor.x = display.contentCenterX
     floor.y = display.contentHeight * 2.1/2
 
+    -- create the five pointer arrows that direct you towards the next apple
     pointerArrow = display.newImageRect("Images/Arrow.png", 50, 25)
     pointerArrow.x = display.contentWidth * 3.7 / 10
     pointerArrow.y = display.contentHeight * 9.41 / 10
@@ -891,7 +912,7 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
-
+        -- stop sound
         bkgMusicLevel1Channel = audio.play(bkgMusic)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)    
@@ -905,8 +926,10 @@ function scene:show( event )
         -- create the character, add physics bodies and runtime listeners
         CharacterSelect() 
 
+        -- add the physiscs
         AddPhysicsBodies()
 
+        -- call the starting timer
         StartTimer()
 
     end
@@ -933,6 +956,8 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
+
+        -- remove all the stuff you added earlier
         RemoveCollisionListeners()
         RemovePhysicsBodies()
 

@@ -83,20 +83,20 @@ end
 local function EasterEggMaker(event)
     if (hiddenEasterEgg == 1) then
         trophy.isVisible = true
-    end
-    if (hiddenEasterEgg2 == 1) then
+
+    elseif (hiddenEasterEgg2 == 1) then
         trophy2.isVisible = true
-    end
-    if (trophy1 == 1) then
+
+    elseif (trophy1 == 1) then
         trophy1Object.isVisible = true
-    end
-    if (trophy2 == 1) then
+
+    elseif (trophy2 == 1) then
         trophy2Object.isVisible = true
-    end
-    if (trophy3 == 1) then
+
+    elseif (trophy3 == 1) then
         trophy3Object.isVisible = true
-    end
-    if (trophy4 == 1) then
+
+    elseif (trophy4 == 1) then
         trophy4Object.isVisible = true
     end
 end
@@ -109,19 +109,19 @@ end
 
 -- Creating Transition to Level1 Screen
 local function Level1ScreenTransition( )
-    composer.gotoScene( "level1_screen", {effect = "crossFade", time = 1000})
+    composer.gotoScene( "level1_screen", {effect = "crossFade", time = 500})
 end    
 
 local function InstructionsTransition( )
-    composer.gotoScene( "instructions_screen", {effect = "zoomInOutRotate", time = 1000})
+    composer.gotoScene( "instructions_screen", {effect = "zoomInOutRotate", time = 500})
 end
 
 local function LevelsScreenTransition( )
-    composer.gotoScene( "levels_screen", {effect = "zoomInOutRotate", time = 1000})
+    composer.gotoScene( "levels_screen", {effect = "zoomInOutRotate", time = 500})
 end
 
 local function CharacterSelectTransition( )
-    composer.gotoScene( "character_select", {effect = "zoomInOutRotate", time = 1000})
+    composer.gotoScene( "character_select", {effect = "zoomInOutRotate", time = 500})
 end
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
 
