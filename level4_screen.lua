@@ -191,7 +191,7 @@ local function startTimer()
 end
 
 local function AskQuestion()
-    randomAnimalName = math.random(1,12)
+    randomAnimalName = math.random(1,15)
 
     if (randomAnimalName == 1) then
         questionObject.text = "Tiger"
@@ -276,6 +276,27 @@ local function AskQuestion()
         incorrectAnswer1.text = "Kid"
         incorrectAnswer2.text = "Billy"
         incorrectAnswer3.text = "Eyas"
+
+    elseif (randomAnimalName == 13) then
+        questionObject.text = "Alpaca"
+        correctAnswer.text = "Cria"
+        incorrectAnswer1.text = "Alpy"
+        incorrectAnswer2.text = "Snoop"
+        incorrectAnswer3.text = "Shoat"
+
+    elseif (randomAnimalName == 14) then
+        questionObject.text = "Porcupine"
+        correctAnswer.text = "Porcupette"
+        incorrectAnswer1.text = "Kid"
+        incorrectAnswer2.text = "Porkchop"
+        incorrectAnswer3.text = "Piglet"
+
+    elseif (randomAnimalName == 15) then
+        questionObject.text = "Snake"
+        correctAnswer.text = "Snakelet"
+        incorrectAnswer1.text = "Squermie"
+        incorrectAnswer2.text = "Fawn"
+        incorrectAnswer3.text = "Siderling"
     end
 end
 
@@ -776,7 +797,7 @@ function scene:create( event )
     titleQuestionObject.isVisible = true
 
     -- text object
-    questionObject = display.newText( "", 395, 490, nil, 55 )
+    questionObject = display.newText( "", 390, 490, nil, 55 )
     questionObject:setTextColor(0.8, 0.5, 0.3)
 
     -- text object
@@ -847,7 +868,7 @@ function scene:create( event )
 
     -- the black box where the user will drag the answer
     userAnswerBoxPlaceholder = display.newImageRect("Images/userAnswerBoxPlaceholder.png",  200, 100)
-    userAnswerBoxPlaceholder.x = display.contentWidth * 0.58
+    userAnswerBoxPlaceholder.x = display.contentWidth * 0.585
     userAnswerBoxPlaceholder.y = display.contentHeight * 0.64
     userAnswerBoxPlaceholder.isVisible = false
 
