@@ -124,6 +124,8 @@ local vertices1 = { 320,115, 320,10, 780,10, 780,115 }
 
 local myGroup = display.newGroup()
 
+local backButton
+
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
 ----------------------------------------------------------------------------------------- 
@@ -185,6 +187,11 @@ end
 local function startTimer()
     -- start count down timer
     countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
+end
+
+-- Creating Transitioning Function back to main menu
+local function BackTransition( )
+    composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
 end
 
 local function AskQuestion()
@@ -859,6 +866,29 @@ function scene:create( event )
     scoreTitle = display.newText( "Score =", 922, 320, nil, 50)
     scoreTitle:setTextColor(0.1, 0.3, 0.7)
 
+    -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*7.2/8,
+        y = display.contentHeight*1/16,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 185,
+        height = 75,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+
+    } )
+
     -- scene groups
     sceneGroup:insert( bkg_image )
     sceneGroup:insert( rectangle )
@@ -883,6 +913,7 @@ function scene:create( event )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( scoreText )
     sceneGroup:insert( scoreTitle )
+    sceneGroup:insert( backButton )
 end 
     
 
