@@ -150,8 +150,8 @@ local function DisplayQuestion()
     -- If randomOperation = 1, the operation used is multiplication
     if (randomOperation == 1) then 
 
-        firstNumber = math.random(2,7) 
-        secondNumber = math.random(2,7)
+        firstNumber = math.random(0,7) 
+        secondNumber = math.random(0,7)
 
         -- calculate the correct answer
         answer = firstNumber * secondNumber
@@ -171,8 +171,8 @@ local function DisplayQuestion()
 
         -- If randomOperation = 2, the operation used is addition
         elseif (randomOperation == 2) then
-            thirdNumber = math.random(0,15)
-            fourthNumber = math.random(0,15)
+            thirdNumber = math.random(0,20)
+            fourthNumber = math.random(0,20)
 
             -- calculate the correct answer
             answer = thirdNumber + fourthNumber
