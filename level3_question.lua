@@ -218,10 +218,10 @@ local function PositionAnswers()
         
     elseif (answerPosition == 2) then
 
-        answerText.x = X2
+        answerText.x = X1
         answerText.y = Y1
             
-        wrongText1.x = X1
+        wrongText1.x = X2
         wrongText1.y = Y1
             
         wrongText2.x = X2

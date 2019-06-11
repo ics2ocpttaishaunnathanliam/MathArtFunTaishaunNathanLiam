@@ -100,7 +100,7 @@ local hitSoundChannel
 local winSound = audio.loadSound( "Sounds/Cheer.m4a" )
 local winSoundChannel
 
-local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
+local bkgMusicLevel1 = audio.loadStream("Sounds/instructionsMusic.mp3")
 local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
 
 ----------------------------------------------------------------------
@@ -747,7 +747,7 @@ function scene:create( event )
         overFile = "Images/BackButtonPressedYourName@2x.png",
 
         width = 200,
-        height = 100,
+        height = 90,
 
         -- Setting Functional Properties
         onRelease = BackTransition
