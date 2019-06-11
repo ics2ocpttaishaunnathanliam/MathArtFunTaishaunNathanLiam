@@ -138,12 +138,13 @@ end
 local function up (touch)
     motiony = -SPEED
 end
--- moves the player 
+-- moves the player when called
 local function movePlayer (event)
     character.x = character.x + motionx
     character.y = character.y + motiony
 end
 
+-- stops th emovement of the player when called
 local function stop (event)
     if (event.phase == "ended") then
         motionx = 0
@@ -151,22 +152,26 @@ local function stop (event)
     end
 end
 
+-- brings you to the "mainMenu screen" when called
 local function BackTransition( )
     composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
 end
 
+-- adds the touch listeners to the arrows
 local function AddArrowEventListeners()
     rArrow:addEventListener("touch", right)
     lArrow:addEventListener("touch", left)
     uArrow:addEventListener("touch", up)
 end
 
+-- removes the touch listeners to the arrows
 local function RemoveArrowEventListeners()
     rArrow:removeEventListener("touch", right)
     lArrow:removeEventListener("touch", left)
     uArrow:removeEventListener("touch", up)
 end
 
+-- changes the number of lives if the numLives goes down
 local function checkLives(event)
     if (numLives == 2) then
         heart1.isVisible = true
@@ -190,6 +195,7 @@ local function checkLives(event)
     end
 end
 
+-- mute button dissapears when touched and stops the sound
 local function Mute(touch)
     if (touch.phase == "ended") then
         audio.pause(bkgMusicMM)
@@ -199,6 +205,7 @@ local function Mute(touch)
     end
 end
 
+-- unmute button dissapears and starts sound when touched
 local function UnMute(touch)
     if (touch.phase == "ended") then
         audio.resume(bkgMusicMM)
@@ -208,18 +215,21 @@ local function UnMute(touch)
     end
 end
 
+-- adds runtime listerners to certain functions
 local function AddRuntimeListeners()
     Runtime:addEventListener("enterFrame", checkLives)
     Runtime:addEventListener("enterFrame", movePlayer)
     Runtime:addEventListener("touch", stop)
 end
 
+-- removes runtime listerners to certain functions
 local function RemoveRuntimeListeners()
     Runtime:removeEventListener("enterFrame", movePlayer)
     Runtime:removeEventListener("enterFrame", checkLives)
     Runtime:removeEventListener("touch", stop)
 end
 
+-- replaces character function and the character itself after you answer a question
 local function ReplaceCharacter()
     print ("***Called ReplaceCharacter1")
     character = display.newImageRect("Images/MooseCharacterLiamC.png", 100, 150)
@@ -244,7 +254,7 @@ local function ReplaceCharacter()
     -- add back runtime listeners
     AddRuntimeListeners()
 end
-
+-- same a replace character 1 but changes the look of the character 
 local function ReplaceCharacter2()
     print ("***Called ReplaceCharacter2")
     character = display.newImageRect("Images/Moose2.png", 100, 150)
@@ -270,6 +280,7 @@ local function ReplaceCharacter2()
     AddRuntimeListeners()
 end
 
+-- same a replace character 1 but changes the look of the character 
 local function ReplaceCharacter3()
     print ("***Called ReplaceCharacter3")
     character = display.newImageRect("Images/Moose3.png", 100, 150)
@@ -295,6 +306,7 @@ local function ReplaceCharacter3()
     AddRuntimeListeners()
 end
 
+-- same a replace character 1 but changes the look of the character 
 local function ReplaceCharacter4()
     print ("***Called ReplaceCharacter4")
     character = display.newImageRect("Images/Moose4.png", 100, 150)
@@ -320,6 +332,7 @@ local function ReplaceCharacter4()
     AddRuntimeListeners()
 end
 
+-- so as to not have missing objects when resetiong the level
 local function MakeAppleVisible()
     apple1.isVisible = true
     apple2.isVisible = true
@@ -327,12 +340,13 @@ local function MakeAppleVisible()
     apple4.isVisible = true
     apple5.isVisible = true
 end
-
+-- same as "MakeAppleVisible"
 local function MakeHeartsVisible()
     heart1.isVisible = true
     heart2.isVisible = true
 end
 
+-- adds transitions to buttons
 local transitionOptions_SlideDown = (
     {
         effect = "slideDown", -- The animation it's going to use when transitioning
@@ -344,6 +358,7 @@ function Transition_SlideDown( )
     composer.gotoScene( "you_lose", transitionOptions_SlideDown )
 end 
 
+-- updates the timer to display 1 less second
 local function UpdateTime()
 
     -- decrement the number of seconds
@@ -353,16 +368,19 @@ local function UpdateTime()
     clockText.text = "Seconds left = " .. secondsLeft .. ""
 
     if (secondsLeft == 0 ) then
+        -- you lose transition when out of time
         YouLoseTransition() 
         secondsLeft = totalSeconds
     end
 
 end
 
+-- resets timer 
 local function stopDieTimer()
     secondsLeft = totalSeconds
 end
 
+-- these functions delete the pointerArrows when touched by the character, I was angry when i named them
 local function Die()
     physics.removeBody(pointerArrow)
     pointerArrow.isVisible = false
@@ -388,10 +406,12 @@ local function Die5()
     pointerArrow5.isVisible = false
 end
 
+-- deletes apple wall
 local function RemoveWallPhysics()
     physics.removeBody(appleW)
 end
 
+-- changes the outfit of you character
 local function CharacterSelect()
     if (characterNumber == 1) then
         ReplaceCharacter()
@@ -472,6 +492,7 @@ local function onCollision( self, event )
             (event.target.myName == "apple4") or  
             (event.target.myName == "apple5") or
             (event.target.myName == "apple6") then
+            -- adds questions answered and is where the win function is called when colliding with the door
 
 
             -- get the ball that the user hit
@@ -505,7 +526,7 @@ local function onCollision( self, event )
                 composer.gotoScene( "level2_screen", {effect = "zoomOutInFadeRotate", time = 500})
             end
         end
-           
+           -- calls function which deletes the arrows
         if  (event.target.myName == "pointerArrow") then
             timer.performWithDelay(100, Die)
         end
@@ -529,6 +550,7 @@ local function onCollision( self, event )
     end
 end
 
+-- adds collision listeners
 local function AddCollisionListeners()
     -- if character collides with ball, onCollision will be called
     apple1.collision = onCollision
@@ -558,6 +580,7 @@ local function AddCollisionListeners()
 
 end
 
+-- removes collision listeners
 local function RemoveCollisionListeners()
     apple1:removeEventListener( "collision" )
     apple2:removeEventListener( "collision" )
@@ -574,6 +597,7 @@ local function RemoveCollisionListeners()
     door:removeEventListener( "collision" )
 end     
 
+-- adds physiscs to objects
 local function AddPhysicsBodies()
 
     physics.addBody(leftW, "static", {density=1, friction=0.3, bounce=0.2} )
@@ -598,6 +622,7 @@ local function AddPhysicsBodies()
 
 end
 
+-- removes physiscs from objects
 local function RemovePhysicsBodies()
 
     physics.removeBody(leftW)
@@ -610,12 +635,14 @@ local function RemovePhysicsBodies()
  
 end
 
+-- starts the timer
 local function StartTimer()
     -- create countdown timer that loops infinetely
     secondsLeft = totalSeconds
     countDownTimer = timer.performWithDelay( 1000, UpdateTime, 0)
 end
 
+-- stops the timer
 local function StopTmers()
     timer.cancel(countDownTimer)
 end
