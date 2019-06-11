@@ -122,6 +122,7 @@ end
 local function Level4ScreenTransition()
     composer.gotoScene( "level4_screen", {effect = "zoomOutInFadeRotate", time = 500} ) -- change transition if wanted    
 end
+
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -311,7 +312,7 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
-        bkgMusicLevel1Channel = audio.play(bkgMusic)
+        bkgMusicLevel1Channel = audio.play(bkgMusicLevel1)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)
         flyingBall:addEventListener("touch", FlyingBallTouch)   
@@ -345,6 +346,7 @@ function scene:hide( event )
 
     elseif ( phase == "did" ) then
         -- Called immediately after scene goes off screen.
+        bkgMusicLevel1Channel = audio.pause(bkgMusicLevel1)
         Runtime:removeEventListener("enterFrame", SpinMoose)
         Runtime:removeEventListener("enterFrame", SpinMoose2)        
     end
