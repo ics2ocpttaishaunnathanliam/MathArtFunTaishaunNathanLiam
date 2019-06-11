@@ -840,7 +840,40 @@ function scene:create( event )
     pointerArrow5.y = display.contentHeight * 9.41 / 10
     pointerArrow5.myName = "pointerArrow5"
 
+     -----------------------------------------------------------------------------------------
+    -- BUTTON WIDGETS
+    -----------------------------------------------------------------------------------------
+
+    -- Creating Back Button
+    backButton = widget.newButton( 
+    {
+        -- Setting Position
+        x = display.contentWidth*7.3/8,
+        y = display.contentHeight*1/16,
+
+        -- Setting Dimensions
+        -- width = 1000,
+        -- height = 106,
+
+        -- Setting Visual Properties
+        defaultFile = "Images/BackButtonUnpressedYourName@2x.png",
+        overFile = "Images/BackButtonPressedYourName@2x.png",
+
+        width = 200,
+        height = 90,
+
+        -- Setting Functional Properties
+        onRelease = BackTransition
+
+    } )
+
+    -----------------------------------------------------------------------------------------
+
+    
+
     -- Insert objects into the scene group in order to ONLY be associated with this scene
+
+    sceneGroup:insert( backButton )
     sceneGroup:insert( floor )
     sceneGroup:insert( topW )
     sceneGroup:insert( rightW )
