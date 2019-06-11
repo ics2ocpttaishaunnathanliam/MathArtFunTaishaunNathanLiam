@@ -69,19 +69,19 @@ local function Moose1()
     if (characterColor == 1) then -- blue
         character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10
+        character.y = display.contentHeight*1.4/10
     end
 
     if (characterColor == 2) then -- red
         character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end 
 
     if (CharacterColor == 3) then -- green
         character = display.newImageRect("Images/MooseCharacterLiamC.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end
 end
 
@@ -89,19 +89,19 @@ local function Moose2()
     if (characterColor == 1) then -- blue
         character = display.newImageRect("Images/Moose2.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10
+        character.y = display.contentHeight*1.4/10
     end
 
     if (characterColor == 2) then -- red
         character = display.newImageRect("Images/RedMoose2.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end 
 
     if (CharacterColor == 3) then -- green
         character = display.newImageRect("Images/GreenMoose2.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end
 end
 
@@ -109,19 +109,19 @@ local function Moose3()
     if (characterColor == 1) then -- blue
         character = display.newImageRect("Images/Moose3.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10
+        character.y = display.contentHeight*1.4/10
     end
 
     if (characterColor == 2) then -- red
         character = display.newImageRect("Images/RedMoose3.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end 
 
     if (CharacterColor == 3) then -- green
         character = display.newImageRect("Images/GreenMoose3.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end
 end
 
@@ -129,19 +129,19 @@ local function Moose4()
     if (characterColor == 1) then -- blue
         character = display.newImageRect("Images/Moose4.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10
+        character.y = display.contentHeight*1.4/10
     end
 
     if (characterColor == 2) then -- red
         character = display.newImageRect("Images/RedMoose4.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end 
 
     if (CharacterColor == 3) then -- green
         character = display.newImageRect("Images/GreenMoose4.png", 200, 200)
         character.x = display.contentWidth*5/10
-        character.y = display.contentHeight*1/10 
+        character.y = display.contentHeight*1.4/10 
     end
 end
 
