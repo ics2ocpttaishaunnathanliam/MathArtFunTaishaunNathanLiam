@@ -678,6 +678,8 @@ end
 function ResumeGame()
     print("Called ResumeGame")
 
+    -- add sound if you qare incorrect
+    hitSoundChannel = audio.play(hitSound)
         -- make character visible again
     character.isVisible = true
     numLives = numLives - 1  
@@ -692,7 +694,8 @@ end
 -- deletes the apple you touched if you are right
 function ResumeGame2()
     print("Called ResumeGame")
-
+    -- play sound when correct
+    winSoundChannel = audio.play(winSound)
         -- make character visible again
     character.isVisible = true  
     if (questionsAnswered > -1) then
