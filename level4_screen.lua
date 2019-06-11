@@ -354,6 +354,7 @@ end
 -- Creating Transitioning Function back to main menu
 local function BackTransition( )
     composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
+    bkgMusicMMChannel = audio.pause(bkgMusicMM)
 end
 
 local function PositionAnswers()
@@ -437,6 +438,7 @@ end
 local function RestartLevel2()
     AskQuestion()
     PositionAnswers()
+    audio.resume(bkgMusicMM)
 end
 
 
@@ -970,6 +972,7 @@ function scene:show( event )
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()
+        bkgMusicMMChannel = audio.play(bkgMusicMM)
     end
 
 end --function scene:show( event )
