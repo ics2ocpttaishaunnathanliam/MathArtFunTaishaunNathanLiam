@@ -49,6 +49,7 @@ local characterSelectButton
 
 local trophy
 local trophy2
+local trophy3
 
 local muteButton
 local unmuteButton
@@ -80,26 +81,49 @@ local function UnMute(touch)
     end
 end
 
-local function EasterEggMaker(event)
+local function trophyMaker1()
     if (hiddenEasterEgg == 1) then
         trophy.isVisible = true
+    end
+end
 
-    elseif (hiddenEasterEgg2 == 1) then
+local function trophyMaker2()
+    if (hiddenEasterEgg2 == 1) then
         trophy2.isVisible = true
+    end
+end
 
-    elseif (trophy1 == 1) then
+
+local function trophyMaker3()
+    if (hiddenEasterEgg3 == 1) then
+        trophy3.isVisible = true
+    end
+end
+
+local function trophyMaker4()
+    if (trophy1 == 1) then
         trophy1Object.isVisible = true
+    end
+end
 
-    elseif (trophy2 == 1) then
+local function trophyMaker5()
+    if (trophy2 == 1) then
         trophy2Object.isVisible = true
+    end
+end
 
-    elseif (trophy3 == 1) then
+local function trophyMaker6()
+    if (trophy3 == 1) then
         trophy3Object.isVisible = true
+    end
+end
 
-    elseif (trophy4 == 1) then
+local function trophyMaker7()
+    if (trophy4 == 1) then
         trophy4Object.isVisible = true
     end
 end
+
 -- Creating Transition Function to Credits Page
 local function CreditsTransition( )       
     composer.gotoScene( "credits_screen", {effect = "zoomInOutFade", time = 500})
@@ -166,6 +190,11 @@ function scene:create( event )
     trophy2.x = display.contentWidth*2/3 + 30
     trophy2.y = display.contentHeight/2 - 63
     trophy2.isVisible = false
+
+    trophy3 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
+    trophy3.x = display.contentWidth/2
+    trophy3.y = display.contentHeight*2/3
+    trophy3.isVisible = false
 
     trophy1Object = display.newImageRect("Images/Level1Trophy.png", 100, 100)
     trophy1Object.x = display.contentWidth*3/7
@@ -333,11 +362,16 @@ function scene:show( event )
     -- Insert code here to make the scene come alive.
     -- Example: start timers, begin animation, play audio, etc.
     elseif ( phase == "did" ) then       
-        EasterEggMaker()
+        trophyMaker1()
+        trophyMaker2()
+        trophyMaker3()
+        trophyMaker4()
+        trophyMaker5()
+        trophyMaker6()
+        trophyMaker7()        
         bkgMusicMMChannel = audio.play(bkgMusicMM)
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)
-        Runtime:addEventListener("enterFrame", EasterEggMaker)
     end
 
 end -- function scene:show( event )
