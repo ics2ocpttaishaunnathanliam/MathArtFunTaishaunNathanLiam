@@ -47,9 +47,9 @@ local creditsButton
 local instructionsButton
 local characterSelectButton
 
-local trophy
-local trophy2
-local trophy3
+local easterTrophy
+local easterTrophy2
+local easterTrophy3
 
 local muteButton
 local unmuteButton
@@ -83,20 +83,20 @@ end
 
 local function trophyMaker1()
     if (hiddenEasterEgg == 1) then
-        trophy.isVisible = true
+        easterTrophy.isVisible = true
     end
 end
 
 local function trophyMaker2()
     if (hiddenEasterEgg2 == 1) then
-        trophy2.isVisible = true
+        easterTrophy2.isVisible = true
     end
 end
 
 
 local function trophyMaker3()
     if (hiddenEasterEgg3 == 1) then
-        trophy3.isVisible = true
+        easterTrophy3.isVisible = true
     end
 end
 
@@ -181,20 +181,20 @@ function scene:create( event )
     unmuteButton.y = display.contentHeight*1.3/10
     unmuteButton.isVisible = false
 
-    trophy = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
-    trophy.x = display.contentWidth*1/3 - 30
-    trophy.y = display.contentHeight/2 - 63
-    trophy.isVisible = false
+    easterTrophy = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
+    easterTrophy.x = display.contentWidth*1/3 - 30
+    easterTrophy.y = display.contentHeight/2 - 63
+    easterTrophy.isVisible = false
 
-    trophy2 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
-    trophy2.x = display.contentWidth*2/3 + 30
-    trophy2.y = display.contentHeight/2 - 63
-    trophy2.isVisible = false
+    easterTrophy2 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
+    easterTrophy2.x = display.contentWidth*2/3 + 30
+    easterTrophy2.y = display.contentHeight/2 - 63
+    easterTrophy2.isVisible = false
 
-    trophy3 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
-    trophy3.x = display.contentWidth/2
-    trophy3.y = display.contentHeight*2/3
-    trophy3.isVisible = false
+    easterTrophy3 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
+    easterTrophy3.x = display.contentWidth/2
+    easterTrophy3.y = display.contentHeight*2/3
+    easterTrophy3.isVisible = false
 
     trophy1Object = display.newImageRect("Images/Level1Trophy.png", 100, 100)
     trophy1Object.x = display.contentWidth*3/7
@@ -319,15 +319,16 @@ function scene:create( event )
     -----------------------------------------------------------------------------------------
 
     -- Associating button widgets with this scene
-    sceneGroup:insert( playButton )
+    sceneGroup:insert( playButton )  
     sceneGroup:insert( creditsButton )
     sceneGroup:insert( instructionsButton )
     sceneGroup:insert( levelsButton )
     sceneGroup:insert( muteButton )
     sceneGroup:insert( unmuteButton )
     sceneGroup:insert( characterSelectButton )
-    sceneGroup:insert( trophy )
-    sceneGroup:insert( trophy2)
+    sceneGroup:insert( easterTrophy )
+    sceneGroup:insert( easterTrophy2)
+    sceneGroup:insert( easterTrophy3 )
     sceneGroup:insert( trophy1Object )
     sceneGroup:insert( trophy2Object )
     sceneGroup:insert( trophy3Object )

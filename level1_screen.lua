@@ -892,6 +892,7 @@ function scene:create( event )
 
     -- this wall exists as a saftey so the game doesnt crash.
     appleW = display.newLine(0, 550, display.contentWidth, 550)
+    appleW.isVisible = false
 
     -- create floor   
     floor = display.newImageRect("Images/Ground.png", 1000, 100)
