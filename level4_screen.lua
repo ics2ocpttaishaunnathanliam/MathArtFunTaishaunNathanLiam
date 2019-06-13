@@ -71,7 +71,6 @@ local unmuteButton
 
 
 local bkgMusicMM = audio.loadSound("Sounds/mmBKGmusic.mp3")
-local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
 local Y1 = 380
@@ -161,6 +160,7 @@ local function UnMute(touch)
 end
 
 local function YouLoseTransition()
+    bkgMusicMMChannel = audio.pause(bkgMusicMM)
     loseSoundChannel = audio.play(loseSound)
     composer.gotoScene( "you_lose" )
 end
@@ -972,7 +972,7 @@ function scene:show( event )
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()
-        bkgMusicMMChannel = audio.play(bkgMusicMM)
+        bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
     end
 
 end --function scene:show( event )

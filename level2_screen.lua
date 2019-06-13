@@ -71,7 +71,7 @@ local unmuteButton
 
 
 local bkgMusicMM = audio.loadSound("Sounds/mmBKGmusic.mp3")
-local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
+
 
 --answers original x and y
 local Y1 = 380
@@ -161,6 +161,7 @@ local function UnMute(touch)
 end
 
 local function YouLoseTransition()
+    bkgMusicMMChannel = audio.pause(bkgMusicMM)
     loseSoundChannel = audio.play(loseSound)
     composer.gotoScene( "you_lose" )
 end
@@ -191,13 +192,13 @@ local function startTimer()
 end
 
 -- Creating Transitioning Function back to main menu
-local function BackTransition( )
+local function BackTransition()
     composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
     bkgMusicMMChannel = audio.pause(bkgMusicMM)
 end
 
 local function AskQuestion()
-    randomAnimalName = math.random(1,16)
+    randomAnimalName = math.random(1,18)
 
     if (randomAnimalName == 1) then
         questionObject.text = "Tiger"
@@ -360,7 +361,7 @@ local function win()
     if ( userAnswer == correctAnswer ) then
         hitSoundChannel = audio.play(hitSound)
         bkgMusicMMChannel = audio.pause(bkgMusicMM)
-        timer.performWithDelay(1600, RestartLevel2)
+        timer.performWithDelay(1500, RestartLevel2)
     end   
 end
 
@@ -424,7 +425,7 @@ local function PositionAnswers()
         incorrectAnswer2.x = X2
         incorrectAnswer2.y = Y2
 
-        incorrectAnswer3.x = X1
+        incorrectAnswer3.x = X2
         incorrectAnswer3.y = Y1
     end
 
@@ -566,7 +567,7 @@ local function TouchListenerCorrectAnswer(touch)
                     WinTransition()
                 else 
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end 
             -- if they release the textbox before the answerbox, then return it to its original position
             else                 
@@ -626,7 +627,7 @@ local function incorrectAnswer1TouchListener(touch)
                     -- play sound
                     hitSoundChannel = audio.play(hitSound)
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end
 
             --else make box go back to where it was
@@ -685,7 +686,7 @@ local function incorrectAnswer2TouchListener(touch)
                     -- play sound
                     hitSoundChannel = audio.play(hitSound)
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end
 
             --else make box go back to where it was
@@ -735,7 +736,7 @@ local function incorrectAnswer3TouchListener(touch)
                 -- pause background music
                 bkgMusicMMChannel = audio.pause(bkgMusicMM)
 
-                -- life is tak3en away for incorrect answer
+                -- life is taken away for incorrect answer
                 lives = lives - 1
                 UpdateHearts()
                 if (lives == 0) then
@@ -744,7 +745,7 @@ local function incorrectAnswer3TouchListener(touch)
                     -- play sound
                     hitSoundChannel = audio.play(hitSound)
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end
 
             --else make box go back to where it was
@@ -972,13 +973,13 @@ function scene:show( event )
         secondsLeft = totalSeconds
         lives = 5
         score = 0
+        AskQuestion()
         UpdateHearts()
         PositionAnswers()
-        AskQuestion()
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()
-        bkgMusicMMChannel = audio.play(bkgMusicMM)
+        bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
     end
 
 end --function scene:show( event )
