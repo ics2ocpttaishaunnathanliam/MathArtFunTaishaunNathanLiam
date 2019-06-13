@@ -532,6 +532,15 @@ local function onCollision( self, event )
                 composer.gotoScene( "level2_screen", {effect = "zoomOutInFadeRotate", time = 500})
             end
         end
+
+        if (questionsAnswered == 3) then
+            flyingBall.isVisible = true
+        end
+
+        if (questionsAnswered == 4) then
+            flyingBall.isVisible = false
+        end
+
            -- calls function which deletes the arrows
         if  (event.target.myName == "pointerArrow") then
             timer.performWithDelay(100, Die)
@@ -729,10 +738,10 @@ function scene:create( event )
         -- Insert background image into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( bkg_image )    
 
-    flyingBall = display.newImageRect("Images/ApplesNathan@2x.png", 50, 50)
+    flyingBall = display.newImageRect("Images/ApplesNathan@2x.png", 10, 10)
     flyingBall.x = 500
     flyingBall.y = display.contentHeight/2
-    flyingBall.isVisible = true
+    flyingBall.isVisible = false
 
     hiddenText = display.newText("Congrats You found the hiddenEasterEgg", 0, 0)
     hiddenText.isVisible = false
@@ -883,6 +892,7 @@ function scene:create( event )
 
     -- this wall exists as a saftey so the game doesnt crash.
     appleW = display.newLine(0, 550, display.contentWidth, 550)
+    appleW.isVisible = false
 
     -- create floor   
     floor = display.newImageRect("Images/Ground.png", 1000, 100)
