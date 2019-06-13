@@ -116,7 +116,7 @@ local winSound = audio.loadSound( "Sounds/Cheer.m4a" )
 local winSoundChannel
 
 -- background sound
-local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
+local bkgMusicLevel1 = audio.loadSound("Sounds/level1Music.mp3")
 local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
 
 ----------------------------------------------------------------------
@@ -708,7 +708,7 @@ function ResumeGame()
 end
 -- deletes the apple you touched if you are right
 function ResumeGame2()
-    -- make character visible again
+   --  make character visible again
     character.isVisible = true
     -- play sound when correct
     winSoundChannel = audio.play(winSound)

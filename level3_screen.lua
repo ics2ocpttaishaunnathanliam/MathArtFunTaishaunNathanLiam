@@ -502,6 +502,7 @@ local function onCollision( self, event )
             if (questionsAnswered == 5) then
                 -- after getting 5 questions right, go to the you win screen
                 winSoundChannel = audio.play(winSound)
+                trophy3 = 1
                 composer.gotoScene( "level4_screen" )
                 timer.pause(countDownTimer)
             end

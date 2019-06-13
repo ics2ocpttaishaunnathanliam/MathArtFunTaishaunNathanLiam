@@ -70,7 +70,7 @@ local muteButton
 local unmuteButton
 
 
-local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
+local bkgMusicMM = audio.loadSound("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y

@@ -70,7 +70,7 @@ local muteButton
 local unmuteButton
 
 
-local bkgMusicMM = audio.loadStream("Sounds/mmBKGmusic.mp3")
+local bkgMusicMM = audio.loadSound("Sounds/mmBKGmusic.mp3")
 local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
@@ -201,7 +201,7 @@ local function AskQuestion()
 
     if (randomAnimalName == 1) then
         questionObject.text = "Tiger"
-        correctAnswer.text = "Kitten:)"
+        correctAnswer.text = "Kitten"
         incorrectAnswer1.text = "Pup"
         incorrectAnswer2.text = "Larva"
         incorrectAnswer3.text = "Owlet"
@@ -215,7 +215,7 @@ local function AskQuestion()
 
     elseif (randomAnimalName == 3) then
         questionObject.text = "Mole"
-        correctAnswer.text = "Pup:)"
+        correctAnswer.text = "Pup"
         incorrectAnswer1.text = "Wellow"
         incorrectAnswer2.text = "Kit"
         incorrectAnswer3.text = "Supole"
@@ -415,7 +415,7 @@ local function PositionAnswers()
 
     elseif (answerPosition == 4) then
 
-        correctAnswer.x = X2
+        correctAnswer.x = X1
         correctAnswer.y = Y1
             
         incorrectAnswer1.x = X1
