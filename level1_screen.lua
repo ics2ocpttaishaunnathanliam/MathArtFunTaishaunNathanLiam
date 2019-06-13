@@ -95,6 +95,11 @@ local secondsLeft = 45
 local clockText
 local countDownTimer
 
+-- easter egg vars
+local flyingBall
+local flyingBallX = 400
+local hiddenText
+
 -----------------------------------------------------------------------------------------
 -- SOUND VARIABLES
 ----------------------------------------------------------------------------------------- 
@@ -118,6 +123,11 @@ local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 }
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------
 -- bring to you to "you lose screen" when called
+local function FlyingBallTouch(touch)
+    hiddenEasterEgg3 = 1
+    hiddenText.isVisible = true
+end
+
 local function YouLoseTransition()
     composer.gotoScene( "you_lose" )
 end
@@ -231,7 +241,6 @@ end
 
 -- replaces character function and the character itself after you answer a question
 local function ReplaceCharacter()
-    print ("***Called ReplaceCharacter1")
     character = display.newImageRect("Images/MooseCharacterLiamC.png", 100, 150)
     character.x = display.contentWidth * 1 / 8
     character.y = display.contentHeight  * 2.5 / 3
@@ -256,7 +265,6 @@ local function ReplaceCharacter()
 end
 -- same a replace character 1 but changes the look of the character 
 local function ReplaceCharacter2()
-    print ("***Called ReplaceCharacter2")
     character = display.newImageRect("Images/Moose2.png", 100, 150)
     character.x = display.contentWidth * 1 / 8
     character.y = display.contentHeight  * 2.5 / 3
@@ -282,7 +290,6 @@ end
 
 -- same a replace character 1 but changes the look of the character 
 local function ReplaceCharacter3()
-    print ("***Called ReplaceCharacter3")
     character = display.newImageRect("Images/Moose3.png", 100, 150)
     character.x = display.contentWidth * 1 / 8
     character.y = display.contentHeight  * 2.5 / 3
@@ -308,7 +315,6 @@ end
 
 -- same a replace character 1 but changes the look of the character 
 local function ReplaceCharacter4()
-    print ("***Called ReplaceCharacter4")
     character = display.newImageRect("Images/Moose4.png", 100, 150)
     character.x = display.contentWidth * 1 / 8
     character.y = display.contentHeight  * 2.5 / 3
@@ -526,6 +532,15 @@ local function onCollision( self, event )
                 composer.gotoScene( "level2_screen", {effect = "zoomOutInFadeRotate", time = 500})
             end
         end
+
+        if (questionsAnswered == 3) then
+            flyingBall.isVisible = true
+        end
+
+        if (questionsAnswered == 4) then
+            flyingBall.isVisible = false
+        end
+
            -- calls function which deletes the arrows
         if  (event.target.myName == "pointerArrow") then
             timer.performWithDelay(100, Die)
@@ -676,7 +691,6 @@ end
 
 -- deletes the apple you touched if you are wrong
 function ResumeGame()
-    print("Called ResumeGame")
 
     -- add sound if you qare incorrect
     hitSoundChannel = audio.play(hitSound)
@@ -693,7 +707,6 @@ function ResumeGame()
 end
 -- deletes the apple you touched if you are right
 function ResumeGame2()
-    print("Called ResumeGame")
     -- play sound when correct
     winSoundChannel = audio.play(winSound)
         -- make character visible again
@@ -724,6 +737,18 @@ function scene:create( event )
 
         -- Insert background image into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( bkg_image )    
+
+    flyingBall = display.newImageRect("Images/ApplesNathan@2x.png", 10, 10)
+    flyingBall.x = 500
+    flyingBall.y = display.contentHeight/2
+    flyingBall.isVisible = false
+
+    hiddenText = display.newText("Congrats You found the hiddenEasterEgg", 0, 0)
+    hiddenText.isVisible = false
+    hiddenText.x = display.contentWidth/2
+    hiddenText.y = 580
+    hiddenText:scale(2, 2)
+    hiddenText:setTextColor(0, 1, 0)
 
     -- create apples
     apple1 = display.newImageRect("Images/ApplesNathan@2x.png", 100, 100)
@@ -867,6 +892,7 @@ function scene:create( event )
 
     -- this wall exists as a saftey so the game doesnt crash.
     appleW = display.newLine(0, 550, display.contentWidth, 550)
+    appleW.isVisible = false
 
     -- create floor   
     floor = display.newImageRect("Images/Ground.png", 1000, 100)
@@ -917,6 +943,8 @@ function scene:create( event )
     sceneGroup:insert(pointerArrow3)
     sceneGroup:insert(pointerArrow4)
     sceneGroup:insert(pointerArrow5)
+    sceneGroup:insert( hiddenText )
+    sceneGroup:insert(flyingBall)
 
 end --function scene:create( event )
 
@@ -947,6 +975,7 @@ function scene:show( event )
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)    
         questionsAnswered = 0
+        flyingBall:addEventListener("touch", FlyingBallTouch)   
 
         -- make all soccer balls visible
         MakeAppleVisible()

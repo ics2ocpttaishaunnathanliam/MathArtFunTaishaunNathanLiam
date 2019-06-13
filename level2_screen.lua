@@ -180,6 +180,7 @@ end
 --
 local function WinTransition()
     winSoundChannel = audio.play(winSound)
+    trophy2 = 1
     composer.gotoScene("level3_screen")
 end 
 
@@ -196,25 +197,25 @@ local function BackTransition( )
 end
 
 local function AskQuestion()
-    randomAnimalName = math.random(1,12)
+    randomAnimalName = math.random(1,16)
 
     if (randomAnimalName == 1) then
         questionObject.text = "Tiger"
-        correctAnswer.text = "Kitten"
+        correctAnswer.text = "Kitten:)"
         incorrectAnswer1.text = "Pup"
         incorrectAnswer2.text = "Larva"
         incorrectAnswer3.text = "Owlet"
 
     elseif (randomAnimalName == 2) then
         questionObject.text = "Goat"
-        correctAnswer.text = "Kid"
+        correctAnswer.text = "Kid:)"
         incorrectAnswer1.text = "Pup"
         incorrectAnswer2.text = "Piglet"
         incorrectAnswer3.text = "Goaty"
 
     elseif (randomAnimalName == 3) then
         questionObject.text = "Mole"
-        correctAnswer.text = "Pup"
+        correctAnswer.text = "Pup:)"
         incorrectAnswer1.text = "Wellow"
         incorrectAnswer2.text = "Kit"
         incorrectAnswer3.text = "Supole"
@@ -238,13 +239,13 @@ local function AskQuestion()
         correctAnswer.text = "Codling"
         incorrectAnswer1.text = "Eft"
         incorrectAnswer2.text = "Whelp"
-        incorrectAnswer3.text = "Calf"
+        incorrectAnswer3.text = "Fishy"
 
     elseif (randomAnimalName == 7) then
-        questionObject.text = "Aardvark"
-        correctAnswer.text = "Cub"
-        incorrectAnswer1.text = "Pup"
-        incorrectAnswer2.text = "Varky"
+        questionObject.text = "Goose"
+        correctAnswer.text = "Gosling"
+        incorrectAnswer1.text = "Goosey"
+        incorrectAnswer2.text = "Calf"
         incorrectAnswer3.text = "Puggle"
 
     elseif (randomAnimalName == 8) then
@@ -276,11 +277,39 @@ local function AskQuestion()
         incorrectAnswer3.text = "Duckling"
 
     elseif (randomAnimalName == 12) then
-        questionObject.text = "Elephant"
-        correctAnswer.text = "Calf"
+        questionObject.text = "Dog"
+        correctAnswer.text = "Puppy"
+        incorrectAnswer1.text = "Kid"
+        incorrectAnswer2.text = "Dogo"
+        incorrectAnswer3.text = "Doggy"
+    
+    elseif (randomAnimalName == 13) then
+        questionObject.text = "Bear"
+        correctAnswer.text = "Cub"
+        incorrectAnswer1.text = "Foal"
+        incorrectAnswer2.text = "Calf"
+        incorrectAnswer3.text = "Fawn"
+
+    elseif (randomAnimalName == 14) then
+        questionObject.text = "Deer"
+        correctAnswer.text = "Fawn"
+        incorrectAnswer1.text = "Lamb"
+        incorrectAnswer2.text = "Eyas"
+        incorrectAnswer3.text = "Dosling"
+
+    elseif (randomAnimalName == 15) then
+        questionObject.text = "Pig"
+        correctAnswer.text = "Piglet"
+        incorrectAnswer1.text = "Piggy"
+        incorrectAnswer2.text = "Bunny"
+        incorrectAnswer3.text = "Infant"
+
+    elseif (randomAnimalName == 16) then
+        questionObject.text = "Rabbit"
+        correctAnswer.text = "Bunny"
         incorrectAnswer1.text = "Kid"
         incorrectAnswer2.text = "Billy"
-        incorrectAnswer3.text = "Eyas"
+        incorrectAnswer3.text = "Lamb"
     end
 end
 
