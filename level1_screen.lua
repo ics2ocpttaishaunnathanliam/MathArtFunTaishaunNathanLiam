@@ -691,7 +691,8 @@ end
 
 -- deletes the apple you touched if you are wrong
 function ResumeGame()
-
+        -- make character visible again
+    character.isVisible = true
     -- add sound if you qare incorrect
     hitSoundChannel = audio.play(hitSound)
         -- make character visible again
@@ -707,6 +708,8 @@ function ResumeGame()
 end
 -- deletes the apple you touched if you are right
 function ResumeGame2()
+    -- make character visible again
+    character.isVisible = true
     -- play sound when correct
     winSoundChannel = audio.play(winSound)
         -- make character visible again

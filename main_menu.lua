@@ -193,7 +193,7 @@ function scene:create( event )
 
     easterTrophy3 = display.newImageRect("Images/easterEggTrophy1.png", 100, 100)
     easterTrophy3.x = display.contentWidth/2
-    easterTrophy3.y = display.contentHeight*2/3
+    easterTrophy3.y = display.contentHeight*1.7/3
     easterTrophy3.isVisible = false
 
     trophy1Object = display.newImageRect("Images/Level1Trophy.png", 100, 100)
