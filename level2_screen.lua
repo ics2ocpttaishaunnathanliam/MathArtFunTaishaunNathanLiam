@@ -208,7 +208,7 @@ local function AskQuestion()
 
     elseif (randomAnimalName == 2) then
         questionObject.text = "Goat"
-        correctAnswer.text = "Kid:)"
+        correctAnswer.text = "Kid"
         incorrectAnswer1.text = "Pup"
         incorrectAnswer2.text = "Piglet"
         incorrectAnswer3.text = "Goaty"
