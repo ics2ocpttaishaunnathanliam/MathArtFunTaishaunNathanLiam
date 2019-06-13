@@ -218,10 +218,10 @@ local function PositionAnswers()
         
     elseif (answerPosition == 2) then
 
-        answerText.x = X2
+        answerText.x = X1
         answerText.y = Y1
             
-        wrongText1.x = X1
+        wrongText1.x = X2
         wrongText1.y = Y1
             
         wrongText2.x = X2
@@ -275,13 +275,13 @@ function scene:create( event )
     -----------------------------------------------------------------------------------------
     --covering the other scene with a rectangle so it looks faded and stops touch from going through
     bkg = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
-    --setting to a semi black colour
+    --setting the background colour
     bkg:setFillColor(0,0,0,0.5)
 
     -----------------------------------------------------------------------------------------
     --making a cover rectangle to have the background fully bolcked where the question is
     cover = display.newRoundedRect(display.contentCenterX, display.contentCenterY, display.contentWidth*0.8, display.contentHeight*0.95, 50 )
-    --setting its colour
+    --setting the colour inside it.
     cover:setFillColor(96/255, 96/255, 96/255)
 
     -- create the question text object

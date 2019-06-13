@@ -100,13 +100,14 @@ local hitSoundChannel
 local winSound = audio.loadSound( "Sounds/Cheer.m4a" )
 local winSoundChannel
 
-local bkgMusicLevel1 = audio.loadStream("Sounds/level1Music.mp3")
+local bkgMusicLevel1 = audio.loadStream("Sounds/instructionsMusic.mp3")
 local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
 
 ----------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------
 
+-- Create local function to transition to the you lose screen
 local function YouLoseTransition2()
     apple1.isVisible = false
     apple2.isVisible = false
@@ -133,6 +134,7 @@ local function up (touch)
     motiony = -SPEED
 end
 
+-- Allows the dog to move
 local function movePlayer (event)
     character.x = character.x + motionx
     character.y = character.y + motiony
@@ -175,6 +177,7 @@ local function checkLives(event)
     end
 end
 
+-- Add mute function
 local function Mute(touch)
     if (touch.phase == "ended") then
         audio.pause(bkgMusicMM)
@@ -184,6 +187,7 @@ local function Mute(touch)
     end
 end
 
+-- add unmute function
 local function UnMute(touch)
     if (touch.phase == "ended") then
         audio.resume(bkgMusicMM)
@@ -304,6 +308,7 @@ local function ReplaceCharacter4()
     AddRuntimeListeners()
 end
 
+-- Make apple visible function
 local function MakeAppleVisible()
     apple1.isVisible = true
     apple2.isVisible = true
@@ -312,6 +317,7 @@ local function MakeAppleVisible()
     apple5.isVisible = true
 end
 
+-- A fuction to make the hearts visible
 local function MakeHeartsVisible()
     heart1.isVisible = true
     heart2.isVisible = true
@@ -337,6 +343,7 @@ function Transition_SlideDown( )
     composer.gotoScene( "you_lose", transitionOptions_SlideDown )
 end 
 
+-- function to change the time
 local function UpdateTime()
 
     -- decrement the number of seconds
@@ -353,6 +360,7 @@ local function UpdateTime()
 
 end
 
+-- time goes back to the original time
 local function stopDieTimer()
     secondsLeft = totalSeconds
 end
@@ -747,7 +755,7 @@ function scene:create( event )
         overFile = "Images/BackButtonPressedYourName@2x.png",
 
         width = 200,
-        height = 100,
+        height = 90,
 
         -- Setting Functional Properties
         onRelease = BackTransition
