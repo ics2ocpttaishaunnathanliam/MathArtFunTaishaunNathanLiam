@@ -191,7 +191,7 @@ local function startTimer()
 end
 
 -- Creating Transitioning Function back to main menu
-local function BackTransition( )
+local function BackTransition()
     composer.gotoScene( "main_menu", {effect = "zoomOutInFadeRotate", time = 500})
     bkgMusicMMChannel = audio.pause(bkgMusicMM)
 end
