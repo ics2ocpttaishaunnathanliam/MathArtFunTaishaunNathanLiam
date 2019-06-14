@@ -120,7 +120,7 @@ local randomAnswer
 
 -- rectangle
 local rectangle
-local vertices1 = { 320,115, 320,10, 780,10, 780,115 }
+local vertices1 = { 310,115, 310,10, 785,10, 785,115 }
 
 local myGroup = display.newGroup()
 
@@ -801,7 +801,7 @@ function scene:create( event )
         -- Insert background image into the scene group in order to ONLY be associated with this scene
 
     -- questin text above
-    titleQuestionObject = display.newText( "Match animal baby names\n      to their adult ones!", 505, 93, nil, 35 )
+    titleQuestionObject = display.newText( "Drag the animal baby names\n    to match their adult ones!", 505, 93, nil, 35 )
     titleQuestionObject:setTextColor(0, 0, 0)
     titleQuestionObject.isVisible = true
 
