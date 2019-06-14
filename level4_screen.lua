@@ -71,7 +71,6 @@ local unmuteButton
 
 
 local bkgMusicMM = audio.loadSound("Sounds/mmBKGmusic.mp3")
-local bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
 
 --answers original x and y
 local Y1 = 380
@@ -120,7 +119,7 @@ local randomAnswer
 
 -- rectangle
 local rectangle
-local vertices1 = { 320,115, 320,10, 780,10, 780,115 }
+local vertices1 = { 310,115, 310,10, 785,10, 785,115 }
 
 local myGroup = display.newGroup()
 
@@ -161,6 +160,7 @@ local function UnMute(touch)
 end
 
 local function YouLoseTransition()
+    bkgMusicMMChannel = audio.pause(bkgMusicMM)
     loseSoundChannel = audio.play(loseSound)
     composer.gotoScene( "you_lose" )
 end
@@ -347,7 +347,7 @@ local function win()
     if ( userAnswer == correctAnswer ) then
         hitSoundChannel = audio.play(hitSound)
         bkgMusicMMChannel = audio.pause(bkgMusicMM)
-        timer.performWithDelay(1600, RestartLevel2)
+        timer.performWithDelay(1500, RestartLevel2)
     end   
 end
 
@@ -559,7 +559,7 @@ local function TouchListenerCorrectAnswer(touch)
                     WinTransition()
                 else 
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end 
             -- if they release the textbox before the answerbox, then return it to its original position
             else                 
@@ -619,7 +619,7 @@ local function incorrectAnswer1TouchListener(touch)
                     -- play sound
                     hitSoundChannel = audio.play(hitSound)
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end
 
             --else make box go back to where it was
@@ -678,7 +678,7 @@ local function incorrectAnswer2TouchListener(touch)
                     -- play sound
                     hitSoundChannel = audio.play(hitSound)
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end
 
             --else make box go back to where it was
@@ -737,7 +737,7 @@ local function incorrectAnswer3TouchListener(touch)
                     -- play sound
                     hitSoundChannel = audio.play(hitSound)
                     -- restart the level after 1.6 seconds
-                    timer.performWithDelay(1600, RestartLevel2)
+                    timer.performWithDelay(1500, RestartLevel2)
                 end
 
             --else make box go back to where it was
@@ -794,7 +794,7 @@ function scene:create( event )
     
 
     -- questin text above
-    titleQuestionObject = display.newText( "Match animal baby names\n      to their adult ones!", 505, 93, nil, 35 )
+    titleQuestionObject = display.newText( "Drag the animal baby names\n    to match their adult ones!", 505, 93, nil, 35 )
     titleQuestionObject:setTextColor(0, 0, 0)
     titleQuestionObject.isVisible = true
 
@@ -972,7 +972,7 @@ function scene:show( event )
         AddTouchListeners()
         AddRuntimeListeners()
         startTimer()
-        bkgMusicMMChannel = audio.play(bkgMusicMM)
+        bkgMusicMMChannel = audio.play( bkgMusicMM, { channel=1, loops=-1 } )
     end
 
 end --function scene:show( event )

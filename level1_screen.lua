@@ -117,7 +117,6 @@ local winSoundChannel
 
 -- background sound
 local bkgMusicLevel1 = audio.loadSound("Sounds/level1Music.mp3")
-local bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
 
 ----------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
@@ -974,7 +973,7 @@ function scene:show( event )
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
         -- stop sound
-        bkgMusicLevel1Channel = audio.play(bkgMusic)
+        bkgMusicLevel1Channel = audio.play(bkgMusicLevel1, { channel=6, loops=-1 } )
         muteButton:addEventListener("touch", Mute)
         unmuteButton:addEventListener("touch", UnMute)    
         questionsAnswered = 0
